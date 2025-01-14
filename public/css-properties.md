@@ -74,13 +74,13 @@ Overrides the `align-items` property for individual flex items. Used to specific
 }
 ```
 
-### all:
-The all property resets all properties, apart from unicode-bidi and direction, to their initial or inherited value.
+### all
+The `all` property resets all properties, apart from `unicode-bidi` and `direction`, to their initial or inherited value.
 
 **Possible values:**
-- `initial`: Item is aligned at the start of the container.
-- `inherit`: Item is aligned at the end of the container.
-- `unset`: Item is aligned at the center of the container.
+- `initial`
+- `inherit`
+- `unset`
 
 **Example:**
 ```css
@@ -91,44 +91,43 @@ div {
 }
 ```
 
-### aspect-ratio:
-The aspect-ratio property allows you to define the ratio between width and height of an element.
-If aspect-ratio and width properties are set, the height will follow in the defined aspect ratio.
+### aspect-ratio
+The `aspect-ratio` property allows you to define the ratio between width and height of an element.
+
+**Example:**
 ```css
 div {
   aspect-ratio: 3 / 2;
 }
 ```
 
-### background:
-Allows you to set a background
+### background
+The `background` property allows you to set a background.
+
+**Example:**
 ```css
 body {
   background: lightblue url("img_tree.gif") no-repeat fixed center;
 }
 ```
-### border:
-The border property is a shorthand property for: 
 
-border-width
-border-style (required)
-border-color
+### border
+The `border` property is a shorthand property for:
+- `border-width`
+- `border-style` (required)
+- `border-color`
 
+**Example:**
 ```css
 h2 {
   border: 4px dotted blue;
 }
 ```
-You can customize border a LOT, like really a LOT.
 
-### border:
-The bottom property affects the vertical position of a positioned element. This property has no effect on non-positioned elements.
+### bottom
+The `bottom` property affects the vertical position of a positioned element. This property has no effect on non-positioned elements.
 
-If position: absolute; or position: fixed; - the bottom property sets the bottom edge of an element to a unit above/below the bottom edge of its nearest positioned ancestor.
-If position: relative; - the bottom property makes the element's bottom edge to move above/below its normal position.
-If position: sticky; - the bottom property behaves like its position is relative when the element is inside the viewport, and like its position is fixed when it is outside.
-If position: static; - the bottom property has no effect.
-
+**Example:**
 ```css
 div.absolute {
   position: absolute;
@@ -138,27 +137,30 @@ div.absolute {
 }
 ```
 
-### border:
-Include padding and border in the element's total width and height:
+### box-sizing
+Include padding and border in the element's total width and height.
 
+**Example:**
 ```css
 #example1 {
   box-sizing: border-box;
 }
 ```
 
-### color:
-The color property specifies the color of text.
+### color
+The `color` property specifies the color of text.
 
+**Example:**
 ```css
 body {
   color: red;
 }
 ```
 
-### column elements:
-The column properties have a wide range of utilities
+### column properties
+The column properties have a wide range of utilities.
 
+**Examples:**
 ```css
 div {
   column-count: 3;
@@ -174,9 +176,10 @@ div {
 }
 ```
 
-### cursor:
-CSS can generate a bunch of different mouse cursors:
+### cursor
+CSS can generate a bunch of different mouse cursors.
 
+**Examples:**
 ```css
 .alias {cursor: alias;}
 .all-scroll {cursor: all-scroll;}
@@ -216,17 +219,20 @@ CSS can generate a bunch of different mouse cursors:
 .zoom-out {cursor: zoom-out;}
 ```
 
-### direction:
-The direction property specifies the text direction/writing direction within a block-level element.
+### direction
+The `direction` property specifies the text direction/writing direction within a block-level element.
 
+**Example:**
 ```css
 p.rtl {
   direction: rtl;
 }
 ```
-### display:
-The display property specifies the display behavior (the type of rendering box) of an element.
 
+### display
+The `display` property specifies the display behavior (the type of rendering box) of an element.
+
+**Examples:**
 ```css
 p.ex1 {display: none;}
 p.ex2 {display: inline;}
@@ -235,8 +241,9 @@ p.ex4 {display: inline-block;}
 ```
 
 ### display: flex
-When you apply display: flex; to a container, its direct child elements automatically become flex items. This allows you to control the positioning, alignment, and spacing of these items with flexbox properties.
+When you apply `display: flex;` to a container, its direct child elements automatically become flex items. This allows you to control the positioning, alignment, and spacing of these items with flexbox properties.
 
+**Example:**
 ```css
 #main div {
   display: flex;
@@ -244,44 +251,46 @@ When you apply display: flex; to a container, its direct child elements automati
 ```
 
 ### flex: 1
-Let all the flexible items be the same length, regardless of its content:
+Let all the flexible items be the same length, regardless of its content.
 
+**Example:**
 ```css
 #main div {
   flex: 1;
 }
 ```
 
-### flex-wrap: wrap;
-The flex-wrap property in CSS controls whether flex items should stay in a single row/column or wrap into multiple lines (rows or columns) when there isn't enough space in the flex container. By default flexbox wraps horizontally mainly. It is possible to achieve height wrap, by transforming it into a column and do
-other properties combined.
+### flex-wrap: wrap
+The `flex-wrap` property in CSS controls whether flex items should stay in a single row/column or wrap into multiple lines (rows or columns) when there isn't enough space in the flex container.
 
+**Example:**
 ```css
 .container {
   display: flex;
-  flex-wrap: nowrap; /* No wrapping it will overflow*/ 
-  flex-wrap: wrap; /* Wrapping it will go down height or width */ 
+  flex-wrap: nowrap; /* No wrapping, it will overflow */
+  flex-wrap: wrap; /* Wrapping, it will go down height or width */
 }
 ```
 
-### float:
-The float property specifies whether an element should float to the left, right, or not at all.
+### float
+The `float` property specifies whether an element should float to the left, right, or not at all.
 
+**Example:**
 ```css
-img  {
+img {
   float: right;
 }
 ```
 
-### font:
-The font property is a shorthand property for:
+### font
+The `font` property is a shorthand property for:
+- `font-style`
+- `font-variant`
+- `font-weight`
+- `font-size/line-height`
+- `font-family`
 
-font-style
-font-variant
-font-weight
-font-size/line-height
-font-family
-
+**Examples:**
 ```css
 p.a {
   font: 15px Arial, sans-serif;
@@ -292,25 +301,26 @@ p.b {
 }
 ```
 
-### gap:
-The gap property defines the size of the gap between the rows and between the columns in flexbox, grid or multi-column layout. It is a shorthand for the following properties:
+### gap
+The `gap` property defines the size of the gap between the rows and between the columns in flexbox, grid, or multi-column layout.
 
+**Example:**
 ```css
 .grid-container {
   gap: 50px;
 }
 ```
 
-### grid:
-The grid property is a shorthand property for:
+### grid
+The `grid` property is a shorthand property for:
+- `grid-template-rows`
+- `grid-template-columns`
+- `grid-template-areas`
+- `grid-auto-rows`
+- `grid-auto-columns`
+- `grid-auto-flow`
 
-grid-template-rows
-grid-template-columns
-grid-template-areas
-grid-auto-rows
-grid-auto-columns
-grid-auto-flow
-
+**Example:**
 ```css
 .grid-container {
   display: grid;
@@ -318,9 +328,10 @@ grid-auto-flow
 }
 ```
 
-### height:
-If height: auto; the element will automatically adjust its height to allow its content to be displayed correctly.
+### height
+If `height: auto;` the element will automatically adjust its height to allow its content to be displayed correctly.
 
+**Example:**
 ```css
 div.a {
   height: auto;
@@ -328,10 +339,10 @@ div.a {
 }
 ```
 
-### justify-content:
-The justify-content property aligns the flexible container's items when the items do not use all available space on the main-axis (horizontally).
-justify-content: flex-start|flex-end|center|space-between|space-around|space-evenly|initial|inherit;
+### justify-content
+The `justify-content` property aligns the flexible container's items when the items do not use all available space on the main-axis (horizontally).
 
+**Example:**
 ```css
 div {
   display: flex;
@@ -339,39 +350,34 @@ div {
 }
 ```
 
-### margin:
-The margin property sets the margins for an element, and is a shorthand property for the following properties:
-all 4 = 4 values, 3 = 1st top, 2nd, left,right, 3rd bottom
-2 values = 1st topbottom, 2nd leftright
-1 value = apply to everything
+### margin
+The `margin` property sets the margins for an element, and is a shorthand property for the following properties:
+- `margin-top`
+- `margin-right`
+- `margin-bottom`
+- `margin-left`
 
-margin-top
-margin-right
-margin-bottom
-margin-left
-
+**Example:**
 ```css
 p {
   margin: 35px;
 }
 ```
 
-### max-block-size:
-The max-block-size property specifies the maximum size of an element in the block direction.
+### max-block-size
+The `max-block-size` property specifies the maximum size of an element in the block direction.
 
-If the content is smaller than the maximum size in block direction, the max-block-size property value has no effect.
-
-If the content is larger than the maximum size in block direction, the max-block-size property value will be applied.
-
+**Example:**
 ```css
 div {
   max-block-size: 60px;
 }
 ```
 
-### overflow:
-The overflow property specifies what should happen if content overflows an element's box.
+### overflow
+The `overflow` property specifies what should happen if content overflows an element's box.
 
+**Examples:**
 ```css
 div.ex1 {
   overflow: scroll;
@@ -382,25 +388,24 @@ div.ex2 {
 }
 ```
 
-### padding:
-An element's padding is the space between its content and its border.
+### padding
+An element's padding is the space between its content and its border. The `padding` property is a shorthand property for:
+- `padding-top`
+- `padding-right`
+- `padding-bottom`
+- `padding-left`
 
-The padding property is a shorthand property for:
-
-padding-top
-padding-right
-padding-bottom
-padding-left
-
+**Example:**
 ```css
 p {
   padding: 35px;
 }
 ```
 
-### text-align:
-The text-align property specifies the horizontal alignment of text in an element.
+### text-align
+The `text-align` property specifies the horizontal alignment of text in an element.
 
+**Examples:**
 ```css
 div.a {
   text-align: center;
@@ -411,9 +416,10 @@ div.b {
 }
 ```
 
-### z-index:
-The z-index property specifies the stack order of an element. Ex: Image being placed behind text
+### z-index
+The `z-index` property specifies the stack order of an element.
 
+**Example:**
 ```css
 img {
   position: absolute;
@@ -440,6 +446,43 @@ header {
     font-size: var(--font-size-large);
 }
 ```
+
+### How the Accordion Works
+To implement an accordion in Bootstrap, you need to wrap the collapsible elements inside a parent `div` and use the `data-bs-parent` attribute to ensure only one section is open at a time. Here is an example:
+
+```html
+<div id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Accordion Item #1
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <!-- Content for Accordion Item #1 -->
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Accordion Item #2
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <!-- Content for Accordion Item #2 -->
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+In this example:
+- The `div` with `id="accordionExample"` is the parent container.
+- Each collapsible section is wrapped in a `div` with the class `accordion-item`.
+- The `data-bs-parent` attribute ensures that only one section is open at a time.
 
 ----------------------------------------------------------------------------------------
 p.class only affects p with class x

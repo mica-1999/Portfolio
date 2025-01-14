@@ -220,6 +220,11 @@ a.dashboard::before {
   }
   */
 
+  .sub-menu li {
+    display: block; /* Ensure the <li> behaves like a block element */
+    width: 100%; /* Make the <li> fill the width of its parent <ul> */
+}
+
 /* ---------------------------------------------- CONTENT -----------------------------------*/
 .card {
     margin-top: 0.75rem; /* Add margin to the second column */
@@ -262,7 +267,7 @@ a.dashboard::before {
 }
 /* Override the padding-right with higher specificity */
 .col-md-10.p-3.pr-5 {
-    padding-right: 5rem !important;
+    padding-right: 2rem !important;
 }
 
 /* ---------------------------------------------- MEDIA STUFF -----------------------------------*/
