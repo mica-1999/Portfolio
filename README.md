@@ -22,5 +22,9 @@ The purpose of this project is to hone my CSS skills and gain a better understan
   - `styles.css`: The CSS file for styling the HTML.
 - `server.js`: The Express server setup.
 
+## Resources
+- [W3Schools](https://www.w3schools.com/): A great resource for learning HTML, CSS, JavaScript, and more.
+- [Font Awesome](https://fontawesome.com/): A popular source for icons.
+
 ## How to Contribute
 Feel free to fork this repository and submit pull requests. Any contributions that help improve CSS skills and understanding are welcome.
