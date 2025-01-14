@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard for Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"> <!-- Import Inter font -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!------------------------------------------------------------- MAIN  ------------------------------------------------------------->
+    <div class="container-fluid">
+        <div class="row">
+            <!-------------------- SIDEBAR  ---------------------------->
+            <div class="d-flex col-md-2 p-3 sb-bg flex-column ps-3">
+                <h4 class="sdb-color"><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
+                <ul class="main-menu nav flex-column mt-3">
+                    <li class="menu-item">
+                        <a class="nav-link sdb-color position-relative" href="#">Dashboards</a>
+                        <ul class="sub-menu nav flex-column">
+                            <li>
+                                <a class="nav-link" href="#">Dashboard 1</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="#">Dashboard 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a class="nav-link position-relative" href="#">Projects</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="nav-link position-relative" href="#">Learning</a>
+                    </li>
+                </ul>
+            </div>
+            <!-------------------- CARDS  ---------------------------->
+            <div class="col-md-10 pr-5 p-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="search-container">
+                            <input type="text" class="form-control search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                </div>
+                <!-------------------------------------------------- 1ST ROW ------------------------------------------>
+                <div class="row d-flex mt-5">
+                    <div class="d-flex col-md-6 col-sm-12 custom-col-12">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Projects</h5>
+                                <p class="card-text">Manage your projects</p>
+                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-md-3 col-sm-6 custom-col-6">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-md-3 col-sm-6 custom-col-6">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-------------------------------------------------- 2ND ROW ------------------------------------------>
+                <div class="row d-flex mt-4">
+                    <div class="col-md-6 d-flex col-sm-12 custom-col-12 custom-height">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Projects</h5>
+                                <p class="card-text">Manage your projects</p>
+                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex col-sm-6 custom-col-6">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex col-sm-6 custom-col-6">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-------------------------------------------------- 3RD ROW ------------------------------------------>
+                <div class="row d-flex mt-4">
+                    <div class="col-md-3 d-flex custom-height-3">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Projects</h5>
+                                <p class="card-text">Manage your projects</p>
+                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 d-flex">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-------------------------------------------------- 4TH ROW ------------------------------------------>
+                <div class="row d-flex mt-4">
+                    <div class="col-md-8 d-flex custom-height-2">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Projects</h5>
+                                <p class="card-text">Manage your projects</p>
+                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex">
+                        <div class="card flex-grow-1">
+                            <div class="card-body">
+                                <h5 class="card-title">Learning</h5>
+                                <p class="card-text">Learn new things</p>
+                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-------------------------------------------------- FOOTER COPYRIGHT ------------------------------------------>
+                <div class="row d-flex mt-4">
+                    <div class="col-md-12 d-flex justify-content-between align-items-center">
+                        <p class="mb-0">© 2025, made with ❤ by Micael Ribeiro</p>   
+                        <div class="d-flex gap-3">
+                            <a href="#">License</a>
+                            <a href="#">More Themes</a>
+                            <a href="#">Documentation</a>
+                            <a href="#">Support</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

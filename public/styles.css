@@ -1,0 +1,131 @@
+/* ---------------------------------------------- BODY STUFF -----------------------------------*/
+:root {
+    --primary-bg-color: #282A42;
+    --primary-text-color: #d7d8ed;
+    --secondary-text-color: #9698af;
+    --card-bg-color: #30334e;
+    --card-border-color: #464963;
+    --card-box-shadow: 0 0.25rem 0.875rem 0 rgba(16, 17, 33, 0.26);
+    --card-border-radius: 0.625rem;
+    --card-padding-y: 1.25rem;
+    --card-padding-x: 1.25rem;
+    --bs-font-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color) !important; /* Apply this color to all text */
+    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+}
+.sd-bg {
+    background-color: var(--primary-bg-color);
+}
+
+/* ---------------------------------------------- SIDEBAR STUFF -----------------------------------*/
+.main-menu a {
+    color: var(--primary-text-color);
+    position: relative; /* Ensure the arrow is positioned relative to the link */
+    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+    padding-left:30px;
+}
+.main-menu a .ri-arrow-right-s-line {
+    position: absolute;
+    right: 0.75rem; /* Position the arrow */
+    font-size: 1.35rem; /* Increase the size of the arrows */
+}
+.sdb-color {
+    color: var(--primary-text-color);
+    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+}
+/* Adding the chart line icon before the text */
+.menu-item a::before {
+    content: "\f201"; /* Font Awesome chart-line icon (solid) */
+    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
+    font-weight: 900; /* Required for solid icons */
+    position: absolute;
+    left: 5px; /* Position the icon to the left */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Adding the right arrow icon after the text */
+.menu-item > a::after {
+    content: "\f105"; /* Font Awesome right arrow icon (solid) */
+    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
+    font-weight: 900; /* Required for solid icons */
+    position: absolute;
+    right: 10px; /* Position the arrow to the right */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Adding a dot before the sub-menu items */
+.sub-menu a::before {
+    content: "\2022"; /* Unicode for bullet point */
+    font-size: 2rem; /* Adjust the size of the dot */
+    position: absolute;
+    left: 5px; /* Position the dot to the left */
+    top: 45%;
+    transform: translateY(-50%);
+}
+.nav-link:hover{
+    background-color: #373951;
+    color: inherit !important;
+}
+/* ---------------------------------------------- CONTENT -----------------------------------*/
+.card {
+    margin-top: 0.75rem; /* Add margin to the second column */
+    --bs-card-spacer-y: var(--card-padding-y);
+    --bs-card-spacer-x: var(--card-padding-x);  
+    --bs-card-title-spacer-y: 0.875rem;
+    --bs-card-title-color: var(--primary-text-color);
+    --bs-card-subtitle-color: var(--secondary-text-color);
+    --bs-card-border-width: 0;
+    --bs-card-border-color: var(--card-border-color);
+    --bs-card-border-radius: var(--card-border-radius);
+    --bs-card-box-shadow: var(--card-box-shadow);
+    --bs-card-inner-border-radius: var(--card-border-radius);
+    --bs-card-cap-padding-y: var(--card-padding-y);
+    --bs-card-cap-padding-x: var(--card-padding-x);
+    --bs-card-cap-bg: transparent;
+    --bs-card-cap-color: var(--primary-text-color);
+    --bs-card-height: ;
+    --bs-card-color: ;
+    --bs-card-bg: var(--card-bg-color);
+    --bs-card-img-overlay-padding: var(--card-padding-x);
+    --bs-card-group-margin: 1.5rem;
+    
+    background-clip: padding-box;
+    box-shadow: var(--card-box-shadow);
+    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+}
+.card-body {
+    color: var(--primary-text-color); /* Ensure card body text color is updated */
+    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+}
+.custom-height {
+    height: 230px; /* Set a custom height */
+}
+.custom-height-2 {
+    height: 490px; /* Set a custom height */
+}
+.custom-height-3 {
+    height: 200px; /* Set a custom height */
+}
+/* Override the padding-right with higher specificity */
+.col-md-10.p-3.pr-5 {
+    padding-right: 5rem !important;
+}
+
+/* ---------------------------------------------- MEDIA STUFF -----------------------------------*/
+@media (max-width: 1040px) {
+    .custom-col-12 {
+        flex: 0 0 100%; /* Full width for first column */
+        max-width: 100%;
+    }
+
+    .custom-col-6 {
+        flex: 0 0 50%; /* Half width for the remaining columns */
+        max-width: 50%;
+    }
+}
