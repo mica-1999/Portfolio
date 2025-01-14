@@ -1,4 +1,8 @@
 /* ---------------------------------------------- BODY STUFF -----------------------------------*/
+html{
+    color-scheme: dark;
+}
+
 :root {
     --primary-bg-color: #282A42;
     --primary-text-color: #d7d8ed;
@@ -197,13 +201,15 @@ a.dashboard::before {
     top: 50%;
     transform: translateY(-50%); /* Centers the lines vertically */
   }
-  
+ 
+  /*
   .menu-header-text::before {
-    margin-left: -0.7rem; /* Adjust the position of the line */
-    width: 3%; /* Short line before the text */
-    height: 1px; /* Height of the line */
-    background-color: #7b7c95; /* Line color */
+    margin-left: -0.7rem; 
+    width: 3%; 
+    height: 1px; 
+    background-color: #7b7c95; 
   }
+  */
   
 /*
   .menu-header-text::after {
@@ -271,3 +277,28 @@ a.dashboard::before {
         max-width: 50%;
     }
 }
+
+/* Custom scrollbar styles for overflow container */
+.overflow-auto::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+    background: var(--primary-bg-color); /* Background of the scrollbar track */
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+    background-color: var(--card-border-color); /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Roundness of the scrollbar thumb */
+    border: 3px solid var(--primary-bg-color); /* Padding around the scrollbar thumb */
+    transition: 0.8s ease; /* Add transition for smooth hover effect */
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+    background-color: #B2B3C7; /* Color of the scrollbar thumb on hover */
+}
+
+
+
+
+

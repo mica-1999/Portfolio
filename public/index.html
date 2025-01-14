@@ -15,68 +15,97 @@
     <div class="container-fluid">
         <div class="row">
             <!-------------------- SIDEBAR  ---------------------------->
-            <div class="d-flex col-md-2 p-3 sb-bg flex-column ps-3 vh-100" >
+            <div class="d-flex col-md-2 p-3 sb-bg flex-column ps-3 vh-100">
                 <h4 class="sdb-color"><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
-                <ul class="main-menu nav flex-column mt-3">
-                    <li class="menu-item">
-                        <a class="nav-link sdb-color position-relative dashboards" href="#">Dashboards</a>
-                        <ul class="sub-menu nav flex-column">
-                            <li>
-                                <a class="nav-link" href="#">Dashboard 1</a>
-                            </li>
-                            <li>
-                                <a class="nav-link" href="#">Dashboard 2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item">
-                        <a class="nav-link position-relative projects" href="#">Projects</a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="nav-link position-relative learning" href="#">Learning</a>
-                    </li>
+                <div class="overflow-auto">
+                    <ul class=" main-menu nav flex-column mt-3">
+                        <li class="menu-item">
+                            <a class="nav-link sdb-color position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="false" aria-controls="dashboardSubMenu">Dashboards</a>
+                            <ul id="dashboardSubMenu" class="sub-menu nav collapse">
+                                <li>
+                                    <a class="nav-link" href="#">Dashboard 1</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="#">Dashboard 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item">
+                            <a class="nav-link sdb-color position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
+                            <ul id="projectsSubMenu" class="sub-menu nav collapse">
+                                <li>
+                                    <a class="nav-link" href="#">Project 1</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="#">Project 2</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="#">Project 3</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-item">
+                            <a class="nav-link sdb-color position-relative learning" data-bs-toggle="collapse" href="#learningSubMenu" role="button" aria-expanded="false" aria-controls="learningSubMenu">Learning</a>
+                            <ul id="learningSubMenu" class="sub-menu nav collapse">
+                                <li>
+                                    <a class="nav-link" href="#">Learning 1</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="#">Learning 2</a>
+                                </li>
+                            </ul>
+                        </li>
+    
+                        <li class="menu-header mt-4 mb-2 position-relative">
+                            <span class="menu-header-text" data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative email" href="#">Email</a>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative chat" href="#">Chat</a>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative calendar" href="#">Calendar</a>
+                        </li>
+    
+                        <li class="menu-item">
+                            <a class="nav-link position-relative music" href="#">Music</a>
+                        </li>
+    
+                        <li class="menu-item">
+                            <a class="nav-link position-relative useful-websites" href="#">Useful Websites</a>
+                        </li>
+    
+                        <li class="menu-header mt-4 mb-2 position-relative">
+                            <span class="menu-header-text" data-i18n="Apps &amp; Pages">Configs</span>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative users" href="#">Users</a>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative posts" href="#">Posts</a>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative dashboard" href="#">DashBoard</a>
+                        </li>
 
-                    <li class="menu-header mt-4 mb-2 position-relative">
-                        <span class="menu-header-text" data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
-                    </li>
-
-                    <li>
-                        <a class="nav-link position-relative email" href="#">Email</a>
-                    </li>
-
-                    <li>
-                        <a class="nav-link position-relative chat" href="#">Chat</a>
-                    </li>
-
-                    <li>
-                        <a class="nav-link position-relative calendar" href="#">Calendar</a>
-                    </li>
-
-                    <li class="menu-item">
-                        <a class="nav-link position-relative music" href="#">Music</a>
-                    </li>
-
-                    <li class="menu-item">
-                        <a class="nav-link position-relative useful-websites" href="#">Useful Websites</a>
-                    </li>
-
-                    <li class="menu-header mt-4 mb-2 position-relative">
-                        <span class="menu-header-text" data-i18n="Apps &amp; Pages">Configs</span>
-                    </li>
-
-                    <li>
-                        <a class="nav-link position-relative users" href="#">Users</a>
-                    </li>
-
-                    <li>
-                        <a class="nav-link position-relative posts" href="#">Posts</a>
-                    </li>
-
-                    <li>
-                        <a class="nav-link position-relative dashboard" href="#">DashBoard</a>
-                    </li>
-
-                </ul>
+                        <li>
+                            <a class="nav-link position-relative posts" href="#">Roles & Permissions</a>
+                        </li>
+    
+                        <li>
+                            <a class="nav-link position-relative dashboard" href="#">Others</a>
+                        </li>
+    
+                    </ul>
+                </div>
             </div>
             <!-------------------- CARDS  ---------------------------->
             <div class="col-md-10 pr-5 p-3">

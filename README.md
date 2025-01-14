@@ -28,3 +28,29 @@ The purpose of this project is to hone my CSS skills and gain a better understan
 
 ## How to Contribute
 Feel free to fork this repository and submit pull requests. Any contributions that help improve CSS skills and understanding are welcome.
+
+## Custom Scrollbar CSS
+To customize the scrollbar, you can add the following CSS properties to your stylesheet:
+
+```css
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-bg-color); /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--card-border-color); /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Roundness of the scrollbar thumb */
+    border: 3px solid var(--primary-bg-color); /* Padding around the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--card-bg-color); /* Color of the scrollbar thumb on hover */
+}
+```
+
+These properties allow you to style the scrollbar's width, track, thumb, and thumb hover state.
