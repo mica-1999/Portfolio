@@ -484,6 +484,23 @@ In this example:
 - Each collapsible section is wrapped in a `div` with the class `accordion-item`.
 - The `data-bs-parent` attribute ensures that only one section is open at a time.
 
+### flex-grow-1
+The `flex-grow-1` class in Bootstrap is used to make an element grow to fill the available space in a flex container. It is a shorthand for the CSS property `flex-grow: 1;`.
+
+To use `flex-grow-1`, the parent container must have the `d-flex` class to enable flexbox layout.
+
+**Example:**
+```html
+<div class="d-flex">
+    <div class="flex-grow-1">This element will grow to fill the available space.</div>
+    <div>This element will not grow.</div>
+</div>
+```
+
+In this example:
+- The `d-flex` class on the parent container enables flexbox layout.
+- The `flex-grow-1` class on the first child element makes it grow to fill the available space.
+
 ----------------------------------------------------------------------------------------
 p.class only affects p with class x
 * affects all elements in the page

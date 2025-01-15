@@ -1,8 +1,4 @@
-/* ---------------------------------------------- BODY STUFF -----------------------------------*/
-html{
-    color-scheme: dark;
-}
-
+/* ---------------------------------------------- ROOT VARIABLES ----------------------------------- */
 :root {
     --primary-bg-color: #282A42;
     --primary-text-color: #d7d8ed;
@@ -14,178 +10,217 @@ html{
     --card-padding-y: 1.25rem;
     --card-padding-x: 1.25rem;
     --bs-font-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --badge-success-bg: #3b4f48;
+    --badge-success-color: #72e128;
+    --badge-warning-bg: #ffcc00;
+    --badge-warning-color: #ff9900;
+    --badge-secondary-bg: #666666;
+    --badge-secondary-color: #cccccc;
+    --badge-danger-bg: #ff0000;
+    --badge-danger-color: #ff6666;
+    --bs-blue: #26c6f9;
+    --bs-indigo: #666cff;
+    --bs-purple: #6f42c1;
+    --bs-pink: #e83e8c;
+    --bs-red: #ff4d49;
+    --bs-orange: #fdb528;
+    --bs-yellow: #ffd950;
+    --bs-green: #72e128;
+    --bs-teal: #20c997;
+    --bs-cyan: #28c3d7;
+    --bs-black: #30334e;
+    --bs-white: #fff;
+    --bs-gray: rgba(234, 234, 255, 0.599);
+    --bs-gray-dark: rgba(234, 234, 255, 0.8);
+    --bs-gray-25: rgba(234, 234, 255, 0.015);
+    --bs-gray-50: rgba(234, 234, 255, 0.03);
+    --bs-primary: #666cff;
+    --bs-secondary: #6d788d;
+    --bs-success: #72e128;
+    --bs-info: #26c6f9;
+    --bs-warning: #fdb528;
+    --bs-danger: #ff4d49;
+    --bs-light: #46445b;
+    --bs-dark: #d7d5ec;
+    --bs-gray: rgba(234, 234, 255, 0.06);
+}
+
+/* ---------------------------------------------- BODY STYLES ----------------------------------- */
+html {
+    color-scheme: dark;
 }
 
 body {
     background-color: var(--primary-bg-color);
-    color: var(--primary-text-color) !important; /* Apply this color to all text */
-    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+    color: var(--primary-text-color) !important;
+    font-family: var(--bs-font-sans-serif);
 }
+
 .sd-bg {
     background-color: var(--primary-bg-color);
 }
 
-/* ---------------------------------------------- SIDEBAR STUFF -----------------------------------*/
+/* ---------------------------------------------- SIDEBAR STYLES ----------------------------------- */
 .main-menu a {
     color: var(--primary-text-color);
-    position: relative; /* Ensure the arrow is positioned relative to the link */
-    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
-    padding-left:30px;
+    position: relative;
+    font-family: var(--bs-font-sans-serif);
+    padding-left: 30px;
 }
+
 .main-menu a .ri-arrow-right-s-line {
     position: absolute;
-    right: 0.75rem; /* Position the arrow */
-    font-size: 1.35rem; /* Increase the size of the arrows */
+    right: 0.75rem;
+    font-size: 1.35rem;
 }
+
 .sdb-color {
     color: var(--primary-text-color);
-    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
+    font-family: var(--bs-font-sans-serif);
 }
-/* Adding the chart line icon before the Dashboards link */
+
+/* Sidebar Icons */
 .menu-item a.dashboards::before {
-    content: "\f201"; /* Font Awesome chart-line icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f201";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the project icon before the Projects link */
 .menu-item a.projects::before {
-    content: "\f15b"; /* Font Awesome project icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f15b";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the learning icon before the Learning link */
 .menu-item a.learning::before {
-    content: "\f518"; /* Font Awesome learning icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f518";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the email icon before the Email link */
 a.email::before {
-    content: "\f0e0"; /* Font Awesome email icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f0e0";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the chat icon before the Chat link */
 a.chat::before {
-    content: "\f086"; /* Font Awesome chat icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f086";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the calendar icon before the Calendar link */
 a.calendar::before {
-    content: "\f073"; /* Font Awesome calendar icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f073";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the music icon before the Music link */
 .menu-item a.music::before {
-    content: "\f001"; /* Font Awesome music icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f001";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the useful websites icon before the Useful Websites link */
 .menu-item a.useful-websites::before {
-    content: "\f0ac"; /* Font Awesome globe icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f0ac";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the users icon before the Users link */
 a.users::before {
-    content: "\f0c0"; /* Font Awesome users icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f0c0";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the posts icon before the Posts link */
 a.posts::before {
-    content: "\f044"; /* Font Awesome posts icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f044";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the dashboard icon before the Dashboard link */
 a.dashboard::before {
-    content: "\f0e4"; /* Font Awesome dashboard icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f0e4";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    left: 5px; /* Position the icon to the left */
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding the right arrow icon after the text */
 .menu-item > a::after {
-    content: "\f105"; /* Font Awesome right arrow icon (solid) */
-    font-family: 'Font Awesome 5 Free'; /* Ensure you're using Font Awesome */
-    font-weight: 900; /* Required for solid icons */
+    content: "\f105";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     position: absolute;
-    right: 10px; /* Position the arrow to the right */
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
 }
 
-/* Adding a dot before the sub-menu items */
 .sub-menu a::before {
-    content: "\2022"; /* Unicode for bullet point */
-    font-size: 2rem; /* Adjust the size of the dot */
+    content: "\2022";
+    font-size: 1.5rem;
     position: absolute;
-    left: 5px; /* Position the dot to the left */
+    left: 5px;
     top: 45%;
     transform: translateY(-50%);
 }
-.nav-link:hover{
+
+.nav-link:hover,
+.nav-link:focus,
+.nav-link[aria-expanded="true"] {
     background-color: #373951;
     color: inherit !important;
+    margin-bottom: 2px;
 }
+
+.nav-link {
+    border-radius: 13px;
+}
+
 .menu-header .menu-header-text {
     padding-left: 5px;
     text-transform: uppercase;
@@ -196,40 +231,33 @@ a.dashboard::before {
 }
 
 .menu-header-text::before, .menu-header-text::after {
-    content: ''; /* This creates the pseudo-element */
+    content: '';
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); /* Centers the lines vertically */
-  }
- 
-  /*
-  .menu-header-text::before {
-    margin-left: -0.7rem; 
-    width: 3%; 
-    height: 1px; 
-    background-color: #7b7c95; 
-  }
-  */
-  
-/*
-  .menu-header-text::after {
-    left: calc(45% + 0.5rem); 
-    right: 0; 
-    height: 1px; 
-    background-color: #7b7c95; 
-  }
-  */
-
-  .sub-menu li {
-    display: block; /* Ensure the <li> behaves like a block element */
-    width: 100%; /* Make the <li> fill the width of its parent <ul> */
+    transform: translateY(-50%);
 }
 
-/* ---------------------------------------------- CONTENT -----------------------------------*/
+.sub-menu li {
+    display: block;
+    width: 100%;
+}
+
+.sub-menu > a:focus {
+    background-color: #666CFF;
+}
+
+.sub-menu a:focus,
+.sub-menu a[aria-expanded="true"],
+.sub-menu a.active {
+    background-color: #666CFF;
+    color: inherit !important;
+}
+
+/* ---------------------------------------------- CARD STYLES ----------------------------------- */
 .card {
-    margin-top: 0.75rem; /* Add margin to the second column */
+    margin-top: 0.75rem;
     --bs-card-spacer-y: var(--card-padding-y);
-    --bs-card-spacer-x: var(--card-padding-x);  
+    --bs-card-spacer-x: var(--card-padding-x);
     --bs-card-title-spacer-y: 0.875rem;
     --bs-card-title-color: var(--primary-text-color);
     --bs-card-subtitle-color: var(--secondary-text-color);
@@ -247,60 +275,180 @@ a.dashboard::before {
     --bs-card-bg: var(--card-bg-color);
     --bs-card-img-overlay-padding: var(--card-padding-x);
     --bs-card-group-margin: 1.5rem;
-    
     background-clip: padding-box;
     box-shadow: var(--card-box-shadow);
-    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
-}
-.card-body {
-    color: var(--primary-text-color); /* Ensure card body text color is updated */
-    font-family: var(--bs-font-sans-serif); /* Apply the font family to all text */
-}
-.custom-height {
-    height: 230px; /* Set a custom height */
-}
-.custom-height-2 {
-    height: 490px; /* Set a custom height */
-}
-.custom-height-3 {
-    height: 200px; /* Set a custom height */
-}
-/* Override the padding-right with higher specificity */
-.col-md-10.p-3.pr-5 {
-    padding-right: 2rem !important;
+    font-family: var(--bs-font-sans-serif);
 }
 
-/* ---------------------------------------------- MEDIA STUFF -----------------------------------*/
+.card-body {
+    color: var(--primary-text-color);
+    font-family: var(--bs-font-sans-serif);
+}
+
+/* ---------------------------------------------- CUSTOM HEIGHTS ----------------------------------- */
+.custom-height {
+    height: 350px;
+}
+
+.custom-height-2 {
+    height: 490px;
+}
+
+.custom-height-3 {
+    height: 200px;
+}
+
+/* ---------------------------------------------- TABLE STYLES ----------------------------------- */
+.table thead tr th {
+    border-bottom-color: #3a3e5b;
+    padding-block: 1.426rem;
+}
+
+.table th {
+    font-size: .8125rem;
+    letter-spacing: .2px;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #464963 !important;
+}
+
+.border-top {
+    border-top: 1px solid #464963 !important;
+}
+
+/* Apply text color to all th elements inside tr */
+.table-head th{
+    text-transform: uppercase;
+    color: #d7d8ed !important;
+}
+.table-content td{
+    color: #b2b3ca !important;
+    padding-block: 1.426rem;
+    
+}
+
+/* Add max-height to table container and enable scrolling */
+.table-responsive {
+    max-height: 400px; /* Set the maximum height */
+}
+
+/* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
 @media (max-width: 1070px) {
     .custom-col-12 {
-        flex: 0 0 100%; /* Full width for first column */
+        flex: 0 0 100%;
         max-width: 100%;
     }
 
     .custom-col-6 {
-        flex: 0 0 50%; /* Half width for the remaining columns */
+        flex: 0 0 50%;
         max-width: 50%;
     }
 }
 
-/* Custom scrollbar styles for overflow container */
+/* ---------------------------------------------- SCROLLBAR STYLES ----------------------------------- */
 .overflow-auto::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+    width: 12px;
 }
 
 .overflow-auto::-webkit-scrollbar-track {
-    background: var(--primary-bg-color); /* Background of the scrollbar track */
+    background: var(--primary-bg-color);
 }
 
 .overflow-auto::-webkit-scrollbar-thumb {
-    background-color: var(--card-border-color); /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Roundness of the scrollbar thumb */
-    border: 3px solid var(--primary-bg-color); /* Padding around the scrollbar thumb */
-    transition: 0.8s ease; /* Add transition for smooth hover effect */
+    background-color: var(--card-border-color);
+    border-radius: 10px;
+    border: 3px solid var(--primary-bg-color);
+    transition: 0.8s ease;
 }
 
 .overflow-auto::-webkit-scrollbar-thumb:hover {
-    background-color: #B2B3C7; /* Color of the scrollbar thumb on hover */
+    background-color: #B2B3C7;
+}
+
+/* ---------------------------------------------- PROFILE ICON ----------------------------------- */
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* ---------------------------------------------- ICON SIZES ----------------------------------- */
+.fa-lg {
+    font-size: 1.3rem;
+}
+
+/* ---------------------------------------------- SEARCH LINK ----------------------------------- */
+.search-link {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+.search-link:hover {
+    cursor: pointer;
+}
+
+/* ---------------------------------------------- SMALL BOXES ----------------------------------- */
+.euro-icon {
+    color: #666CFF;
+}
+
+.small-box {
+    background-color: #393C6A;
+    padding: 0.7rem;
+    border-radius: 0.4rem;
+    width: 40px;
+    height: 40px;
+}
+
+.balance-received-icon {
+    color: #FF5733;
+}
+
+.small-box-received {
+    background-color: #6A3939;
+    padding: 0.7rem;
+    border-radius: 0.4rem;
+    width: 40px;
+    height: 40px;
+}
+
+.third-icon {
+    color: #33FF57;
+}
+
+.small-box-third {
+    background-color: #396A39;
+    padding: 0.7rem;
+    border-radius: 0.4rem;
+    width: 40px;
+    height: 40px;
+}
+
+/* ---------------------------------------------- BADGES ----------------------------------- */
+.bg-label-primary {
+    background-color: #393c6a !important;
+    color: #666cff !important;
+}
+
+.bg-label-success {
+    background-color: var(--badge-success-bg) !important;
+    color: var(--badge-success-color) !important;
+}
+
+.bg-label-warning {
+    background-color: var(--badge-warning-bg) !important;
+    color: var(--badge-warning-color) !important;
+}
+
+.bg-label-secondary {
+    background-color: var(--badge-secondary-bg) !important;
+    color: var(--badge-secondary-color) !important;
+}
+
+.bg-label-danger {
+    background-color: var(--badge-danger-bg) !important;
+    color: var(--badge-danger-color) !important;
 }
 
 

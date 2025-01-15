@@ -15,7 +15,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-------------------- SIDEBAR  ---------------------------->
-            <div class="d-flex col-md-2 p-3 sb-bg flex-column ps-3 vh-100">
+            <div class="d-flex col-md-2 p-3 sb-bg flex-column ps-3 vh-100 position-fixed">
                 <h4 class="sdb-color"><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
                 <div class="overflow-auto">
                     <ul class=" main-menu nav flex-column mt-3">
@@ -24,10 +24,10 @@
                                 <a class="nav-link sdb-color position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="false" aria-controls="dashboardSubMenu">Dashboards</a>
                                 <ul id="dashboardSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                                     <li>
-                                        <a class="nav-link" href="#">Dashboard 1</a>
+                                        <a class="nav-link" href="#">Main</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="#">Dashboard 2</a>
+                                        <a class="nav-link" href="#">Sub</a>
                                     </li>
                                 </ul>
                             </li>
@@ -125,107 +125,210 @@
                 </div>
             </div>
             <!-------------------- CARDS  ---------------------------->
-            <div class="col-md-10 pr-5 p-3">
-                <div class="row">
+            <div class="col-md-10 offset-md-2 p-4">
+                <div class="row d-flex align-items-center">
                     <div class="col-md-10">
-                        <div class="search-container">
-                            <input type="text" class="form-control search-input" placeholder="Search (Ctrl+/)">
-                        </div>
+                        <a href="#" class="search-link d-flex align-items-center">
+                            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                            <span class="ms-2 ps-3" style="color: #7b7c95">Search (Ctrl+/)</span>
+                        </a>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 d-flex justify-content-end align-items-center gap-3">
+                        <i class="fa-brands fa-youtube fa-lg"></i>
                         <i class="fa-brands fa-github fa-lg"></i>
                         <i class="fa-solid fa-arrows-rotate fa-lg"></i>
-                        <i class="fa-solid fa-bell fa-lg"></i>
-                        <i class="fa-solid fa-user fa-lg"></i>
+                        <i class="fa-regular fa-bell fa-lg"></i>
+                        <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon">
                     </div>
                 </div>
                 <!-------------------------------------------------- 1ST ROW ------------------------------------------>
-                <div class="row d-flex mt-5">
+                <div class="row d-flex mt-3">
                     <div class="d-flex col-md-6 col-sm-12 custom-col-12">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
-                                <h5 class="card-title">Projects</h5>
-                                <p class="card-text">Manage your projects</p>
-                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                            <div class="card-header">
+                                <h5 class="card-title">Multibanco</h5>
+                                <h6 class="card-subtitle mb-2">Balance Overview</h6>
                             </div>
+                            <div class="card-body d-flex justify-content-evenly flex-wrap p-0 mb-4">
+                                <div class="d-flex gap-2">
+                                    <div class="d-flex justify-content-center align-items-center small-box">
+                                        <i class="fa-solid fa-euro-sign fa-lg euro-icon"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h5 class="mb-0">2456</h5>
+                                        <p class="mb-0">Total Balance</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex gap-2">
+                                    <div class="d-flex justify-content-center align-items-center small-box-third">
+                                        
+                                        <i class="fa-solid fa-arrow-up fa-lg third-icon"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h5 class="mb-0">725</h5>
+                                        <p class="mb-0">This Month</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex gap-2 p-0">
+                                    <div class="d-flex justify-content-center align-items-center small-box-received">
+                                        <i class="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h5 class="mb-0">TBD</h5>
+                                        <p class="mb-0">New Transactions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex col-md-3 col-sm-6 custom-col-6">
+                        <div class="card flex-grow-1">
+                            <div class="row flex-grow-1">
+                                <div class="col-md-6">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Ratings</h5>
+                                        <div class="badge bg-label-primary rounded-pill lh-xs">Year of 2025</div>
+                                    </div>
+                                    <div class="card-body p-0 ms-3">
+                                        <h4>8.5k</h4>
+                                    </div>
+                                </div>
+                                <div class ="col-md-6 d-flex align-items-center">
+                                    <img src="assets/images/avatar.png">
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="d-flex col-md-3 col-sm-6 custom-col-6">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
-                                <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex col-md-3 col-sm-6 custom-col-6">
-                        <div class="card flex-grow-1">
-                            <div class="card-body">
-                                <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            <div class="row flex-grow-1">
+                                <div class="col-md-6">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Sessions</h5>
+                                        <div class="badge bg-label-success rounded-pill lh-xs">Last Month</div>
+                                    </div>
+                                    <div class="card-body p-0 ms-3">
+                                        <h4>0</h4>
+                                    </div>
+                                </div>
+                                <div class ="col-md-6 d-flex align-items-center">
+                                    <img src="assets/images/session.png">
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-------------------------------------------------- 2ND ROW ------------------------------------------>
-                <div class="row d-flex mt-4">
-                    <div class="col-md-6 d-flex col-sm-12 custom-col-12 custom-height">
+                <div class="row d-flex mt-2">
+                    <div class="col-md-8 d-flex col-sm-12 custom-col-12 ">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Projects</h5>
-                                <p class="card-text">Manage your projects</p>
-                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                                <h6 class="card-subtitle mb-2">#Categories</h6>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive text-nowrap">
+                                    <table class="table border-top">
+                                        <thead class="table-head">
+                                            <tr>
+                                                <th class="bg-transparent border-bottom">ID</th>
+                                                <th class="bg-transparent border-bottom">Name</th>
+                                                <th class="bg-transparent border-bottom">Description</th>
+                                                <th class="bg-transparent border-bottom">State</th>
+                                                <th class="bg-transparent border-bottom">Last Updated</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-content">
+                                            <tr>
+                                                <td class="bg-transparent border-bottom">001</td>
+                                                <td class="bg-transparent border-bottom">CSS Project</td>
+                                                <td class="bg-transparent border-bottom">Practice CSS for Advancement</td>
+                                                <td class="bg-transparent border-bottom"><div class="badge bg-label-success rounded-pill lh-xs">Completed</div></td>
+                                                <td class="bg-transparent border-bottom">2023-10-01</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg-transparent border-bottom">002</td>
+                                                <td class="bg-transparent border-bottom">JavaScript Project</td>
+                                                <td class="bg-transparent border-bottom">Learn JavaScript Basics</td>
+                                                <td class="bg-transparent border-bottom"><div class="badge bg-label-warning rounded-pill lh-xs">In Progress</div></td>
+                                                <td class="bg-transparent border-bottom">2023-10-10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg-transparent border-bottom">003</td>
+                                                <td class="bg-transparent border-bottom">React Project</td>
+                                                <td class="bg-transparent border-bottom">Build a React App</td>
+                                                <td class="bg-transparent border-bottom"><div class="badge bg-label-secondary rounded-pill lh-xs">Not Started</div></td>
+                                                <td class="bg-transparent border-bottom">2023-09-25</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg-transparent border-bottom">004</td>
+                                                <td class="bg-transparent border-bottom">Node.js Project</td>
+                                                <td class="bg-transparent border-bottom">Create a REST API</td>
+                                                <td class="bg-transparent border-bottom"><div class="badge bg-label-success rounded-pill lh-xs">Completed</div></td>
+                                                <td class="bg-transparent border-bottom">2023-08-15</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="bg-transparent border-bottom">005</td>
+                                                <td class="bg-transparent border-bottom">Python Project</td>
+                                                <td class="bg-transparent border-bottom">Develop a Web Scraper</td>
+                                                <td class="bg-transparent border-bottom"><div class="badge bg-label-danger rounded-pill lh-xs">Failed</div></td>
+                                                <td class="bg-transparent border-bottom">2023-07-20</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 d-flex col-sm-6 custom-col-6">
+                    <div class="col-md-4 d-flex col-sm-12 custom-col-12">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
-                                <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            <div class="card-header">
+                                <h5 class="card-title">Activity Timeline</h5>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 d-flex col-sm-6 custom-col-6">
-                        <div class="card flex-grow-1">
-                            <div class="card-body">
-                                <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                            <div class="card-body p-0">
+                                
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-------------------------------------------------- 3RD ROW ------------------------------------------>
-                <div class="row d-flex mt-4">
+                <div class="row d-flex mt-2">
                     <div class="col-md-3 d-flex custom-height-3">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Projects</h5>
-                                <p class="card-text">Manage your projects</p>
+                                <h6 class="card-subtitle mb-2">Subtitle</h5>
+                            </div>
+                            <div class="card-body p-0">
                                 <a href="#" class="btn btn-primary">Go to Projects</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-5 d-flex">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
+                                <h6 class="card-subtitle mb-2">Subtitle</h6>
+                            </div>
+                            <div class="card-body p-0">
                                 <a href="#" class="btn btn-primary">Go to Learning</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 d-flex">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
+                                <h6 class="card-subtitle mb-2">Subtitle</h6>
+                            </div>
+                            <div class="card-body p-0">
                                 <a href="#" class="btn btn-primary">Go to Learning</a>
                             </div>
                         </div>
@@ -233,21 +336,25 @@
                 </div>
 
                 <!-------------------------------------------------- 4TH ROW ------------------------------------------>
-                <div class="row d-flex mt-4">
+                <div class="row d-flex mt-2">
                     <div class="col-md-8 d-flex custom-height-2">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Projects</h5>
-                                <p class="card-text">Manage your projects</p>
+                                <h6 class="card-subtitle mb-2">Subtitle</h6>
+                            </div>
+                            <div class="card-body p-0">
                                 <a href="#" class="btn btn-primary">Go to Projects</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 d-flex">
                         <div class="card flex-grow-1">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Learning</h5>
-                                <p class="card-text">Learn new things</p>
+                                <h6 class="card-subtitle mb-2">Subtitle</h6>
+                            </div>
+                            <div class="card-body p-0">
                                 <a href="#" class="btn btn-primary">Go to Learning</a>
                             </div>
                         </div>
@@ -272,5 +379,15 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.sub-menu a').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sub-menu a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
