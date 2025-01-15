@@ -17,6 +17,131 @@ The Bootstrap 5 grid system has six classes:
 
 Use these classes in combination to specify how columns should behave on different devices.
 
+## Bootstrap Breakpoints
+
+Bootstrap includes six default breakpoints, sometimes referred to as grid tiers, for building responsive layouts. These breakpoints can be used to control the layout and design of your web pages at different screen sizes.
+
+- `xs` (extra small): `<576px`
+- `sm` (small): `≥576px`
+- `md` (medium): `≥768px`
+- `lg` (large): `≥992px`
+- `xl` (extra large): `≥1200px`
+- `xxl` (extra extra large): `≥1400px`
+
+These breakpoints can be used with various Bootstrap classes to create responsive designs. For example:
+
+```html
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 col-xxl-1">
+    <!-- Content here -->
+</div>
+```
+
+In this example:
+- The element will take up 12 columns (full width) on extra small screens.
+- It will take up 6 columns on small screens.
+- It will take up 4 columns on medium screens.
+- It will take up 3 columns on large screens.
+- It will take up 2 columns on extra large screens.
+- It will take up 1 column on extra extra large screens.
+
+### Example Usage
+
+Here is an example of how to use Bootstrap breakpoints in your HTML:
+
+```html
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 col-xxl-1">
+            <!-- Content here -->
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 col-xxl-1">
+            <!-- Content here -->
+        </div>
+        <!-- Add more columns as needed -->
+    </div>
+</div>
+```
+
+In this example:
+- The `container` class creates a responsive fixed-width container.
+- The `row` class creates a horizontal group of columns.
+- The `col-*` classes specify the number of columns to span at each breakpoint.
+
+### Customizing Breakpoints
+
+You can customize the breakpoints by modifying the CSS or using a preprocessor like Sass. Here is an example of how to customize breakpoints using Sass:
+
+```scss
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+@import "bootstrap/scss/bootstrap";
+```
+
+In this example:
+- The `$grid-breakpoints` map defines the custom breakpoints.
+- The `@import` directive includes the Bootstrap styles with the custom breakpoints.
+
+### Using Breakpoints in CSS
+
+You can also use the breakpoints in your custom CSS to apply styles at different screen sizes. Here is an example:
+
+```css
+/* Extra small devices (phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .custom-class {
+        /* Styles for extra small devices */
+    }
+}
+
+/* Small devices (tablets, 576px and up) */
+@media (min-width: 576px) {
+    .custom-class {
+        /* Styles for small devices */
+    }
+}
+
+/* Medium devices (desktops, 768px and up) */
+@media (min-width: 768px) {
+    .custom-class {
+        /* Styles for medium devices */
+    }
+}
+
+/* Large devices (large desktops, 992px and up) */
+@media (min-width: 992px) {
+    .custom-class {
+        /* Styles for large devices */
+    }
+}
+
+/* Extra large devices (larger desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .custom-class {
+        /* Styles for extra large devices */
+    }
+}
+
+/* Extra extra large devices (largest desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .custom-class {
+        /* Styles for extra extra large devices */
+    }
+}
+```
+
+In this example:
+- The `@media` rule applies styles based on the screen width.
+- The `min-width` and `max-width` conditions specify the breakpoints.
+
+By using these breakpoints, you can create responsive designs that adapt to different screen sizes and devices.
+
 ## Typography
 - `<p class="h1">h1 Bootstrap heading</p>`
 - `<p class="h2">h2 Bootstrap heading</p>`

@@ -12,12 +12,12 @@
     --bs-font-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     --badge-success-bg: #3b4f48;
     --badge-success-color: #72e128;
-    --badge-warning-bg: #ffcc00;
-    --badge-warning-color: #ff9900;
-    --badge-secondary-bg: #666666;
-    --badge-secondary-color: #cccccc;
-    --badge-danger-bg: #ff0000;
-    --badge-danger-color: #ff6666;
+    --badge-warning-bg: #514848;
+    --badge-warning-color: #fdb528;
+    --badge-secondary-bg: #3a3e58;
+    --badge-secondary-color: #6d788d;
+    --badge-danger-bg: #51374d;
+    --badge-danger-color: #ff4d49;
     --bs-blue: #26c6f9;
     --bs-indigo: #666cff;
     --bs-purple: #6f42c1;
@@ -283,6 +283,7 @@ a.dashboard::before {
 .card-body {
     color: var(--primary-text-color);
     font-family: var(--bs-font-sans-serif);
+
 }
 
 /* ---------------------------------------------- CUSTOM HEIGHTS ----------------------------------- */
@@ -330,10 +331,57 @@ a.dashboard::before {
 
 /* Add max-height to table container and enable scrolling */
 .table-responsive {
-    max-height: 400px; /* Set the maximum height */
+    max-height: 350px; /* Set the maximum height */
+    overflow-x: hidden; /* Disables horizontal scrolling */
 }
 
 /* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
+@media (max-width: 1400px) {
+    .custom-col-xxl {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .custom-col-xl {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .custom-col-lg {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .custom-col-md {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .custom-col-sm {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 1345px) {
+    .table-custom {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .timeline-custom{
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 1070px) {
     .custom-col-12 {
         flex: 0 0 100%;
@@ -451,7 +499,26 @@ a.dashboard::before {
     color: var(--badge-danger-color) !important;
 }
 
-
-
-
-
+/* TIMELINE STUFF */
+.timeline {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+}
+.timeline .timeline-item {
+    position: relative;
+    padding-left: 1.4rem;
+}
+.timeline .timeline-item .timeline-point {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    display: block;
+    height: .75rem;
+    width: .75rem;
+    border-radius: 50%;
+    background-color: #666cff;
+    box-shadow: 0 0 0 10px #30334e;
+}
