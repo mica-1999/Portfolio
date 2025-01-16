@@ -155,7 +155,7 @@
                                         <i class="fa-solid fa-euro-sign fa-lg euro-icon"></i>
                                     </div>
                                     <div class="card-info">
-                                        <h5 class="mb-0">2456</h5>
+                                        <h5 class="mb-0">?????</h5>
                                         <p class="mb-0">Total Balance</p>
                                     </div>
                                 </div>
@@ -166,7 +166,7 @@
                                         <i class="fa-solid fa-arrow-up fa-lg third-icon"></i>
                                     </div>
                                     <div class="card-info">
-                                        <h5 class="mb-0">725</h5>
+                                        <h5 class="mb-0">?????</h5>
                                         <p class="mb-0">This Month</p>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@
                             <div class="row flex-grow-1">
                                 <div class="col-md-6">
                                     <div class="card-header">
-                                        <h5 class="card-title">Ratings</h5>
+                                        <h6 class="card-title">Ratings</h6>
                                         <div class="badge bg-label-primary rounded-pill lh-xs">Year of 2025</div>
                                     </div>
                                     <div class="card-body p-0 ms-3">
@@ -197,7 +197,7 @@
                                     </div>
                                 </div>
                                 <div class ="col-md-6 d-flex align-items-center">
-                                    <img src="assets/images/avatar.png">
+                                    <img src="assets/images/avatar.png" class="img-fluid">
                                 </div>
                             </div>
                             
@@ -208,7 +208,7 @@
                             <div class="row flex-grow-1">
                                 <div class="col-md-6">
                                     <div class="card-header">
-                                        <h5 class="card-title">Sessions</h5>
+                                        <h6 class="card-title">Sessions</h6>
                                         <div class="badge bg-label-success rounded-pill lh-xs">Last Month</div>
                                     </div>
                                     <div class="card-body p-0 ms-3">
@@ -216,7 +216,7 @@
                                     </div>
                                 </div>
                                 <div class ="col-md-6 d-flex align-items-center">
-                                    <img src="assets/images/session.png">
+                                    <img src="assets/images/session.png" class="img-fluid">
                                 </div>
 
                             </div>
@@ -229,7 +229,7 @@
                                 <h6 class="card-subtitle mb-2">#Categories</h6>
                             </div>
                             <div class="card-body p-0">
-                                <div class="table-responsive text-nowrap">
+                                <div class="table-responsive text-nowrap project-table">
                                     <table class="table user-table border-top">
                                         <thead class="table-head">
                                             <tr>
@@ -398,7 +398,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 d-flex cs-5">
+                    <div class="col-lg-4 col-md-6 d-flex cs-5 c-order">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">CHANGE ORDER OF THIS TO BOTTOM</h5>
@@ -412,10 +412,10 @@
 
                     <div class="col-lg-8 col-md-12 d-flex table-custom-2">
                         <div class="card flex-grow-1 p-0">
-                            <div class="table-responsive text-nowrap">
-                                <table class="table">
+                            <div class="table-responsive text-nowrap user-table rounded">
+                                <table class="table table-sm mb-0 ">
                                     <thead class="table-head">
-                                        <tr>
+                                        <tr style="background-color: #3A3E5B;">
                                             <th>User</th>
                                             <th>Email</th>
                                             <th>Role</th>
@@ -425,26 +425,70 @@
                                     </thead>
                                     <tbody class="table-content">
                                         <tr>
-                                            <td>John Doe</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2">
+                                                    <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon-small">
+                                                    John Doe
+                                                </span>
+                                            </td>
                                             <td>john.doe@example.com</td>
-                                            <td>Admin</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2 text-heading">
+                                                    <i class="ri-vip-crown-line ri-22px text-primary"></i> Admin
+                                                </span>  
+                                            </td>
                                             <td><div class="badge bg-label-success rounded-pill lh-xs">Active</div></td>
                                             <td>2023-10-01</td>
                                         </tr>
                                         <tr>
-                                            <td>Jane Smith</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2">
+                                                    <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon-small">
+                                                    Jane Smith
+                                                </span>
+                                            </td>
                                             <td>jane.smith@example.com</td>
-                                            <td>Editor</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2 text-heading">
+                                                    <i class="ri-edit-box-line ri-22px text-warning"></i> Editor
+                                                </span>
+                                            </td>
                                             <td><div class="badge bg-label-warning rounded-pill lh-xs">Inactive</div></td>
                                             <td>2023-09-25</td>
                                         </tr>
                                         <tr>
-                                            <td>Alice Johnson</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2">
+                                                    <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon-small">
+                                                    Alice Johnson
+                                                </span>
+                                            </td>
                                             <td>alice.johnson@example.com</td>
-                                            <td>Viewer</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2 text-heading">
+                                                    <i class="ri-user-line ri-22px text-success"></i> Viewer
+                                                </span>
+                                            </td>
+                                            <td><div class="badge bg-label-success rounded-pill lh-xs">Active</div></td>
+                                            <td>2023-08-15</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2">
+                                                    <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon-small">
+                                                    Amy Johnson
+                                                </span>
+                                            </td>
+                                            <td>amy.johnson@example.com</td>
+                                            <td>
+                                                <span class="d-flex align-items-center gap-2 text-heading">
+                                                    <i class="ri-computer-line ri-22px text-danger"></i> Author
+                                                </span>
+                                            </td>
                                             <td><div class="badge bg-label-danger rounded-pill lh-xs">Banned</div></td>
                                             <td>2023-08-15</td>
                                         </tr>
+                                        
                                     </tbody>
                                 </table>
                             </div>

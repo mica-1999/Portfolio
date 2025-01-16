@@ -53,4 +53,17 @@ To customize the scrollbar, you can add the following CSS properties to your sty
 }
 ```
 
-These properties allow you to style the scrollbar's width, track, thumb, and thumb hover state.
+## Bootstrap Tips
+You can have multiple `col-md` classes inside a single row. This allows you to change the order of the elements inside the row easily. In this project, the `d-flex` class was used with `flex-column`, which changes the order in height.
+
+```html
+<div class="row">
+    <div class="col-md-4">First Column</div>
+    <div class="col-md-4 order-md-3">Second Column</div>
+    <div class="col-md-4 order-md-2">Third Column</div>
+</div>
+```
+
+In this example:
+- The `order-md-*` classes are used to change the order of the columns on medium and larger screens.
+- The `d-flex` class with `flex-column` can be used to change the order in height.

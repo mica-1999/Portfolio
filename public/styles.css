@@ -57,6 +57,9 @@ body {
     font-family: var(--bs-font-sans-serif);
     font-size: var(--bs-body-font-size);
 }
+.row>* {
+    margin-top: 0.5rem;
+}
 
 /* ---------------------------------------------- SIDEBAR STYLES ----------------------------------- */
 .main-menu a {
@@ -198,38 +201,55 @@ a.dashboard::before { content: "\f0e4"; }
 /* ---------------------------------------------- TABLE STYLES ----------------------------------- */
 .table thead tr th {
     padding-block: 1.426rem;
-}
-
-.table th {
     font-size: .8125rem;
     letter-spacing: .2px;
+    text-transform: uppercase;
+    color: #d7d8ed !important;
 }
 .border-top {
     border-top: 1px solid #464963 !important;
 }
-
-/* Apply text color to all th elements inside tr */
-.table-head th{
-    text-transform: uppercase;
-    color: #d7d8ed !important;
-}
 .table-content td{
-    color: #b2b3ca !important;
+    color: #b2b3ca;
     padding-block: 1.426rem;
 }
 
-/* Add max-height to table container and enable scrolling */
-.table-responsive {
+/* CHANGES FOR DIFFERENT TABLES */
+/* PROJECT TABLE STYLES */
+.project-table {
     max-height: 350px; /* Set the maximum height */
     overflow-x: hidden; /* Disables horizontal scrolling */
 }
-
-/* Apply styles to tr, th, and td elements */
-.table tr,
-.table th,
-.table td {
+.project-table tr,
+.project-table th,
+.project-table td {
     background-color: transparent !important;
-    border-bottom: 1px solid #464963 !important;
+    border-bottom: 1px solid #464963;
+}
+
+/* PROJECT TABLE STYLES */
+.project-table {
+    max-height: 350px; /* Set the maximum height */
+    overflow-x: hidden; /* Disables horizontal scrolling */
+}
+/* USER TABLE STYLES */ 
+.user-table td {
+    background-color: transparent !important;
+    border-bottom: 1px solid #464963;
+}
+.user-table th {
+    background-color: #3A3E5B;
+    border-bottom: 1px solid #464963;
+}
+.table-sm>:not(caption)>*>* {
+    padding: 1.426rem 1.25rem;
+}
+tbody tr:last-child td {
+    border-bottom: none;
+  }
+.text-heading {
+    --bs-text-opacity: 1;
+    color: #d7d8ed !important;
 }
 
 /* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
@@ -253,6 +273,9 @@ a.dashboard::before { content: "\f0e4"; }
     .cs-6{
         flex: 0 0 50%;
         max-width: 50%;
+    }
+    .c-order{
+        order: 1;
     }
 }
 
@@ -292,6 +315,12 @@ a.dashboard::before { content: "\f0e4"; }
 .profile-icon {
     width: 40px;
     height: 40px;
+    border-radius: 50%;
+}
+
+.profile-icon-small {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
 }
 
@@ -380,7 +409,6 @@ a.dashboard::before { content: "\f0e4"; }
     max-height: 300px; 
     overflow-x: hidden;
 }
-
 .timeline .timeline-item {
     position: relative;
     left: 0.7rem;
@@ -436,17 +464,24 @@ a.dashboard::before { content: "\f0e4"; }
     align-items: center;
     flex-direction: row;
 }
-
 .text-muted {
     --bs-text-opacity: 1;
     color: #7b7c95 !important;
 }
 
+/* ---------------------------------------------- FOOTER STYLES ----------------------------------- */
 .footer-links a{
     color: #666cff;
     text-decoration: none;;
 }
-/* ---------------------------------------------- USER TABLE ----------------------------------- */
-.user-table{
-    left: 0.5rem;
+
+/* ---------------------------------------------- ROLE ICON STYLES ----------------------------------- */
+.role-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.ri-22px{
+    font-size: 22px;
 }
