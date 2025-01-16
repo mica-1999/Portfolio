@@ -67,3 +67,16 @@ You can have multiple `col-md` classes inside a single row. This allows you to c
 In this example:
 - The `order-md-*` classes are used to change the order of the columns on medium and larger screens.
 - The `d-flex` class with `flex-column` can be used to change the order in height.
+
+
+What needs to be done
+
+- Chat with Node js storing the nessages in MongoDB
+- Login js already done in another project
+- Notifications on the top right corner
+- AI intregration on the chat
+- Add a CRUD for the blogs  s posts, project and other suttuff that I might need on the dashboard
+- add API for news spotify weather and all the other stuff at the dashvoqrd main page
+- Include and search through the sessions to load the number of visiting users
+- 
+
