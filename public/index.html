@@ -15,13 +15,13 @@
     <div class="container-fluid">
         <div class="row">
             <!-------------------- SIDEBAR  ---------------------------->
-            <div class="d-flex col-md-2 p-3 sb-bg flex-column ps-3 vh-100 position-fixed">
-                <h4 class="sdb-color"><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
+            <div class="d-flex col-md-2 p-3 flex-column ps-3 vh-100 position-fixed">
+                <h4><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
                 <div class="overflow-auto">
                     <ul class=" main-menu nav flex-column mt-3">
                         <div id="menuAccordion">
                             <li class="menu-item">
-                                <a class="nav-link sdb-color position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="false" aria-controls="dashboardSubMenu">Dashboards</a>
+                                <a class="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="false" aria-controls="dashboardSubMenu">Dashboards</a>
                                 <ul id="dashboardSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                                     <li>
                                         <a class="nav-link" href="#">Main</a>
@@ -32,7 +32,7 @@
                                 </ul>
                             </li>
                             <li class="menu-item">
-                                <a class="nav-link sdb-color position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
+                                <a class="nav-link position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
                                 <ul id="projectsSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                                     <li>
                                         <a class="nav-link" href="#">Project 1</a>
@@ -46,7 +46,7 @@
                                 </ul>
                             </li>
                             <li class="menu-item">
-                                <a class="nav-link sdb-color position-relative learning" data-bs-toggle="collapse" href="#learningSubMenu" role="button" aria-expanded="false" aria-controls="learningSubMenu">Learning</a>
+                                <a class="nav-link position-relative learning" data-bs-toggle="collapse" href="#learningSubMenu" role="button" aria-expanded="false" aria-controls="learningSubMenu">Learning</a>
                                 <ul id="learningSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                                     <li>
                                         <a class="nav-link" href="#">Learning 1</a>
@@ -74,7 +74,7 @@
                             </li>
         
                             <li class="menu-item">
-                                <a class="nav-link sdb-color position-relative music" data-bs-toggle="collapse" href="#musicSubMenu" role="button" aria-expanded="false" aria-controls="musicSubMenu">Music</a>
+                                <a class="nav-link position-relative music" data-bs-toggle="collapse" href="#musicSubMenu" role="button" aria-expanded="false" aria-controls="musicSubMenu">Music</a>
                                 <ul id="musicSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                                     <li>
                                         <a class="nav-link" href="#">Playlists</a>
@@ -86,7 +86,7 @@
                             </li>
         
                             <li class="menu-item">
-                                <a class="nav-link sdb-color position-relative useful-websites" data-bs-toggle="collapse" href="#usefulWebsitesSubMenu" role="button" aria-expanded="false" aria-controls="usefulWebsitesSubMenu">Useful Websites</a>
+                                <a class="nav-link position-relative useful-websites" data-bs-toggle="collapse" href="#usefulWebsitesSubMenu" role="button" aria-expanded="false" aria-controls="usefulWebsitesSubMenu">Useful Websites</a>
                                 <ul id="usefulWebsitesSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                                     <li>
                                         <a class="nav-link" href="#">Website 1</a>
@@ -291,10 +291,87 @@
                             <div class="card-header">
                                 <h5 class="card-title">Activity Timeline</h5>
                             </div>
-                            <div class="card-body p-0">
+                            <div class="card-body p-0 pt-4">
                                 <ul class="timeline card-timeline mb-0">
                                     <li class="timeline-item">
                                         <span class="timeline-point timeline-point-primary"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">New Project</h6>
+                                                <small class="text-muted">12 min ago</small>
+                                            </div>
+                                            <p>Description of the first timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-success"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Project Completed</h6>
+                                                <small class="text-muted">1 hour ago</small>
+                                            </div>
+                                            <p>Description of the second timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-warning"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Warning Issued</h6>
+                                                <small class="text-muted">3 hours ago</small>
+                                            </div>
+                                            <p>Description of the third timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-danger"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Error Occurred</h6>
+                                                <small class="text-muted">5 hours ago</small>
+                                            </div>
+                                            <p>Description of the fourth timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-info"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Information</h6>
+                                                <small class="text-muted">1 day ago</small>
+                                            </div>
+                                            <p>Description of the fifth timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-secondary"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Secondary Event</h6>
+                                                <small class="text-muted">2 days ago</small>
+                                            </div>
+                                            <p>Description of the sixth timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-light"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Light Event</h6>
+                                                <small class="text-muted">3 days ago</small>
+                                            </div>
+                                            <p>Description of the seventh timeline</p>
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item">
+                                        <span class="timeline-point timeline-point-dark"></span>
+                                        <div class="timeline-event ps-4">
+                                            <div class="timeline-header mb-2 pe-4">
+                                                <h6 class="mb-0">Dark Event</h6>
+                                                <small class="text-muted">4 days ago</small>
+                                            </div>
+                                            <p>Description of the eighth timeline</p>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -311,7 +388,7 @@
                                 <h6 class="card-subtitle mb-2">Subtitle</h5>
                             </div>
                             <div class="card-body p-0">
-                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -322,7 +399,7 @@
                                 <h6 class="card-subtitle mb-2">Subtitle</h6>
                             </div>
                             <div class="card-body p-0">
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -333,7 +410,7 @@
                                 <h6 class="card-subtitle mb-2">Subtitle</h6>
                             </div>
                             <div class="card-body p-0">
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -344,11 +421,11 @@
                     <div class="col-md-8 d-flex custom-height-2">
                         <div class="card flex-grow-1">
                             <div class="card-header">
-                                <h5 class="card-title">Projects</h5>
-                                <h6 class="card-subtitle mb-2">Subtitle</h6>
+                                <h5 class="card-title">Users</h5>
+                                <h6 class="card-subtitle mb-2">Info & Others</h6>
                             </div>
                             <div class="card-body p-0">
-                                <a href="#" class="btn btn-primary">Go to Projects</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -359,7 +436,7 @@
                                 <h6 class="card-subtitle mb-2">Subtitle</h6>
                             </div>
                             <div class="card-body p-0">
-                                <a href="#" class="btn btn-primary">Go to Learning</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -367,9 +444,9 @@
 
                 <!-------------------------------------------------- FOOTER COPYRIGHT ------------------------------------------>
                 <div class="row d-flex mt-4">
-                    <div class="col-md-12 d-flex justify-content-between align-items-center">
-                        <p class="mb-0">© 2025, made with ❤ by Micael Ribeiro</p>   
-                        <div class="d-flex gap-3">
+                    <div class="col-md-12 d-flex justify-content-between align-items-center footer-links">
+                        <p class="mb-0">© 2025, made with ❤ by <a href="#">Micael Ribeiro</a></p>   
+                        <div class="d-flex gap-3 footer-links">
                             <a href="#">License</a>
                             <a href="#">More Themes</a>
                             <a href="#">Documentation</a>

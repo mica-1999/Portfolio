@@ -7,9 +7,10 @@
     --card-border-color: #464963;
     --card-box-shadow: 0 0.25rem 0.875rem 0 rgba(16, 17, 33, 0.26);
     --card-border-radius: 0.625rem;
-    --card-padding-y: 1.25rem;
-    --card-padding-x: 1.25rem;
+    --card-padding-y: 0.65rem;
+    --card-padding-x: 0.65rem;
     --bs-font-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --bs-body-font-size: 0.9375rem;
     --badge-success-bg: #3b4f48;
     --badge-success-color: #72e128;
     --badge-warning-bg: #514848;
@@ -54,134 +55,28 @@ body {
     background-color: var(--primary-bg-color);
     color: var(--primary-text-color) !important;
     font-family: var(--bs-font-sans-serif);
-}
-
-.sd-bg {
-    background-color: var(--primary-bg-color);
+    font-size: var(--bs-body-font-size);
 }
 
 /* ---------------------------------------------- SIDEBAR STYLES ----------------------------------- */
 .main-menu a {
     color: var(--primary-text-color);
     position: relative;
-    font-family: var(--bs-font-sans-serif);
     padding-left: 30px;
+    width: 99%;
 }
 
-.main-menu a .ri-arrow-right-s-line {
-    position: absolute;
-    right: 0.75rem;
-    font-size: 1.35rem;
-}
-
-.sdb-color {
-    color: var(--primary-text-color);
-    font-family: var(--bs-font-sans-serif);
-}
-
-/* Sidebar Icons */
-.menu-item a.dashboards::before {
-    content: "\f201";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.menu-item a.projects::before {
-    content: "\f15b";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.menu-item a.learning::before {
-    content: "\f518";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-a.email::before {
-    content: "\f0e0";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-a.chat::before {
-    content: "\f086";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-a.calendar::before {
-    content: "\f073";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.menu-item a.music::before {
-    content: "\f001";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.menu-item a.useful-websites::before {
-    content: "\f0ac";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-a.users::before {
-    content: "\f0c0";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-a.posts::before {
-    content: "\f044";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
+.menu-item a.dashboards::before,
+.menu-item a.projects::before,
+.menu-item a.learning::before,
+a.email::before,
+a.chat::before,
+a.calendar::before,
+.menu-item a.music::before,
+.menu-item a.useful-websites::before,
+a.users::before,
+a.posts::before,
 a.dashboard::before {
-    content: "\f0e4";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     position: absolute;
@@ -189,6 +84,18 @@ a.dashboard::before {
     top: 50%;
     transform: translateY(-50%);
 }
+
+.menu-item a.dashboards::before { content: "\f201"; }
+.menu-item a.projects::before { content: "\f15b"; }
+.menu-item a.learning::before { content: "\f518"; }
+a.email::before { content: "\f0e0"; }
+a.chat::before { content: "\f086"; }
+a.calendar::before { content: "\f073"; }
+.menu-item a.music::before { content: "\f001"; }
+.menu-item a.useful-websites::before { content: "\f0ac"; }
+a.users::before { content: "\f0c0"; }
+a.posts::before { content: "\f044"; }
+a.dashboard::before { content: "\f0e4"; }
 
 .menu-item > a::after {
     content: "\f105";
@@ -242,10 +149,6 @@ a.dashboard::before {
     width: 100%;
 }
 
-.sub-menu > a:focus {
-    background-color: #666CFF;
-}
-
 .sub-menu a:focus,
 .sub-menu a[aria-expanded="true"],
 .sub-menu a.active {
@@ -256,25 +159,24 @@ a.dashboard::before {
 /* ---------------------------------------------- CARD STYLES ----------------------------------- */
 .card {
     margin-top: 0.75rem;
-    --bs-card-spacer-y: var(--card-padding-y);
-    --bs-card-spacer-x: var(--card-padding-x);
+    padding: var(--card-padding-y) var(--card-padding-x);
     --bs-card-title-spacer-y: 0.875rem;
-    --bs-card-title-color: var(--primary-text-color);
-    --bs-card-subtitle-color: var(--secondary-text-color);
+    --bs-card-cap-padding-y: var(--card-padding-y);
+    --bs-card-cap-padding-x: var(--card-padding-x);
+    --bs-card-img-overlay-padding: var(--card-padding-x);
+    --bs-card-group-margin: 1.5rem;
+    --bs-card-inner-border-radius: var(--card-border-radius);
     --bs-card-border-width: 0;
     --bs-card-border-color: var(--card-border-color);
     --bs-card-border-radius: var(--card-border-radius);
     --bs-card-box-shadow: var(--card-box-shadow);
-    --bs-card-inner-border-radius: var(--card-border-radius);
-    --bs-card-cap-padding-y: var(--card-padding-y);
-    --bs-card-cap-padding-x: var(--card-padding-x);
+    --bs-card-title-color: var(--primary-text-color);
+    --bs-card-subtitle-color: var(--secondary-text-color);
     --bs-card-cap-bg: transparent;
     --bs-card-cap-color: var(--primary-text-color);
-    --bs-card-height: ;
     --bs-card-color: ;
     --bs-card-bg: var(--card-bg-color);
-    --bs-card-img-overlay-padding: var(--card-padding-x);
-    --bs-card-group-margin: 1.5rem;
+    --bs-card-height: ;
     background-clip: padding-box;
     box-shadow: var(--card-box-shadow);
     font-family: var(--bs-font-sans-serif);
@@ -282,15 +184,9 @@ a.dashboard::before {
 
 .card-body {
     color: var(--primary-text-color);
-    font-family: var(--bs-font-sans-serif);
-
 }
 
 /* ---------------------------------------------- CUSTOM HEIGHTS ----------------------------------- */
-.custom-height {
-    height: 350px;
-}
-
 .custom-height-2 {
     height: 490px;
 }
@@ -301,7 +197,6 @@ a.dashboard::before {
 
 /* ---------------------------------------------- TABLE STYLES ----------------------------------- */
 .table thead tr th {
-    border-bottom-color: #3a3e5b;
     padding-block: 1.426rem;
 }
 
@@ -326,7 +221,6 @@ a.dashboard::before {
 .table-content td{
     color: #b2b3ca !important;
     padding-block: 1.426rem;
-    
 }
 
 /* Add max-height to table container and enable scrolling */
@@ -396,7 +290,7 @@ a.dashboard::before {
 
 /* ---------------------------------------------- SCROLLBAR STYLES ----------------------------------- */
 .overflow-auto::-webkit-scrollbar {
-    width: 12px;
+    width: 13px;
 }
 
 .overflow-auto::-webkit-scrollbar-track {
@@ -431,7 +325,6 @@ a.dashboard::before {
     color: var(--primary-text-color);
     text-decoration: none;
 }
-
 .search-link:hover {
     cursor: pointer;
 }
@@ -440,7 +333,6 @@ a.dashboard::before {
 .euro-icon {
     color: #666CFF;
 }
-
 .small-box {
     background-color: #393C6A;
     padding: 0.7rem;
@@ -448,13 +340,12 @@ a.dashboard::before {
     width: 40px;
     height: 40px;
 }
-
 .balance-received-icon {
-    color: #FF5733;
+    color: var(--badge-danger-color) !important;
 }
 
 .small-box-received {
-    background-color: #6A3939;
+    background-color: var(--badge-danger-bg) !important;
     padding: 0.7rem;
     border-radius: 0.4rem;
     width: 40px;
@@ -462,11 +353,11 @@ a.dashboard::before {
 }
 
 .third-icon {
-    color: #33FF57;
+    color: var(--badge-success-color) !important;
 }
 
 .small-box-third {
-    background-color: #396A39;
+    background-color: var(--badge-success-bg) !important;
     padding: 0.7rem;
     border-radius: 0.4rem;
     width: 40px;
@@ -499,26 +390,79 @@ a.dashboard::before {
     color: var(--badge-danger-color) !important;
 }
 
-/* TIMELINE STUFF */
+/* ---------------------------------------------- TIMELINE STYLES ----------------------------------- */
 .timeline {
     position: relative;
     height: 100%;
     width: 100%;
     padding: 0;
     list-style: none;
+    max-height: 300px; 
+    overflow-x: hidden;
 }
+
 .timeline .timeline-item {
     position: relative;
-    padding-left: 1.4rem;
+    left: 0.7rem;
+    border-left: 1px solid #464963;
 }
 .timeline .timeline-item .timeline-point {
     position: absolute;
-    top: 0;
+    left: -0.36rem;
+    top: 0.24rem;
     z-index: 2;
     display: block;
     height: .75rem;
     width: .75rem;
     border-radius: 50%;
-    background-color: #666cff;
     box-shadow: 0 0 0 10px #30334e;
+}
+.timeline .timeline-item .timeline-point-primary {
+    background-color: var(--bs-primary);
+}
+.timeline .timeline-item .timeline-point-success {
+    background-color: var(--bs-success);
+}
+.timeline .timeline-item .timeline-point-warning {
+    background-color: var(--bs-warning);
+}
+.timeline .timeline-item .timeline-point-danger {
+    background-color: var(--bs-danger);
+}
+.timeline .timeline-item .timeline-point-info {
+    background-color: var(--bs-info);
+}
+.timeline .timeline-item .timeline-point-secondary {
+    background-color: var(--bs-secondary);
+}
+.timeline .timeline-item .timeline-point-light {
+    background-color: var(--bs-light);
+}
+.timeline .timeline-item .timeline-point-dark {
+    background-color: var(--bs-dark);
+}
+.timeline .timeline-item .timeline-event {
+    position: relative;
+    width: 100%;
+    min-height: 4rem;
+    border-radius: .375rem;
+}
+.timeline-event p {
+    color: #b2b3ca;
+}
+.timeline .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.text-muted {
+    --bs-text-opacity: 1;
+    color: #7b7c95 !important;
+}
+
+.footer-links a{
+    color: #666cff;
+    text-decoration: none;;
 }
