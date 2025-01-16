@@ -204,11 +204,6 @@ a.dashboard::before { content: "\f0e4"; }
     font-size: .8125rem;
     letter-spacing: .2px;
 }
-
-.border-bottom {
-    border-bottom: 1px solid #464963 !important;
-}
-
 .border-top {
     border-top: 1px solid #464963 !important;
 }
@@ -229,42 +224,15 @@ a.dashboard::before { content: "\f0e4"; }
     overflow-x: hidden; /* Disables horizontal scrolling */
 }
 
+/* Apply styles to tr, th, and td elements */
+.table tr,
+.table th,
+.table td {
+    background-color: transparent !important;
+    border-bottom: 1px solid #464963 !important;
+}
+
 /* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
-@media (max-width: 1400px) {
-    .custom-col-xxl {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 1200px) {
-    .custom-col-xl {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 992px) {
-    .custom-col-lg {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .custom-col-md {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 576px) {
-    .custom-col-sm {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-}
-
 @media (max-width: 1345px) {
     .table-custom {
         flex: 0 0 100%;
@@ -273,6 +241,18 @@ a.dashboard::before { content: "\f0e4"; }
     .timeline-custom{
         flex: 0 0 100%;
         max-width: 100%;
+    }
+    .table-custom-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .cs-5{
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .cs-6{
+        flex: 0 0 50%;
+        max-width: 50%;
     }
 }
 
@@ -465,4 +445,8 @@ a.dashboard::before { content: "\f0e4"; }
 .footer-links a{
     color: #666cff;
     text-decoration: none;;
+}
+/* ---------------------------------------------- USER TABLE ----------------------------------- */
+.user-table{
+    left: 0.5rem;
 }
