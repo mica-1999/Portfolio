@@ -68,7 +68,6 @@ body {
     padding-left: 30px;
     width: 99%;
 }
-
 .menu-item a.dashboards::before,
 .menu-item a.projects::before,
 .menu-item a.learning::before,
@@ -277,6 +276,8 @@ tbody tr:last-child td {
     .c-order{
         order: 1;
     }
+
+
 }
 
 @media (max-width: 1070px) {
@@ -310,6 +311,7 @@ tbody tr:last-child td {
 .overflow-auto::-webkit-scrollbar-thumb:hover {
     background-color: #B2B3C7;
 }
+
 
 /* ---------------------------------------------- PROFILE ICON ----------------------------------- */
 .profile-icon {
