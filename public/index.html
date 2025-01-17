@@ -15,8 +15,11 @@
     <div class="container-fluid">
         <div class="row">
             <!-------------------- SIDEBAR  ---------------------------->
-            <div class="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action">
-                <h4><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
+            <div class="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
+                <div class="d-flex align-items-center justify-content-between"> 
+                    <h4><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
+                    <i class="fa-solid fa-arrow-left fa-lg d-none"></i>
+                </div>
                 <div class="overflow-auto">
                     <ul class="main-menu nav flex-column mt-3">
                         <div id="menuAccordion">
@@ -128,14 +131,14 @@
             <div class="col-lg-10 d-flex flex-md-column offset-lg-2 p-4 card-section">
                 <div class="row d-flex align-items-center">
                     <div class="col-lg-12 d-flex align-items-center">
-                        <i class="fa-solid fa-bars fa-lg me-2" style="display: none;"></i>
+                        <i class="fa-solid fa-bars fa-lg me-2" id="expand-sidebar" style="display: none;"></i>
                         <a href="#" class="search-link d-flex align-items-center">
                             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                             <span class="ms-2 ps-3" style="color: #7b7c95">Search (Ctrl+/)</span>
                         </a>
-                        <div class="d-flex gap-3 ms-auto align-items-center">
-                            <i class="fa-brands fa-youtube fa-lg"></i>
-                            <i class="fa-brands fa-github fa-lg"></i>
+                        <div class="d-flex gap-3 ms-auto align-items-center profile-section">
+                            <a href="https://www.youtube.com/"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                            <a href="https://github.com/mica-1999"><i class="fa-brands fa-github fa-lg"></i></a>
                             <i class="fa-solid fa-arrows-rotate fa-lg"></i>
                             <i class="fa-regular fa-bell fa-lg"></i>
                             <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon">
@@ -496,7 +499,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 d-flex cs-6">
+                    <div class="col-lg-4 d-flex cs-6 custom-height-3">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">STAYS NEXT TO THE CHANGED ORDER CARD</h5>
@@ -538,6 +541,20 @@
                 });
                 this.classList.add('active');
             });
+        });
+
+        document.getElementById('expand-sidebar').addEventListener('click', function() {
+            const expand = document.getElementById('sidebar');
+            expand.classList.add("z-2");
+            expand.classList.remove("responsive-action");
+            document.getElementsByClassName("fa-arrow-left")[0].classList.remove("d-none");    
+        });
+
+        document.getElementsByClassName("fa-arrow-left")[0].addEventListener('click', function() {
+            const expand = document.getElementById('sidebar');
+            expand.classList.remove("z-2");
+            expand.classList.add("responsive-action");
+            document.getElementsByClassName("fa-arrow-left")[0].classList.add("d-none");
         });
     </script>
 </body>

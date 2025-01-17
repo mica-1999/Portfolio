@@ -273,6 +273,10 @@ tbody tr:last-child td {
     .responsive-action {
         display: none !important;
     }
+    #sidebar {
+        width: 250px;
+        background-color: var(--primary-bg-color);
+    }
     .card-section {
         flex: 0 0 100%;
         max-width: 100%;
@@ -347,7 +351,7 @@ tbody tr:last-child td {
 
 /* ---------------------------------------------- ICON SIZES ----------------------------------- */
 .fa-lg {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 /* ---------------------------------------------- SEARCH LINK ----------------------------------- */
@@ -491,7 +495,7 @@ tbody tr:last-child td {
 }
 
 /* ---------------------------------------------- FOOTER STYLES ----------------------------------- */
-.footer-links a {
+.footer-links-section a {
     color: #666cff;
     text-decoration: none;
 }
@@ -499,4 +503,23 @@ tbody tr:last-child td {
 /* ---------------------------------------------- ROLE ICON STYLES ----------------------------------- */
 .ri-22px{
     font-size: 22px;
+}
+/* ---------------------------------------------- PROFILE SECTION STYLES ----------------------------------- */
+.profile-section a {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+.profile-section a .fa-youtube:hover {
+    color: red;
+}
+.profile-section a .fa-github:hover {
+    color: black;
+}
+.profile-section .fa-arrows-rotate:hover {
+    cursor: pointer;
+    color: green;
+}
+.profile-section .fa-bell:hover {
+    cursor: pointer;
+    color: yellow;
 }
