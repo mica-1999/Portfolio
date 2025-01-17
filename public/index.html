@@ -15,16 +15,16 @@
     <div class="container-fluid">
         <div class="row">
             <!-------------------- SIDEBAR  ---------------------------->
-            <div class="d-flex col-md-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action">
+            <div class="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action">
                 <h4><img src="assets/images/logo.png" alt="logo" width="20" height="20">   Portfolio</h4>
                 <div class="overflow-auto">
                     <ul class="main-menu nav flex-column mt-3">
                         <div id="menuAccordion">
                             <li class="menu-item">
-                                <a class="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="false" aria-controls="dashboardSubMenu">Dashboards</a>
-                                <ul id="dashboardSubMenu" class="sub-menu nav collapse" data-bs-parent="#menuAccordion">
+                                <a class="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Dashboards</a>
+                                <ul id="dashboardSubMenu" class="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
                                     <li>
-                                        <a class="nav-link" href="#">Main</a>
+                                        <a class="nav-link active" href="#">Main</a>
                                     </li>
                                     <li>
                                         <a class="nav-link" href="#">Sub</a>
@@ -125,26 +125,27 @@
                 </div>
             </div>
             <!-------------------- CARDS  ---------------------------->
-            <div class="col-md-10 d-flex flex-md-column offset-md-2 p-4">
+            <div class="col-lg-10 d-flex flex-md-column offset-lg-2 p-4 card-section">
                 <div class="row d-flex align-items-center">
-                    <div class="col-md-10 d-flex align-items-center">
-                        <i class="fa-solid fa-bars fa-lg me-2 d-none"></i>
+                    <div class="col-lg-12 d-flex align-items-center">
+                        <i class="fa-solid fa-bars fa-lg me-2" style="display: none;"></i>
                         <a href="#" class="search-link d-flex align-items-center">
                             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                             <span class="ms-2 ps-3" style="color: #7b7c95">Search (Ctrl+/)</span>
                         </a>
-                    </div>
-                    <div class="col-md-2 d-flex justify-content-end align-items-center gap-3">
-                        <i class="fa-brands fa-youtube fa-lg"></i>
-                        <i class="fa-brands fa-github fa-lg"></i>
-                        <i class="fa-solid fa-arrows-rotate fa-lg"></i>
-                        <i class="fa-regular fa-bell fa-lg"></i>
-                        <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon">
+                        <div class="d-flex gap-3 ms-auto align-items-center">
+                            <i class="fa-brands fa-youtube fa-lg"></i>
+                            <i class="fa-brands fa-github fa-lg"></i>
+                            <i class="fa-solid fa-arrows-rotate fa-lg"></i>
+                            <i class="fa-regular fa-bell fa-lg"></i>
+                            <img src="assets/images/profile-icon.png" alt="Profile Icon" class="profile-icon">
+                        </div>
+                        
                     </div>
                 </div>
                 <!-------------------------------------------------- MAIN CONTENT ROW ------------------------------------------>
                 <div class="row d-flex mt-3">
-                    <div class="d-flex col-md-6 col-sm-12 custom-col-12">
+                    <div class="d-flex col-lg-6 balance">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">Multibanco</h5>
@@ -185,10 +186,10 @@
                         </div>
                     </div>
 
-                    <div class="d-flex col-md-3 col-sm-6 custom-col-6">
+                    <div class="d-flex col-lg-3 ratings">
                         <div class="card flex-grow-1">
-                            <div class="row flex-grow-1">
-                                <div class="col-md-6">
+                            <div class="row g-0 flex-grow-1">
+                                <div class="col-lg-6">
                                     <div class="card-header">
                                         <h6 class="card-title">Ratings</h6>
                                         <div class="badge bg-label-primary rounded-pill lh-xs">Year of 2025</div>
@@ -197,17 +198,17 @@
                                         <h4>8.5k</h4>
                                     </div>
                                 </div>
-                                <div class ="col-md-6 d-flex align-items-center">
-                                    <img src="assets/images/avatar.png" class="img-fluid">
+                                <div class ="col-lg-6 d-flex align-items-center justify-content-end pe-4">
+                                    <img src="assets/images/avatar.png" class="img-fluid" style="margin-bottom: -10px;">
                                 </div>
                             </div>
                             
                         </div>
                     </div>
-                    <div class="d-flex col-md-3 col-sm-6 custom-col-6">
+                    <div class="d-flex col-lg-3 sessions">
                         <div class="card flex-grow-1">
                             <div class="row flex-grow-1">
-                                <div class="col-md-6">
+                                <div class="col-lg-6">
                                     <div class="card-header">
                                         <h6 class="card-title">Sessions</h6>
                                         <div class="badge bg-label-success rounded-pill lh-xs">Last Month</div>
@@ -216,14 +217,14 @@
                                         <h4>0</h4>
                                     </div>
                                 </div>
-                                <div class ="col-md-6 d-flex align-items-center">
-                                    <img src="assets/images/session.png" class="img-fluid">
+                                <div class ="col-lg-6 d-flex align-items-center justify-content-end pe-4">
+                                    <img src="assets/images/session.png" class="img-fluid" style="margin-bottom: -10px;">
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-12 d-flex col-sm-12 table-custom">
+                    <div class="col-lg-8 d-flex table-custom">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">Projects</h5>
@@ -285,7 +286,7 @@
                     </div>
 
 
-                    <div class="col-lg-4 col-md-12 d-flex col-sm-6 timeline-custom">
+                    <div class="col-lg-4 d-flex timeline-custom">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">Activity Timeline</h5>
@@ -377,7 +378,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 d-flex custom-height-3 cs-5">
+                    <div class="col-lg-3 d-flex custom-height-3 cs-5">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">TBD</h5>
@@ -388,7 +389,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-md-6 d-flex cs-5">
+                    <div class="col-lg-5 d-flex cs-5">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">TBD</h5>
@@ -399,7 +400,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 d-flex cs-5 c-order">
+                    <div class="col-lg-4 d-flex cs-5 c-order">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">CHANGE ORDER OF THIS TO BOTTOM</h5>
@@ -411,7 +412,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-8 col-md-12 d-flex table-custom-2">
+                    <div class="col-lg-8 d-flex table-custom-2">
                         <div class="card flex-grow-1 p-0">
                             <div class="table-responsive text-nowrap user-table rounded">
                                 <table class="table table-sm mb-0 ">
@@ -495,7 +496,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 d-flex cs-6">
+                    <div class="col-lg-4 d-flex cs-6">
                         <div class="card flex-grow-1">
                             <div class="card-header">
                                 <h5 class="card-title">STAYS NEXT TO THE CHANGED ORDER CARD</h5>
@@ -513,11 +514,11 @@
 
                 <!-------------------------------------------------- FOOTER COPYRIGHT ------------------------------------------>
                 <div class="row d-flex mt-4">
-                    <div class="col-md-12 d-flex justify-content-between align-items-center footer-links">
+                    <div class="col-lg-12 d-flex justify-content-between align-items-center footer-links-section">
                         <p class="mb-0">© 2025, made with ❤ by <a href="#">Micael Ribeiro</a></p>   
-                        <div class="d-flex gap-3 footer-links">
+                        <div class="d-flex gap-3 footer-link">
                             <a href="#">License</a>
-                            <a href="#">More Themes</a>
+                            <a href="#">Themes</a>
                             <a href="#">Documentation</a>
                             <a href="#">Support</a>
                         </div>

@@ -1,426 +1,139 @@
 # CSS Properties
 
-### background-color
-Sets the background color of an element. Can be applied to any HTML element.
+### Background and Color
+- **background-color**: Sets the background color of an element.
+- **accent-color**: Sets the accent color for user interface controls.
+- **background**: Allows you to set a background.
+- **color**: Specifies the color of text.
 
-**Example:**
+**Examples:**
 ```css
 header {
     background-color: #4CAF50; /* Green background */
 }
-```
-
-### accent-color
-Sets the accent color for user interface controls such as checkboxes, radio buttons, and range inputs.
-
-**Example:**
-```css
 input[type="checkbox"] {
     accent-color: #FF5733; /* Orange accent color */
 }
+body {
+    background: lightblue url("img_tree.gif") no-repeat fixed center;
+}
+body {
+    color: red;
+}
 ```
 
-### align-content
-Aligns the flexible container's lines within the flex container when there is extra space in the cross-axis. Should be used with `display: flex`. Often applied to `div` elements.
+### Flexbox and Alignment
+- **align-content**: Aligns the flexible container's lines within the flex container.
+- **align-items**: Aligns the flex items along the cross-axis.
+- **align-self**: Overrides the `align-items` property for individual flex items.
+- **justify-content**: Aligns the flexible container's items when the items do not use all available space on the main-axis.
+- **display: flex**: Applies flexbox layout to a container.
+- **flex: 1**: Makes all flexible items the same length.
+- **flex-wrap: wrap**: Controls whether flex items should stay in a single row/column or wrap into multiple lines.
 
-**Possible values:**
-- `flex-start`: Lines are packed at the start of the container.
-- `flex-end`: Lines are packed at the end of the container.
-- `center`: Lines are packed at the center of the container.
-- `space-between`: Lines are evenly distributed with equal space between them.
-- `space-around`: Lines are evenly distributed with equal space around them.
-- `space-evenly`: Lines are evenly distributed with equal space between them.
-
-**Example:**
+**Examples:**
 ```css
 .container {
     display: flex;
     align-content: center; /* Aligns content to the center */
-}
-```
-
-### align-items
-Aligns the flex items along the cross-axis. Should be used with `display: flex`. Often applied to `div` elements.
-
-**Possible values:**
-- `flex-start`: Items are aligned at the start of the container.
-- `flex-end`: Items are aligned at the end of the container.
-- `center`: Items are aligned at the center of the container.
-- `baseline`: Items are aligned at the baseline of the container.
-- `stretch`: Items are stretched to fill the container.
-
-**Example:**
-```css
-.container {
-    display: flex;
     align-items: center; /* Aligns items to the center */
+    justify-content: center; /* Aligns items to the center */
+    flex-wrap: wrap; /* Wrapping, it will go down height or width */
 }
-```
-
-### align-self
-Overrides the `align-items` property for individual flex items. Used to specifically align one item differently inside the flex alignments.
-
-**Possible values:**
-- `flex-start`: Item is aligned at the start of the container.
-- `flex-end`: Item is aligned at the end of the container.
-- `center`: Item is aligned at the center of the container.
-- `baseline`: Item is aligned at the baseline of the container.
-- `stretch`: Item is stretched to fill the container.
-
-**Example:**
-```css
 #specific-item {
     align-self: flex-end; /* Aligns this item to the end */
 }
 ```
 
-### all
-The `all` property resets all properties, apart from `unicode-bidi` and `direction`, to their initial or inherited value.
+### Box Model
+- **border**: Shorthand property for `border-width`, `border-style`, and `border-color`.
+- **box-sizing**: Includes padding and border in the element's total width and height.
+- **margin**: Sets the margins for an element.
+- **padding**: Sets the padding for an element.
 
-**Possible values:**
-- `initial`
-- `inherit`
-- `unset`
-
-**Example:**
-```css
-div {
-  background-color: yellow;
-  color: red;
-  all: initial;
-}
-```
-
-### aspect-ratio
-The `aspect-ratio` property allows you to define the ratio between width and height of an element.
-
-**Example:**
-```css
-div {
-  aspect-ratio: 3 / 2;
-}
-```
-
-### background
-The `background` property allows you to set a background.
-
-**Example:**
-```css
-body {
-  background: lightblue url("img_tree.gif") no-repeat fixed center;
-}
-```
-
-### border
-The `border` property is a shorthand property for:
-- `border-width`
-- `border-style` (required)
-- `border-color`
-
-**Example:**
+**Examples:**
 ```css
 h2 {
   border: 4px dotted blue;
 }
+#example1 {
+  box-sizing: border-box;
+}
+p {
+  margin: 35px;
+  padding: 35px;
+}
 ```
 
-### bottom
-The `bottom` property affects the vertical position of a positioned element. This property has no effect on non-positioned elements.
+### Sizing and Positioning
+- **height**: Specifies the height of an element.
+- **max-block-size**: Specifies the maximum size of an element in the block direction.
+- **bottom**: Affects the vertical position of a positioned element.
+- **aspect-ratio**: Defines the ratio between width and height of an element.
 
-**Example:**
+**Examples:**
 ```css
+div.a {
+  height: auto;
+  border: 1px solid black;
+}
+div {
+  max-block-size: 60px;
+}
 div.absolute {
   position: absolute;
   bottom: 10px;
   width: 50%;
   border: 3px solid #8AC007;
 }
-```
-
-### box-sizing
-Include padding and border in the element's total width and height.
-
-**Example:**
-```css
-#example1 {
-  box-sizing: border-box;
-}
-```
-
-### color
-The `color` property specifies the color of text.
-
-**Example:**
-```css
-body {
-  color: red;
-}
-```
-
-### column properties
-The column properties have a wide range of utilities.
-
-**Examples:**
-```css
 div {
-  column-count: 3;
-}
-div {
-  column-gap: 40px;
-}
-div {
-  column-rule: 4px double #ff00ff;
-}
-div {
-  columns: 100px 3;
+  aspect-ratio: 3 / 2;
 }
 ```
 
-### cursor
-CSS can generate a bunch of different mouse cursors.
-
-**Examples:**
-```css
-.alias {cursor: alias;}
-.all-scroll {cursor: all-scroll;}
-.auto {cursor: auto;}
-.cell {cursor: cell;}
-.col-resize {cursor: col-resize;}
-.context-menu {cursor: context-menu;}
-.copy {cursor: copy;}
-.crosshair {cursor: crosshair;}
-.default {cursor: default;}
-.e-resize {cursor: e-resize;}
-.ew-resize {cursor: ew-resize;}
-.grab {cursor: grab;}
-.grabbing {cursor: grabbing;}
-.help {cursor: help;}
-.move {cursor: move;}
-.n-resize {cursor: n-resize;}
-.ne-resize {cursor: ne-resize;}
-.nesw-resize {cursor: nesw-resize;}
-.ns-resize {cursor: ns-resize;}
-.nw-resize {cursor: nw-resize;}
-.nwse-resize {cursor: nwse-resize;}
-.no-drop {cursor: no-drop;}
-.none {cursor: none;}
-.not-allowed {cursor: not-allowed;}
-.pointer {cursor: pointer;}
-.progress {cursor: progress;}
-.row-resize {cursor: row-resize;}
-.s-resize {cursor: s-resize;}
-.se-resize {cursor: se-resize;}
-.sw-resize {cursor: sw-resize;}
-.text {cursor: text;}
-.url {cursor: url(myBall.cur),auto;}
-.w-resize {cursor: w-resize;}
-.wait {cursor: wait;}
-.zoom-in {cursor: zoom-in;}
-.zoom-out {cursor: zoom-out;}
-```
-
-### direction
-The `direction` property specifies the text direction/writing direction within a block-level element.
-
-**Example:**
-```css
-p.rtl {
-  direction: rtl;
-}
-```
-
-### display
-The `display` property specifies the display behavior (the type of rendering box) of an element.
-
-**Examples:**
-```css
-p.ex1 {display: none;}
-p.ex2 {display: inline;}
-p.ex3 {display: block;}
-p.ex4 {display: inline-block;}
-```
-
-### display: flex
-When you apply `display: flex;` to a container, its direct child elements automatically become flex items. This allows you to control the positioning, alignment, and spacing of these items with flexbox properties.
-
-**Example:**
-```css
-#main div {
-  display: flex;
-}
-```
-
-### flex: 1
-Let all the flexible items be the same length, regardless of its content.
-
-**Example:**
-```css
-#main div {
-  flex: 1;
-}
-```
-
-### flex-wrap: wrap
-The `flex-wrap` property in CSS controls whether flex items should stay in a single row/column or wrap into multiple lines (rows or columns) when there isn't enough space in the flex container.
-
-**Example:**
-```css
-.container {
-  display: flex;
-  flex-wrap: nowrap; /* No wrapping, it will overflow */
-  flex-wrap: wrap; /* Wrapping, it will go down height or width */
-}
-```
-
-### float
-The `float` property specifies whether an element should float to the left, right, or not at all.
-
-**Example:**
-```css
-img {
-  float: right;
-}
-```
-
-### font
-The `font` property is a shorthand property for:
-- `font-style`
-- `font-variant`
-- `font-weight`
-- `font-size/line-height`
-- `font-family`
-
-**Examples:**
-```css
-p.a {
-  font: 15px Arial, sans-serif;
-}
-
-p.b {
-  font: italic small-caps bold 12px/30px Georgia, serif;
-}
-```
-
-### gap
-The `gap` property defines the size of the gap between the rows and between the columns in flexbox, grid, or multi-column layout.
-
-**Example:**
-```css
-.grid-container {
-  gap: 50px;
-}
-```
-
-### grid
-The `grid` property is a shorthand property for:
-- `grid-template-rows`
-- `grid-template-columns`
-- `grid-template-areas`
-- `grid-auto-rows`
-- `grid-auto-columns`
-- `grid-auto-flow`
-
-**Example:**
-```css
-.grid-container {
-  display: grid;
-  grid: 150px / auto auto auto;
-}
-```
-
-### height
-If `height: auto;` the element will automatically adjust its height to allow its content to be displayed correctly.
-
-**Example:**
-```css
-div.a {
-  height: auto;
-  border: 1px solid black;
-}
-```
-
-### justify-content
-The `justify-content` property aligns the flexible container's items when the items do not use all available space on the main-axis (horizontally).
-
-**Example:**
-```css
-div {
-  display: flex;
-  justify-content: center;
-}
-```
-
-### margin
-The `margin` property sets the margins for an element, and is a shorthand property for the following properties:
-- `margin-top`
-- `margin-right`
-- `margin-bottom`
-- `margin-left`
-
-**Example:**
-```css
-p {
-  margin: 35px;
-}
-```
-
-### max-block-size
-The `max-block-size` property specifies the maximum size of an element in the block direction.
-
-**Example:**
-```css
-div {
-  max-block-size: 60px;
-}
-```
-
-### overflow
-The `overflow` property specifies what should happen if content overflows an element's box.
-
-**Examples:**
-```css
-div.ex1 {
-  overflow: scroll;
-}
-
-div.ex2 {
-  overflow: hidden;
-}
-```
-
-### padding
-An element's padding is the space between its content and its border. The `padding` property is a shorthand property for:
-- `padding-top`
-- `padding-right`
-- `padding-bottom`
-- `padding-left`
-
-**Example:**
-```css
-p {
-  padding: 35px;
-}
-```
-
-### text-align
-The `text-align` property specifies the horizontal alignment of text in an element.
+### Text and Typography
+- **text-align**: Specifies the horizontal alignment of text in an element.
+- **font**: Shorthand property for `font-style`, `font-variant`, `font-weight`, `font-size/line-height`, and `font-family`.
 
 **Examples:**
 ```css
 div.a {
   text-align: center;
 }
-
-div.b {
-  text-align: left;
+p.a {
+  font: 15px Arial, sans-serif;
+}
+p.b {
+  font: italic small-caps bold 12px/30px Georgia, serif;
 }
 ```
 
-### z-index
-The `z-index` property specifies the stack order of an element.
+### Miscellaneous
+- **all**: Resets all properties, apart from `unicode-bidi` and `direction`, to their initial or inherited value.
+- **cursor**: Specifies the type of cursor to be displayed when pointing on an element.
+- **direction**: Specifies the text direction/writing direction within a block-level element.
+- **display**: Specifies the display behavior of an element.
+- **float**: Specifies whether an element should float to the left, right, or not at all.
+- **gap**: Defines the size of the gap between the rows and columns in flexbox, grid, or multi-column layout.
+- **grid**: Shorthand property for `grid-template-rows`, `grid-template-columns`, `grid-template-areas`, `grid-auto-rows`, `grid-auto-columns`, and `grid-auto-flow`.
+- **overflow**: Specifies what should happen if content overflows an element's box.
+- **z-index**: Specifies the stack order of an element.
 
-**Example:**
+**Examples:**
 ```css
+div {
+  all: initial;
+}
+img {
+  float: right;
+}
+.grid-container {
+  display: grid;
+  grid: 150px / auto auto auto;
+}
+div.ex1 {
+  overflow: scroll;
+}
 img {
   position: absolute;
   left: 0px;
@@ -430,7 +143,7 @@ img {
 ```
 
 ### Using :root and CSS Variables
-Using `:root` and CSS variables is a good practice for reusing styles and maintaining consistency across your project. Define your variables in the `:root` selector and use the `var()` function to apply them.
+Using `:root` and CSS variables is a good practice for reusing styles and maintaining consistency across your project.
 
 **Example:**
 ```css
@@ -448,8 +161,9 @@ header {
 ```
 
 ### How the Accordion Works
-To implement an accordion in Bootstrap, you need to wrap the collapsible elements inside a parent `div` and use the `data-bs-parent` attribute to ensure only one section is open at a time. Here is an example:
+To implement an accordion in Bootstrap, you need to wrap the collapsible elements inside a parent `div` and use the `data-bs-parent` attribute to ensure only one section is open at a time.
 
+**Example:**
 ```html
 <div id="accordionExample">
     <div class="accordion-item">
@@ -479,15 +193,8 @@ To implement an accordion in Bootstrap, you need to wrap the collapsible element
 </div>
 ```
 
-In this example:
-- The `div` with `id="accordionExample"` is the parent container.
-- Each collapsible section is wrapped in a `div` with the class `accordion-item`.
-- The `data-bs-parent` attribute ensures that only one section is open at a time.
-
 ### flex-grow-1
 The `flex-grow-1` class in Bootstrap is used to make an element grow to fill the available space in a flex container. It is a shorthand for the CSS property `flex-grow: 1;`.
-
-To use `flex-grow-1`, the parent container must have the `d-flex` class to enable flexbox layout.
 
 **Example:**
 ```html
@@ -497,30 +204,25 @@ To use `flex-grow-1`, the parent container must have the `d-flex` class to enabl
 </div>
 ```
 
-In this example:
-- The `d-flex` class on the parent container enables flexbox layout.
-- The `flex-grow-1` class on the first child element makes it grow to fill the available space.
+### CSS Combinators and Pseudo-classes
+- **CSS Combinators**: 
+  - `div p {}`: Affects all `p` inside the `div`.
+  - `div > p {}`: Affects all `p` directly inside the `div`.
+  - `div + p {}`: Affects the `p` adjacent to the `div`.
+  - `div ~ p {}`: Affects all `p` inside that are siblings and next to the `div`.
 
-----------------------------------------------------------------------------------------
-p.class only affects p with class x
-* affects all elements in the page
-h1,h2,p  {
-    if using the same styles
+- **CSS Pseudo-class**: Affects certain elements (e.g., `a`, `button`).
+  - `a:link {}`: Affects unvisited links.
+  - `a:visited {}`: Affects visited links.
+
+- **CSS Pseudo-element**: Affects certain parts of elements (e.g., text).
+  - `p::first-line {}`: Affects the first line of a paragraph.
+
+### CSS Attribute Selector
+Targets a tag with a certain attribute.
+
+**Example:**
+```css
+a[class="something"] {
 }
-Box Model is that little 4 squares I see in the browser : Margin,Border,Padding,Content
-
-CSS Combinators
-div p{} affects all p inside the div
-div > p {} affects all p inside that div 
-div + p {} affects the p adjacent to the div
-div ~ p {} affects all the p inside that are siblings and next to the div
-
-CSS Pseudoclass -  affects certain elements (a buttons etc)example:
-a:link{}
-a:visited{}
-CSS PseudoElement - affects certain elements (text etc)
-p::first-line{} 
-
-CSS Attribute selector targets a tag with a certain attribute
-a[class]="something"{
-}
+```

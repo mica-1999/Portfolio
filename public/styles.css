@@ -188,11 +188,14 @@ a.dashboard::before { content: "\f0e4"; }
     color: var(--primary-text-color);
 }
 
-/* ---------------------------------------------- CUSTOM HEIGHTS ----------------------------------- */
-.custom-height-2 {
-    height: 490px;
+/* General styles for .col-lg-6 inside .sessions and .ratings */
+.sessions .col-lg-6,
+.ratings .col-lg-6 {
+    flex: 0 0 auto;
+    width: 50%; /* Default behavior: Set to 50% width */
 }
 
+/* ---------------------------------------------- CUSTOM HEIGHTS ----------------------------------- */
 .custom-height-3 {
     height: 200px;
 }
@@ -245,7 +248,7 @@ a.dashboard::before { content: "\f0e4"; }
 }
 tbody tr:last-child td {
     border-bottom: none;
-  }
+}
 .text-heading {
     --bs-text-opacity: 1;
     color: #d7d8ed !important;
@@ -253,42 +256,59 @@ tbody tr:last-child td {
 
 /* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
 @media (max-width: 1345px) {
-    .table-custom {
+    .table-custom, .timeline-custom, .table-custom-2 {
         flex: 0 0 100%;
         max-width: 100%;
     }
-    .timeline-custom{
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-    .table-custom-2 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-    .cs-5{
+    .cs-5, .cs-6 {
         flex: 0 0 50%;
         max-width: 50%;
     }
-    .cs-6{
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-    .c-order{
+    .c-order {
         order: 1;
     }
+}
 
-
+@media (max-width: 1227px) {
+    .responsive-action {
+        display: none !important;
+    }
+    .card-section {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-left: 0 !important;
+        flex-direction: column !important;
+    }
+    .fa-bars {
+        display: block !important;
+        padding-right: 20px;
+    }
 }
 
 @media (max-width: 1070px) {
-    .custom-col-12 {
+    .balance {
         flex: 0 0 100%;
         max-width: 100%;
     }
-
-    .custom-col-6 {
+    .ratings, .sessions {
         flex: 0 0 50%;
         max-width: 50%;
+    }
+}
+@media (max-width: 765px){
+    .footer-links-section{
+        justify-content: center !important;
+    }
+    .footer-link {
+        display: none !important;
+    }
+    
+}
+
+@media (max-width: 575px){
+    .ratings, .sessions {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
     }
 }
 
@@ -311,7 +331,6 @@ tbody tr:last-child td {
 .overflow-auto::-webkit-scrollbar-thumb:hover {
     background-color: #B2B3C7;
 }
-
 
 /* ---------------------------------------------- PROFILE ICON ----------------------------------- */
 .profile-icon {
@@ -408,7 +427,7 @@ tbody tr:last-child td {
     width: 100%;
     padding: 0;
     list-style: none;
-    max-height: 300px; 
+    max-height: 300px;
     overflow-x: hidden;
 }
 .timeline .timeline-item {
@@ -472,18 +491,12 @@ tbody tr:last-child td {
 }
 
 /* ---------------------------------------------- FOOTER STYLES ----------------------------------- */
-.footer-links a{
+.footer-links a {
     color: #666cff;
-    text-decoration: none;;
+    text-decoration: none;
 }
 
 /* ---------------------------------------------- ROLE ICON STYLES ----------------------------------- */
-.role-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    vertical-align: middle;
-}
 .ri-22px{
     font-size: 22px;
 }

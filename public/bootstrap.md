@@ -307,3 +307,41 @@ A card can contain a header, content, and a footer. It also supports action colo
 ## Flexbox
 - When using `.flex-column`, the div transforms into a y-axis, making `justify-content` based on the y-axis. `align-items` will still work on the horizontal axis.
 
+## Spacing Utilities
+Bootstrap provides a variety of spacing utility classes to control the margin and padding of elements. These classes can be combined to achieve the desired spacing.
+
+### Margin Utilities
+- `.m-0`: No margin
+- `.mt-1`, `.mt-2`, `.mt-3`, `.mt-4`, `.mt-5`: Top margin
+- `.mb-1`, `.mb-2`, `.mb-3`, `.mb-4`, `.mb-5`: Bottom margin
+- `.ms-1`, `.ms-2`, `.ms-3`, `.ms-4`, `.ms-5`: Start (left) margin
+- `.me-1`, `.me-2`, `.me-3`, `.me-4`, `.me-5`: End (right) margin
+- `.mx-1`, `.mx-2`, `.mx-3`, `.mx-4`, `.mx-5`: Horizontal margin
+- `.my-1`, `.my-2`, `.my-3`, `.my-4`, `.my-5`: Vertical margin
+
+### Padding Utilities
+- `.p-0`: No padding
+- `.pt-1`, `.pt-2`, `.pt-3`, `.pt-4`, `.pt-5`: Top padding
+- `.pb-1`, `.pb-2`, `.pb-3`, `.pb-4`, `.pb-5`: Bottom padding
+- `.ps-1`, `.ps-2`, `.ps-3`, `.ps-4`, `.ps-5`: Start (left) padding
+- `.pe-1`, `.pe-2`, `.pe-3`, `.pe-4`, `.pe-5`: End (right) padding
+- `.px-1`, `.px-2`, `.px-3`, `.px-4`, `.px-5`: Horizontal padding
+- `.py-1`, `.py-2`, `.py-3`, `.py-4`, `.py-5`: Vertical padding
+
+### Combining Spacing Utilities
+You can combine multiple spacing utility classes to achieve the desired layout.
+
+**Example:**
+```html
+<div class="mt-3 ms-3 mb-5">
+    <!-- Content here -->
+</div>
+```
+
+In this example:
+- `mt-3`: Adds a top margin of 3 units.
+- `ms-3`: Adds a start (left) margin of 3 units.
+- `mb-5`: Adds a bottom margin of 5 units.
+
+By using these spacing utilities, you can easily control the layout and positioning of elements within your Bootstrap project.
+
