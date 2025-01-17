@@ -1,0 +1,108 @@
+/* ---------------------------------------------- ROOT VARIABLES ----------------------------------- */
+:root {
+    --primary-bg-color: #282A42;
+    --primary-text-color: #d7d8ed;
+    --secondary-text-color: #9698af;
+    --card-bg-color: #30334e;
+    --card-border-color: #464963;
+    --card-box-shadow: 0 0.25rem 0.875rem 0 rgba(16, 17, 33, 0.26);
+    --card-border-radius: 0.625rem;
+    --card-padding-y: 0.65rem;
+    --card-padding-x: 0.65rem;
+    --bs-font-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --bs-body-font-size: 0.9375rem;
+    --badge-success-bg: #3b4f48;
+    --badge-success-color: #72e128;
+    --badge-warning-bg: #514848;
+    --badge-warning-color: #fdb528;
+    --badge-secondary-bg: #3a3e58;
+    --badge-secondary-color: #6d788d;
+    --badge-danger-bg: #51374d;
+    --badge-danger-color: #ff4d49;
+    --bs-blue: #26c6f9;
+    --bs-indigo: #666cff;
+    --bs-purple: #6f42c1;
+    --bs-pink: #e83e8c;
+    --bs-red: #ff4d49;
+    --bs-orange: #fdb528;
+    --bs-yellow: #ffd950;
+    --bs-green: #72e128;
+    --bs-teal: #20c997;
+    --bs-cyan: #28c3d7;
+    --bs-black: #30334e;
+    --bs-white: #fff;
+    --bs-gray: rgba(234, 234, 255, 0.599);
+    --bs-gray-dark: rgba(234, 234, 255, 0.8);
+    --bs-gray-25: rgba(234, 234, 255, 0.015);
+    --bs-gray-50: rgba(234, 234, 255, 0.03);
+    --bs-primary: #666cff;
+    --bs-secondary: #6d788d;
+    --bs-success: #72e128;
+    --bs-info: #26c6f9;
+    --bs-warning: #fdb528;
+    --bs-danger: #ff4d49;
+    --bs-light: #46445b;
+    --bs-dark: #d7d5ec;
+    --bs-gray: rgba(234, 234, 255, 0.06);
+}
+
+/* ---------------------------------------------- BODY STYLES ----------------------------------- */
+html {
+    color-scheme: dark;
+}
+
+body {
+    background-color: #1A1A1A;
+    color: var(--bs-black);
+    font-family: var(--bs-font-sans-serif);
+    font-size: var(--bs-body-font-size);
+}
+.social-icons{
+    height: 76px;
+    background-color: #30475E;
+}
+.social-icons a {
+    background-color: white;
+    text-decoration: none;
+}
+.rounded-border{
+    border-radius: 50px;
+}
+.social-icon-container {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+.copyright{
+    color: var(--primary-text-color);
+}
+.contacts a{
+    color: #666cff;
+    text-decoration: none;
+}
+.nav-links a{
+    color: black;
+    text-decoration: none;
+}
+.active{
+    background-color: #DDDEE2;
+}
+
+/* ---------------------------------------------- MEDIA RESPONSIVE  ----------------------------------- */
+@media (max-width: 1025px) {
+    .item-section .col-lg-3{
+        flex: 0 0 33.3%;
+        max-width: 33.3%;
+    }
+    
+}
+@media (max-width: 765px) {
+    .item-section .col-lg-3{
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .contact-section{
+        padding: 40px 5px !important;
+    }
+    
+}
