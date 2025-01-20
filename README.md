@@ -1,14 +1,13 @@
-# CSS-Weakness
-CSS Mastery: Strengthening Responsive Design and Layout Skills
+# Portfolio Project
 
-## Project Goals
-The purpose of this project is to hone my CSS skills and gain a better understanding of various CSS properties and responsive design techniques.
+This project is focused on learning and mastering advanced concepts in the following technologies:
 
-## Objectives
-- Practice and improve CSS layout techniques.
-- Understand and implement responsive design principles.
-- Experiment with different CSS properties to see their effects.
-- Create clean and visually appealing web pages.
+- **CSS**: Advanced styling techniques, animations, and responsive design.
+- **Bootstrap**: Utilizing the latest features of Bootstrap for efficient and responsive UI design.
+- **HTML**: Deep dive into semantic HTML and best practices.
+- **React**: Advanced React patterns, hooks, and state management.
+- **Next.js**: Server-side rendering, static site generation, and API routes.
+- **JavaScript**: Modern JavaScript (ES6+), asynchronous programming, and performance optimization.
 
 ## Getting Started
 1. Clone the repository.
@@ -78,5 +77,5 @@ What needs to be done
 - Add a CRUD for the blogs  s posts, project and other suttuff that I might need on the dashboard
 - add API for news spotify weather and all the other stuff at the dashvoqrd main page
 - Include and search through the sessions to load the number of visiting users
-- 
+-
 
