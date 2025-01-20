@@ -1,19 +1,20 @@
 const express = require('express');
 const next = require('next');
-const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 const path = require('path');
 require('dotenv').config();
 
+const dbConnect = require('./utils/dbConnect'); // Correctly import the dbConnect function
+
 const app = express();
 const dev = process.env.NODE_ENV !== 'production';
-const nextApp = next({ dev });
+const nextApp = next({ dev, dir: './src/app' }); // Specify the custom directory
 const handle = nextApp.getRequestHandler();
 
 nextApp.prepare().then(() => {
   // Connect to the database
-  require('./config/db');
+  dbConnect();
 
   // Middleware to parse JSON bodies
   app.use(express.json());
@@ -29,7 +30,7 @@ nextApp.prepare().then(() => {
   app.use(flash());
 
   // Serve static files from the "public" directory
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, '../../public')));
 
   // Custom API routes or other logic
   // For example: app.use('/api', apiRoutes);

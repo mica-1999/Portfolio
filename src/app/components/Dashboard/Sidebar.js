@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 export default function Sidebar() {
+  const [link] = useState('/blog'); // Use a default link
+
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
       <div className="d-flex align-items-center justify-content-between">
@@ -12,13 +16,14 @@ export default function Sidebar() {
               <a className="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Main</a>
               <ul id="dashboardSubMenu" className="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
                 <li>
-                  <a className="nav-link active" href="#">Backend</a>
+                  <a className="nav-link active" href="#">Main</a>
                 </li>
                 <li>
-                  <a className="nav-link" href="/blog-public">Blog Site</a>
+                  <a className="nav-link" href={link}>Blog Site</a>
                 </li>
               </ul>
             </li>
+            
             <li className="menu-item">
               <a className="nav-link position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
               <ul id="projectsSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">

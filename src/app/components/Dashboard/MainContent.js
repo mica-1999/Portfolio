@@ -343,7 +343,8 @@ export default function MainContent() {
           </div>
         </div>
       </div>
-      <div className="col-lg-4 d-flex cs-6 custom-height-3">
+
+      <div className="col-lg-4 d-flex cs-6">
         <div className="card flex-grow-1">
           <div className="card-header">
             <h5 className="card-title">STAYS NEXT TO THE CHANGED ORDER CARD</h5>
