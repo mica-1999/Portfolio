@@ -85,7 +85,19 @@ body {
     text-decoration: none;
 }
 .active{
+    padding: 10px 20px; /* Increase padding to make the box larger */
     background-color: #DDDEE2;
+}
+.categories{
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+.categories a{
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
 }
 
 /* ---------------------------------------------- MEDIA RESPONSIVE  ----------------------------------- */
