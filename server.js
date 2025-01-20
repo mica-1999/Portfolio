@@ -1,37 +1,48 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const session = require("express-session");
-const flash = require("connect-flash");
-const app = express();
+const express = require('express');
+const next = require('next');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const flash = require('connect-flash');
+const path = require('path');
 require('dotenv').config();
 
+const app = express();
+const dev = process.env.NODE_ENV !== 'production';
+const nextApp = next({ dev });
+const handle = nextApp.getRequestHandler();
 
-// Connect to the database
-require('./config/db');
+nextApp.prepare().then(() => {
+  // Connect to the database
+  require('./config/db');
 
-// Middleware to parse JSON bodies
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  // Middleware to parse JSON bodies
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'secret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false, maxAge: 36000000 }
-}));
+  app.use(session({
+    secret: process.env.SESSION_SECRET || 'secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 36000000 },
+  }));
 
-app.use(flash());
+  app.use(flash());
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, "public")));
+  // Serve static files from the "public" directory
+  app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve blog.html as the default page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/Blog-public/blog.html'));
-});
+  // Custom API routes or other logic
+  // For example: app.use('/api', apiRoutes);
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  // Handle all requests through Next.js
+  app.all('*', (req, res) => {
+    return handle(req, res);  // This sends requests to the correct Next.js page
+  });
+
+  // Start the server
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, (err) => {
+    if (err) throw err;
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
 });
