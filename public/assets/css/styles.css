@@ -52,7 +52,7 @@ html {
 }
 
 body {
-    background-color: var(--primary-bg-color);
+    background-color: var(--primary-bg-color) !important;
     color: var(--primary-text-color) !important;
     font-family: var(--bs-font-sans-serif);
     font-size: var(--bs-body-font-size);
@@ -522,4 +522,10 @@ tbody tr:last-child td {
 .profile-section .fa-bell:hover {
     cursor: pointer;
     color: yellow;
+}
+
+/* ---------------------------------------------- FORM PAGE ----------------------------------- */
+.form-n1{
+    width: 140px;
+    height: 40px;
 }

@@ -21,6 +21,9 @@ export default function Sidebar() {
                 <li>
                   <a className="nav-link" href={link}>Blog Site</a>
                 </li>
+                <li>
+                  <a className="nav-link" href="/dashboard/insertForm">Insert</a>
+                </li>
               </ul>
             </li>
             
