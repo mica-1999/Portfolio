@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'; // Import the useRouter hook from Next.js
 import Head from 'next/head'; // Import the Head component for managing the document head
 import Script from 'next/script'; // Import the Script component for loading external scripts
-import Sidebar from '../../components/Dashboard/Sidebar'; // Import the Sidebar component
-import Header from '../../components/Dashboard/Header'; // Import the Header component
-import Forms from '../../components/Dashboard/Forms/newMenu'; // Import the Forms component
-import Footer from '../../components/Dashboard/Footer'; // Import the Footer component
+import Sidebar from '../../src/app/components/Dashboard/Sidebar'; // Import the Sidebar component
+import Header from '../../src/app/components/Dashboard/Header'; // Import the Header component
+import MainContent from '../../src/app/components/Dashboard/MainContent'; // Import the MainContent component
+import Footer from '../../src/app/components/Dashboard/Footer'; // Import the Footer component
 
 export default function Dashboard() {
   const router = useRouter();
@@ -27,10 +27,7 @@ export default function Dashboard() {
           <Sidebar currentPath={currentPath} /> {/* Render the Sidebar component */}
           <div className="col-lg-10 offset-lg-2 p-4 card-section">
             <Header /> {/* Render the Header component */}
-            <div className="row d-flex mt-3">
-              <Forms /> {/* Render the Forms component */}
-              <Forms /> {/* Render the Forms component */}
-            </div>
+            <MainContent /> {/* Render the MainContent component */}
             <Footer /> {/* Render the Footer component */}
           </div>
         </div>
