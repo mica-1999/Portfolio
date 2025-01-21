@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import Link from 'next/link';
 
-export default function Sidebar() {
-  const [link] = useState('/blog'); // Use a default link
-
+export default function Sidebar({ currentPath }) {
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
       <div className="d-flex align-items-center justify-content-between">
@@ -16,28 +14,39 @@ export default function Sidebar() {
               <a className="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Main</a>
               <ul id="dashboardSubMenu" className="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
                 <li>
-                  <a className="nav-link active" href="#">Main</a>
+                  <Link href="/dashboard" className={currentPath === '/dashboard/index' ? 'nav-link active' : 'nav-link'}>
+                    Main
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href={link}>Blog Site</a>
+                  <Link href="/blog" className={currentPath === '/blog' ? 'nav-link active' : 'nav-link'}>
+                    Blog Site
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href="/dashboard/insertForm">Insert</a>
+                  <Link href="/dashboard/insertForm" className={currentPath === '/dashboard/insertForm' ? 'nav-link active' : 'nav-link'}>
+                    Insert
+                  </Link>
                 </li>
               </ul>
             </li>
-            
             <li className="menu-item">
               <a className="nav-link position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
               <ul id="projectsSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <a className="nav-link" href="#">Project 1</a>
+                  <Link href="/projects/project1" className={currentPath === '/projects/project1' ? 'nav-link active' : 'nav-link'}>
+                    Project 1
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href="#">Project 2</a>
+                  <Link href="/projects/project2" className={currentPath === '/projects/project2' ? 'nav-link active' : 'nav-link'}>
+                    Project 2
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href="#">Project 3</a>
+                  <Link href="/projects/project3" className={currentPath === '/projects/project3' ? 'nav-link active' : 'nav-link'}>
+                    Project 3
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -45,10 +54,14 @@ export default function Sidebar() {
               <a className="nav-link position-relative learning" data-bs-toggle="collapse" href="#learningSubMenu" role="button" aria-expanded="false" aria-controls="learningSubMenu">Learning</a>
               <ul id="learningSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <a className="nav-link" href="#">Learning 1</a>
+                  <Link href="/learning/learning1" className={currentPath === '/learning/learning1' ? 'nav-link active' : 'nav-link'}>
+                    Learning 1
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href="#">Learning 2</a>
+                  <Link href="/learning/learning2" className={currentPath === '/learning/learning2' ? 'nav-link active' : 'nav-link'}>
+                    Learning 2
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -56,22 +69,32 @@ export default function Sidebar() {
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
             </li>
             <li>
-              <a className="nav-link position-relative email" href="#">Email</a>
+              <Link href="/email" className={currentPath === '/email' ? 'nav-link active' : 'nav-link'}>
+                Email
+              </Link>
             </li>
             <li>
-              <a className="nav-link position-relative chat" href="#">Chat</a>
+              <Link href="/chat" className={currentPath === '/chat' ? 'nav-link active' : 'nav-link'}>
+                Chat
+              </Link>
             </li>
             <li>
-              <a className="nav-link position-relative calendar" href="#">Calendar</a>
+              <Link href="/calendar" className={currentPath === '/calendar' ? 'nav-link active' : 'nav-link'}>
+                Calendar
+              </Link>
             </li>
             <li className="menu-item">
               <a className="nav-link position-relative music" data-bs-toggle="collapse" href="#musicSubMenu" role="button" aria-expanded="false" aria-controls="musicSubMenu">Music</a>
               <ul id="musicSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <a className="nav-link" href="#">Playlists</a>
+                  <Link href="/music/playlists" className={currentPath === '/music/playlists' ? 'nav-link active' : 'nav-link'}>
+                    Playlists
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href="#">Favorites Songs</a>
+                  <Link href="/music/favorites" className={currentPath === '/music/favorites' ? 'nav-link active' : 'nav-link'}>
+                    Favorites Songs
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -79,10 +102,14 @@ export default function Sidebar() {
               <a className="nav-link position-relative useful-websites" data-bs-toggle="collapse" href="#usefulWebsitesSubMenu" role="button" aria-expanded="false" aria-controls="usefulWebsitesSubMenu">Websites</a>
               <ul id="usefulWebsitesSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <a className="nav-link" href="#">Website 1</a>
+                  <Link href="/websites/website1" className={currentPath === '/websites/website1' ? 'nav-link active' : 'nav-link'}>
+                    Website 1
+                  </Link>
                 </li>
                 <li>
-                  <a className="nav-link" href="#">Website 2</a>
+                  <Link href="/websites/website2" className={currentPath === '/websites/website2' ? 'nav-link active' : 'nav-link'}>
+                    Website 2
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -90,19 +117,29 @@ export default function Sidebar() {
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Configs</span>
             </li>
             <li>
-              <a className="nav-link position-relative users" href="#">Users</a>
+              <Link href="/users" className={currentPath === '/users' ? 'nav-link active' : 'nav-link'}>
+                Users
+              </Link>
             </li>
             <li>
-              <a className="nav-link position-relative posts" href="#">Posts</a>
+              <Link href="/posts" className={currentPath === '/posts' ? 'nav-link active' : 'nav-link'}>
+                Posts
+              </Link>
             </li>
             <li>
-              <a className="nav-link position-relative dashboard" href="#">DashBoard</a>
+              <Link href="/dashboard" className={currentPath === '/dashboard' ? 'nav-link active' : 'nav-link'}>
+                DashBoard
+              </Link>
             </li>
             <li>
-              <a className="nav-link position-relative posts" href="#">Roles & Permissions</a>
+              <Link href="/roles" className={currentPath === '/roles' ? 'nav-link active' : 'nav-link'}>
+                Roles & Permissions
+              </Link>
             </li>
             <li>
-              <a className="nav-link position-relative dashboard" href="#">Others</a>
+              <Link href="/others" className={currentPath === '/others' ? 'nav-link active' : 'nav-link'}>
+                Others
+              </Link>
             </li>
           </div>
         </ul>

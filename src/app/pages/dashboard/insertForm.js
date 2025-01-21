@@ -1,11 +1,14 @@
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Script from 'next/script';
 import Sidebar from '../../components/Dashboard/Sidebar';
 import Header from '../../components/Dashboard/Header';
-import Forms from '../../components/Dashboard/Forms';
+import Forms from '../../components/Dashboard//Forms/newMenu';
 import Footer from '../../components/Dashboard/Footer';
 
 export default function Dashboard() {
+  const router = useRouter();
+  const currentPath = router.pathname; // Get the current route
   return (
     <>
       <Head>
@@ -20,10 +23,13 @@ export default function Dashboard() {
       </Head>
       <div className="container-fluid vh-100">
         <div className="row">
-          <Sidebar />
+          <Sidebar currentPath={currentPath}/>
           <div className="col-lg-10 offset-lg-2 p-4 card-section">
             <Header />
-            <Forms />
+            <div className="row d-flex mt-3">
+              <Forms />
+              <Forms />
+            </div>
             <Footer />
           </div>
         </div>
