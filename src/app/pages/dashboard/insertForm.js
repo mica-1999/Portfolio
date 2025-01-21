@@ -1,19 +1,20 @@
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Script from 'next/script';
-import Sidebar from '../../components/Dashboard/Sidebar';
-import Header from '../../components/Dashboard/Header';
-import Forms from '../../components/Dashboard//Forms/newMenu';
-import Footer from '../../components/Dashboard/Footer';
+import { useRouter } from 'next/router'; // Import the useRouter hook from Next.js
+import Head from 'next/head'; // Import the Head component for managing the document head
+import Script from 'next/script'; // Import the Script component for loading external scripts
+import Sidebar from '../../components/Dashboard/Sidebar'; // Import the Sidebar component
+import Header from '../../components/Dashboard/Header'; // Import the Header component
+import Forms from '../../components/Dashboard/Forms/newMenu'; // Import the Forms component
+import Footer from '../../components/Dashboard/Footer'; // Import the Footer component
 
 export default function Dashboard() {
   const router = useRouter();
   const currentPath = router.pathname; // Get the current route
+
   return (
     <>
       <Head>
         <title>Dashboard for Portfolio</title>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
@@ -23,44 +24,19 @@ export default function Dashboard() {
       </Head>
       <div className="container-fluid vh-100">
         <div className="row">
-          <Sidebar currentPath={currentPath}/>
+          <Sidebar currentPath={currentPath} /> {/* Render the Sidebar component */}
           <div className="col-lg-10 offset-lg-2 p-4 card-section">
-            <Header />
+            <Header /> {/* Render the Header component */}
             <div className="row d-flex mt-3">
-              <Forms />
-              <Forms />
+              <Forms /> {/* Render the Forms component */}
+              <Forms /> {/* Render the Forms component */}
             </div>
-            <Footer />
+            <Footer /> {/* Render the Footer component */}
           </div>
         </div>
       </div>
-      <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
-      <Script>
-        {`
-          document.querySelectorAll('.sub-menu a').forEach(item => {
-            item.addEventListener('click', function() {
-              document.querySelectorAll('.sub-menu a').forEach(link => {
-                link.classList.remove('active');
-              });
-              this.classList.add('active');
-            });
-          });
-
-          document.getElementById('expand-sidebar').addEventListener('click', function() {
-            const expand = document.getElementById('sidebar');
-            expand.classList.add("z-2");
-            expand.classList.remove("responsive-action");
-            document.getElementsByClassName("fa-arrow-left")[0].classList.remove("d-none");    
-          });
-
-          document.getElementsByClassName("fa-arrow-left")[0].addEventListener('click', function() {
-            const expand = document.getElementById('sidebar');
-            expand.classList.remove("z-2");
-            expand.classList.add("responsive-action");
-            document.getElementsByClassName("fa-arrow-left")[0].classList.add("d-none");
-          });
-        `}
-      </Script>
+      <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script> {/* Load Bootstrap JavaScript */}
+      <Script src="/assets/js/sidebar.js"></Script> {/* Load the sidebar script */}
     </>
   );
 }
