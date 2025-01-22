@@ -9,7 +9,7 @@ export default function NavBar() {
           <div className="rounded-pill"><Link href="/python">Python</Link></div>
           <div className="rounded-pill"><Link href="/web">Web</Link></div>
           <div className="rounded-pill"><Link href="/java">Java</Link></div>
-          <div className="rounded-pill"><Link href="/dashboard">Others</Link></div>
+          <div className="rounded-pill"><Link href="/dashboard">Dashboard</Link></div>
           <div className="rounded-pill"><Link href="/login">Login</Link></div>
         </div>
       </div>

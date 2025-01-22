@@ -2,7 +2,7 @@ const express = require('express'); // Import the Express framework
 const next = require('next'); // Import Next.js
 require('dotenv').config(); // Load environment variables from a .env file
 
-const dbConnect = require('./utils/dbConnect'); // Import the dbConnect function to connect to the database
+const dbConnect = require('../utils/dbConnect'); // Import the dbConnect function to connect to the database
 
 const app = express(); // Create an Express application
 const dev = process.env.NODE_ENV !== 'production'; // Determine if the environment is development or production

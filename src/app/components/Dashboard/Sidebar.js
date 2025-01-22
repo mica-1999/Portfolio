@@ -1,3 +1,5 @@
+"use client"; // Enable client-side rendering
+
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
@@ -35,12 +37,12 @@ export default function Sidebar({ currentPath }) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className={active_menu === 'blog' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('blog')}>
+                  <Link href="/blog" className={active_menu === 'blog' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('blog')}>
                     Blog Site
                   </Link>
                 </li>
                 <li>
-                  <Link href="/dashboard/insertForm" className={active_menu === 'insertForm' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('insertForm')}>
+                  <Link href="/dashboard/Form" className={active_menu === 'insertForm' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('insertForm')}>
                     Insert Menu
                   </Link>
                 </li>

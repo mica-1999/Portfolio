@@ -7,9 +7,12 @@ const dbConnect = async () => {
     return;
   }
 
-  mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => { console.log('Connected to the database!') })
-    .catch((error) => { console.error('Error connecting to the database', error); });
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log('Connected to the database!');
+  } catch (error) {
+    console.error('Error connecting to the database', error);
+  }
 };
 
 module.exports = dbConnect;

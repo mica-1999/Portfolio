@@ -60,7 +60,7 @@ export default function Footer() {
           <p><strong>NIF:</strong> 261446509</p>
         </div>
         <div className="col-lg-3 d-flex flex-column contacts">
-          <p><strong>Telefone:</strong> <a href="tel:+964420812">+ 351 964 420 812</a></p>
+          <p><strong>Telefone:</strong> <a href="tel:+964420812">+351 964 420 812</a></p>
           <p><strong>Email:</strong> <a href="mailto:micael1999work@gmail.com">micael1999work@gmail.com</a></p>
           <p><strong>Instragram:</strong> <a href="#">micael</a></p>
           <p><strong>LinkedIn:</strong> <a href="#">micael</a></p>

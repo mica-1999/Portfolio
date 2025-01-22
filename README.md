@@ -9,6 +9,14 @@ This project is focused on learning and mastering advanced concepts in the follo
 - **Next.js**: Server-side rendering, static site generation, and API routes.
 - **JavaScript**: Modern JavaScript (ES6+), asynchronous programming, and performance optimization.
 
+## Installation
+
+To install the required dependencies, run the following command:
+
+```bash
+npm install connect-flash dotenv express express-session mongoose next path react react-dom
+```
+
 ## Getting Started
 1. Clone the repository.
 2. Install the necessary dependencies using `npm install`.
