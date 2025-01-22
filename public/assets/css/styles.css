@@ -157,6 +157,10 @@ a.dashboard::before { content: "\f0e4"; }
     background-color: #666CFF;
     color: inherit !important;
 }
+.main-menu a.active:not([data-bs-toggle="collapse"]) {
+    background-color: #666CFF;
+    color: inherit !important;
+}
 
 /* ---------------------------------------------- CARD STYLES ----------------------------------- */
 .card {

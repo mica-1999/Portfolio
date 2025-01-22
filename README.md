@@ -32,11 +32,91 @@ React uses a syntax extension called JSX, which allows you to write HTML-like co
 
 You can easily convert HTML to JSX using online converters. This can help you quickly adapt existing HTML code to work with React.
 
+## Core Concepts of React
+
+There are three core concepts of React that you'll need to be familiar with to start building React applications. These are:
+
+### Components
+Components are the building blocks of a React application. They are basically functions that return UI elements. They are reusable pieces of UI that can be nested, managed, and handled independently. Components can be either class-based or function-based. Components should initialize with a capital letter to distinguish them from HTML and JavaScript. Additionally, components can be nested inside each other to build complex UIs.
+
+Example of a functional component:
+```javascript
+import React from 'react';
+
+function Greeting() {
+  return <h1>Hello, World!</h1>;
+}
+
+export default Greeting;
+```
+
+Example of nested components:
+```javascript
+import React from 'react';
+
+function Header() {
+  return <header><h1>Header</h1></header>;
+}
+
+function Footer() {
+  return <footer><p>Footer</p></footer>;
+}
+
+function Layout() {
+  return (
+    <div>
+      <Header />
+      <main><p>Main content</p></main>
+      <Footer />
+    </div>
+  );
+}
+
+export default Layout;
+```
+
+### Props
+Props (short for properties) are used to pass data from one component to another. They are read-only and cannot be modified by the receiving component.
+
+Example of using props:
+```javascript
+import React from 'react';
+
+function Greeting(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+
+export default Greeting;
+```
+
+### State
+State is a built-in object that allows components to create and manage their own data. State can be updated, and when it changes, the component re-renders to reflect the new state.
+
+Example of using state:
+```javascript
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
 ## React Hooks
 Hooks are functions that let you use state and other React features in functional components. They allow you to "hook into" React's state and lifecycle features from function components. Hooks can only be called at the top level of a component or a custom hook.
 
 ### `useState`
-`useState` is a built-in hook that allows you to add state to functional components. It returns an array with two elements: the current state value and a function to update it.
+`useState` is a built-in hook that allows you to add state to functional components. It returns an array with two elements: the current state value and a function to update it. The first element is the current state value, and the second element is the function to update that value.
 
 Example usage of `useState`:
 ```javascript
@@ -61,51 +141,116 @@ In this example:
 - `setCount` is a function that updates the value of `count`.
 - The button's `onClick` handler increments the `count` value by `1` each time it is clicked.
 
-## Resources
-- [W3Schools](https://www.w3schools.com/): A great resource for learning HTML, CSS, JavaScript, and more.
-- [Font Awesome](https://fontawesome.com/): A popular source for icons.
+## Using `useEffect` to Store Data Locally
 
-## How to Contribute
-Feel free to fork this repository and submit pull requests. Any contributions that help improve CSS skills and understanding are welcome.
+In React, you can use the `useEffect` hook to store data locally in the browser's `localStorage`. This allows you to persist data across page switches or refreshes. Here's how you can do it:
 
-## Custom Scrollbar CSS
-To customize the scrollbar, you can add the following CSS properties to your stylesheet:
+1. **Storing Data in `localStorage`**:
+   Use the `useEffect` hook to store data in `localStorage` whenever the data changes.
 
-```css
-/* Custom scrollbar styles */
-::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+   Example:
+   ```javascript
+   import React, { useState, useEffect } from 'react';
+
+   function MyComponent() {
+     const [data, setData] = useState('');
+
+     useEffect(() => {
+       localStorage.setItem('myData', data);
+     }, [data]);
+
+     return (
+       <input
+         type="text"
+         value={data}
+         onChange={(e) => setData(e.target.value)}
+       />
+     );
+   }
+   ```
+
+2. **Retrieving Data from `localStorage`**:
+   Use the `useEffect` hook to retrieve data from `localStorage` when the component mounts.
+
+   Example:
+   ```javascript
+   import React, { useState, useEffect } from 'react';
+
+   function MyComponent() {
+     const [data, setData] = useState('');
+
+     useEffect(() => {
+       const storedData = localStorage.getItem('myData');
+       if (storedData) {
+         setData(storedData);
+       }
+     }, []);
+
+     return (
+       <input
+         type="text"
+         value={data}
+         onChange={(e) => setData(e.target.value)}
+       />
+     );
+   }
+   ```
+
+In these examples:
+- The `useEffect` hook with an empty dependency array (`[]`) runs only once when the component mounts, retrieving the stored data from `localStorage`.
+- The `useEffect` hook with `[data]` as the dependency array runs whenever the `data` state changes, storing the updated data in `localStorage`.
+
+This approach ensures that the data persists across page switches or refreshes, providing a better user experience.
+
+## Next.js
+
+Next.js is a React framework that enables server-side rendering and static site generation, providing a powerful way to build fast and user-friendly web applications. It enhances the capabilities of React by allowing you to render pages on the server, generate static pages at build time, and create API routes.
+
+### Routers in Next.js
+
+Next.js provides two different routers for managing your application's routes: the `app` router and the `pages` router.
+
+1. **App Router**: The `app` router is the newer router in Next.js and supports the latest React features, such as React Server Components and Suspense. It offers a more modern approach to building applications but may still be evolving in terms of stability and features.
+
+2. **Pages Router**: The `pages` router is the more stable and widely used router in Next.js. It follows a file-based routing system where each file in the `pages` directory automatically becomes a route in your application. This router is well-documented and has been used in production applications for a longer time.
+
+### Using Next.js with React
+
+Next.js integrates seamlessly with React, allowing you to use all the features of React while adding powerful capabilities like server-side rendering and static site generation. Here's how you can use Next.js with React:
+
+- **Pages**: Create a `pages` directory at the root of your project. Each file in this directory represents a route in your application. For example, `pages/index.js` will be the home page, and `pages/about.js` will be the about page.
+
+- **Components**: Organize your React components in a separate directory, such as `components`, and import them into your pages as needed.
+
+- **API Routes**: Create API routes by adding files to the `pages/api` directory. Each file in this directory becomes an API endpoint.
+
+When you use Next.js in your project, you do not need to load the `react` and `react-dom` scripts from external sources like `unpkg.com`. Instead, you can install these packages locally using npm or your preferred package manager. Next.js will manage both `react` and `react-dom` for you.
+
+Next.js also has a built-in compiler that transforms JSX into valid JavaScript so that the browser can understand it. This means you do not need to use Babel for this purpose. For more information, you can refer to the [Next.js documentation](https://nextjs.org/docs).
+
+Example of a simple page in Next.js:
+
+```javascript
+// filepath: /project-root/pages/index.js
+import Head from 'next/head';
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>Home Page</title>
+      </Head>
+      <h1>Welcome to the Home Page</h1>
+    </>
+  );
 }
-
-::-webkit-scrollbar-track {
-    background: var(--primary-bg-color); /* Background of the scrollbar track */
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--card-border-color); /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Roundness of the scrollbar thumb */
-    border: 3px solid var(--primary-bg-color); /* Padding around the scrollbar thumb */
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--card-bg-color); /* Color of the scrollbar thumb on hover */
-}
-```
-
-## Bootstrap Tips
-You can have multiple `col-md` classes inside a single row. This allows you to change the order of the elements inside the row easily. In this project, the `d-flex` class was used with `flex-column`, which changes the order in height.
-
-```html
-<div class="row">
-    <div class="col-md-4">First Column</div>
-    <div class="col-md-4 order-md-3">Second Column</div>
-    <div class="col-md-4 order-md-2">Third Column</div>
-</div>
 ```
 
 In this example:
-- The `order-md-*` classes are used to change the order of the columns on medium and larger screens.
-- The `d-flex` class with `flex-column` can be used to change the order in height.
+- The `Head` component is used to manage the document head.
+- The `Home` component is the default export of the `pages/index.js` file, making it the home page of the application.
+
+Next.js simplifies the process of building React applications with powerful features and a structured approach to routing and rendering.
 
 ## Future Enhancements
 
