@@ -1,4 +1,85 @@
+"use client"
+import { useEffect, useState } from 'react';
+import { formatNumber } from '../../../utils/formatNumber';
+
 export default function MainContent() {
+  //Array intializations
+  const theads_projects = ['ID', 'Name', 'Description', 'State', 'Last Updated'];
+
+
+  // State Initialization
+  const [totalBalance, setTotalBalance] = useState(null);
+  const [balanceMonth, setBalanceMonth] = useState(null);
+  const [withdrawal, setWithdrawal] = useState(null);
+  const [projects, setProjects] = useState([]);
+
+  // Error Handling and Loading State
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBalanceData = async () => {
+      try {
+        const response_balance = await fetch('/api/getBalance');
+        if (!response_balance.ok) {
+          throw new Error('Failed to fetch balance data');
+        }
+        const data_balance = await response_balance.json();
+        setTotalBalance(data_balance.totalBalance);
+        setBalanceMonth(data_balance.thisMonth.totalDeposits);
+        setWithdrawal(data_balance.thisMonth.totalWithdrawals);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    const fetchProjectData = async () => {
+      try {
+        const response_project = await fetch('/api/getProjects');
+        if (!response_project.ok) {
+          throw new Error('Failed to fetch projects data');
+        }
+        const data_project = await response_project.json();
+        console.log(data_project);
+        setProjects(data_project);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([fetchBalanceData(), fetchProjectData()]);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const getBadgeClass = (state) => {
+    console.log('State:', state, 'Type:', typeof state); // Debug log
+    switch (state) {
+      case '0':
+        return { badgeColor: 'danger', output: 'Failed' };
+      case '1':
+        return { badgeColor: 'success', output: 'Completed' };
+      case '2':
+        return { badgeColor: 'warning', output: 'In Progress' };
+      case '3':
+        return { badgeColor: 'secondary', output: 'Not Started' };
+      default:
+        return { badgeColor: 'default', output: 'default' };
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="row d-flex mt-3">
       <div className="d-flex col-lg-6 balance">
@@ -13,7 +94,7 @@ export default function MainContent() {
                 <i className="fa-solid fa-euro-sign fa-lg euro-icon"></i>
               </div>
               <div className="card-info">
-                <h5 className="mb-0">?????</h5>
+                <h5 className="mb-0">{formatNumber(totalBalance)}</h5>
                 <p className="mb-0">Total Balance</p>
               </div>
             </div>
@@ -22,7 +103,7 @@ export default function MainContent() {
                 <i className="fa-solid fa-arrow-up fa-lg third-icon"></i>
               </div>
               <div className="card-info">
-                <h5 className="mb-0">?????</h5>
+                <h5 className="mb-0">{formatNumber(balanceMonth)}</h5>
                 <p className="mb-0">This Month</p>
               </div>
             </div>
@@ -31,7 +112,7 @@ export default function MainContent() {
                 <i className="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
               </div>
               <div className="card-info">
-                <h5 className="mb-0">TBD</h5>
+                <h5 className="mb-0">{formatNumber(withdrawal)}</h5>
                 <p className="mb-0">New Transactions</p>
               </div>
             </div>
@@ -85,49 +166,30 @@ export default function MainContent() {
               <table className="table user-table border-top">
                 <thead className="table-head">
                   <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>State</th>
-                    <th>Last Updated</th>
+                    {theads_projects.map((thead) => {
+                      return (
+                        <th key={thead}>{thead}</th>
+                      );
+                   })}
                   </tr>
                 </thead>
                 <tbody className="table-content">
-                  <tr>
-                    <td>001</td>
-                    <td>CSS Project</td>
-                    <td>Practice CSS for Advancement</td>
-                    <td><div className="badge bg-label-success rounded-pill lh-xs">Completed</div></td>
-                    <td>2023-10-01</td>
-                  </tr>
-                  <tr>
-                    <td>002</td>
-                    <td>JavaScript Project</td>
-                    <td>Learn JavaScript Basics</td>
-                    <td><div className="badge bg-label-warning rounded-pill lh-xs">In Progress</div></td>
-                    <td>2023-10-10</td>
-                  </tr>
-                  <tr>
-                    <td>003</td>
-                    <td>React Project</td>
-                    <td>Build a React App</td>
-                    <td><div className="badge bg-label-secondary rounded-pill lh-xs">Not Started</div></td>
-                    <td>2023-09-25</td>
-                  </tr>
-                  <tr>
-                    <td>004</td>
-                    <td>Node.js Project</td>
-                    <td>Create a REST API</td>
-                    <td><div className="badge bg-label-success rounded-pill lh-xs">Completed</div></td>
-                    <td>2023-08-15</td>
-                  </tr>
-                  <tr>
-                    <td>005</td>
-                    <td>Python.js Project</td>
-                    <td>Develop a Web Scraper</td>
-                    <td><div className="badge bg-label-danger rounded-pill lh-xs">Failed</div></td>
-                    <td>2023-07-20</td>
-                  </tr>
+                  {projects.map((project) => {
+                    const { badgeColor, output } = getBadgeClass(project.state);
+                    return (
+                      <tr key={project.id}>
+                        <td>{project.id}</td>
+                        <td>{project.title}</td>
+                        <td>{project.description}</td>
+                        <td>
+                          <div className={`badge bg-label-${badgeColor} rounded-pill lh-xs`}>
+                            {output}
+                          </div>
+                        </td>
+                        <td>{new Date(project.lastUpdated).toLocaleDateString()}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

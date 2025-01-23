@@ -1,23 +1,10 @@
 "use client"; // Enable client-side rendering
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation'; // Import the new hook
 
-export default function Sidebar({ currentPath }) {
-  const [active_menu, update_active_menu] = useState(null);
-
-  // Retrieve the active menu from localStorage when the component mounts
-  useEffect(() => {
-    const storedMenu = localStorage.getItem('active_menu');
-    if (storedMenu) {
-      update_active_menu(storedMenu || 'dashboard');
-    }
-  }, []);
-
-  function handle_menu_click(menu_clicked) {
-    update_active_menu(menu_clicked);
-    localStorage.setItem('active_menu', menu_clicked);
-  }
+export default function Sidebar() {
+  const currentPath = usePathname(); // Use the usePathname hook to get the current path
 
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
@@ -32,37 +19,39 @@ export default function Sidebar({ currentPath }) {
               <a className="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Main</a>
               <ul id="dashboardSubMenu" className="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="/dashboard/" className={active_menu === 'dashboard' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('dashboard')}>
+                  <Link href="/dashboard/" className={currentPath === '/dashboard' ? 'nav-link active' : 'nav-link'}>
                     DashBoard
                   </Link>
                 </li>
+
                 <li>
-                  <Link href="/blog" className={active_menu === 'blog' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('blog')}>
-                    Blog Site
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dashboard/form/" className={active_menu === 'insertForm' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('insertForm')}>
+                  <Link href="/dashboard/form/" className={currentPath === '/dashboard/form' ? 'nav-link active' : 'nav-link'}>
                     Insert Menu
                   </Link>
                 </li>
+                <li>
+                  <Link href="/blog" className={currentPath === '/blog' ? 'nav-link active' : 'nav-link'}>
+                    Blog Site
+                  </Link>
+                </li>
+                
               </ul>
             </li>
             <li className="menu-item">
               <a className="nav-link position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
               <ul id="projectsSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="#" className={active_menu === 'project1' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('project1')}>
+                  <Link href="#" className={currentPath === '/project1' ? 'nav-link active' : 'nav-link'}>
                     Project 1
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className={active_menu === 'project2' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('project2')}>
+                  <Link href="#" className={currentPath === '/project2' ? 'nav-link active' : 'nav-link'}>
                     Project 2
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className={active_menu === 'project3' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('project3')}>
+                  <Link href="#" className={currentPath === '/project3' ? 'nav-link active' : 'nav-link'}>
                     Project 3
                   </Link>
                 </li>
@@ -72,12 +61,12 @@ export default function Sidebar({ currentPath }) {
               <a className="nav-link position-relative learning" data-bs-toggle="collapse" href="#learningSubMenu" role="button" aria-expanded="false" aria-controls="learningSubMenu">Learning</a>
               <ul id="learningSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="#" className={active_menu === 'learning1' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('learning1')}>
+                  <Link href="#" className={currentPath === '/learning1' ? 'nav-link active' : 'nav-link'}>
                     Learning 1
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className={active_menu === 'learning2' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('learning2')}>
+                  <Link href="#" className={currentPath === '/learning2' ? 'nav-link active' : 'nav-link'}>
                     Learning 2
                   </Link>
                 </li>
@@ -87,17 +76,17 @@ export default function Sidebar({ currentPath }) {
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'email' ? 'nav-link active email' : 'nav-link email'} onClick={() => handle_menu_click('email')}>
+              <Link href="#" className={currentPath === '/email' ? 'nav-link active email' : 'nav-link email'}>
                 Email
               </Link>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'chat' ? 'nav-link active chat' : 'nav-link chat'} onClick={() => handle_menu_click('chat')}>
+              <Link href="#" className={currentPath === '/chat' ? 'nav-link active chat' : 'nav-link chat'}>
                 Chat
               </Link>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'calendar' ? 'nav-link active calendar' : 'nav-link calendar'} onClick={() => handle_menu_click('calendar')}>
+              <Link href="#" className={currentPath === '/calendar' ? 'nav-link active calendar' : 'nav-link calendar'}>
                 Calendar
               </Link>
             </li>
@@ -105,12 +94,12 @@ export default function Sidebar({ currentPath }) {
               <a className="nav-link position-relative music" data-bs-toggle="collapse" href="#musicSubMenu" role="button" aria-expanded="false" aria-controls="musicSubMenu">Music</a>
               <ul id="musicSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="#" className={active_menu === 'playlists' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('playlists')}>
+                  <Link href="#" className={currentPath === '/playlists' ? 'nav-link active' : 'nav-link'}>
                     Playlists
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className={active_menu === 'favorites' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('favorites')}>
+                  <Link href="#" className={currentPath === '/favorites' ? 'nav-link active' : 'nav-link'}>
                     Favorites Songs
                   </Link>
                 </li>
@@ -120,12 +109,12 @@ export default function Sidebar({ currentPath }) {
               <a className="nav-link position-relative useful-websites" data-bs-toggle="collapse" href="#usefulWebsitesSubMenu" role="button" aria-expanded="false" aria-controls="usefulWebsitesSubMenu">Websites</a>
               <ul id="usefulWebsitesSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="#" className={active_menu === 'website1' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('website1')}>
+                  <Link href="#" className={currentPath === '/website1' ? 'nav-link active' : 'nav-link'}>
                     Website 1
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className={active_menu === 'website2' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('website2')}>
+                  <Link href="#" className={currentPath === '/website2' ? 'nav-link active' : 'nav-link'}>
                     Website 2
                   </Link>
                 </li>
@@ -135,27 +124,27 @@ export default function Sidebar({ currentPath }) {
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Configs</span>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'users' ? 'nav-link active users' : 'nav-link users'} onClick={() => handle_menu_click('users')}>
+              <Link href="#" className={currentPath === '/users' ? 'nav-link active users' : 'nav-link users'}>
                 Users
               </Link>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'posts' ? 'nav-link active posts' : 'nav-link posts'} onClick={() => handle_menu_click('posts')}>
+              <Link href="#" className={currentPath === '/posts' ? 'nav-link active posts' : 'nav-link posts'}>
                 Posts
               </Link>
             </li>
             <li>
-              <Link href="/dashboard" className={active_menu === 'dashboard' ? 'nav-link active dashboard' : 'nav-link dashboard'} onClick={() => handle_menu_click('dashboard')}>
+              <Link href="/dashboard" className={currentPath === '/blabla' ? 'nav-link active dashboard' : 'nav-link dashboard'}>
                 DashBoard
               </Link>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'roles' ? 'nav-link active roles' : 'nav-link roles'} onClick={() => handle_menu_click('roles')}>
+              <Link href="#" className={currentPath === '/roles' ? 'nav-link active roles' : 'nav-link roles'}>
                 Roles & Permissions
               </Link>
             </li>
             <li>
-              <Link href="#" className={active_menu === 'others' ? 'nav-link active others' : 'nav-link others'} onClick={() => handle_menu_click('others')}>
+              <Link href="#" className={currentPath === '/others' ? 'nav-link active others' : 'nav-link others'}>
                 Others
               </Link>
             </li>

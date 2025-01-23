@@ -1,7 +1,9 @@
-import MainContent from '../components/Dashboard/MainContent'; // Import the MainContent component
+import MainContent from '../components/Dashboard/MainContent';
 
-export default function DashboardForm() {
+export default function DashboardPage() {
   return (
+    <div>
       <MainContent />
+    </div>
   );
 }
