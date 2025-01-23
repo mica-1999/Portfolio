@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { formatNumber } from '../../../utils/formatNumber';
 
 export default function MainContent() {
-  //Array intializations
+  // Array initializations
   const theads_projects = ['ID', 'Name', 'Description', 'State', 'Last Updated'];
-
+  const thead_user = ['User', 'Email', 'Role', 'Status', 'Last Active'];
 
   // State Initialization
   const [totalBalance, setTotalBalance] = useState(null);
@@ -13,6 +13,7 @@ export default function MainContent() {
   const [withdrawal, setWithdrawal] = useState(null);
   const [projects, setProjects] = useState([]);
   const [timeline, setTimeline] = useState([]);
+  const [users, setUsers] = useState([]);
 
   // Error Handling and Loading State
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,6 @@ export default function MainContent() {
           throw new Error('Failed to fetch projects data');
         }
         const data_project = await response_project.json();
-        console.log(data_project);
         setProjects(data_project);
       } catch (error) {
         setError(error.message);
@@ -52,11 +52,25 @@ export default function MainContent() {
       try {
         const response_timeline = await fetch('/api/getTimeline');
         if (!response_timeline.ok) {
-          throw new Error('Failed to fetch projects data');
+          throw new Error('Failed to fetch timeline data');
         }
         const timeline_data = await response_timeline.json();
-        console.log(timeline_data);
         setTimeline(timeline_data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+
+    const fetchUserData = async () => {
+      try {
+        const response_user = await fetch('/api/getUser');
+        if (!response_user.ok) {
+          throw new Error('Failed to fetch timeline data');
+        }
+        const user_data = await response_user.json();
+        console.log(user_data);
+        setUsers(user_data);
       } catch (error) {
         setError(error.message);
       }
@@ -64,7 +78,7 @@ export default function MainContent() {
 
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([fetchBalanceData(), fetchProjectData(), fetchTimelineData()]);
+      await Promise.all([fetchBalanceData(), fetchProjectData(), fetchTimelineData(), fetchUserData()]);
       setLoading(false);
     };
 
@@ -72,7 +86,6 @@ export default function MainContent() {
   }, []);
 
   const getBadgeClass = (state) => {
-    console.log('State:', state, 'Type:', typeof state); // Debug log
     switch (state) {
       case 0:
         return { badgeColor: 'danger', output: 'Failed' };
@@ -84,6 +97,21 @@ export default function MainContent() {
         return { badgeColor: 'secondary', output: 'Not Started' };
       default:
         return { badgeColor: 'default', output: 'default' };
+    }
+  };
+
+  const getRoleClass = (role) => {
+    switch (role) {
+      case 'admin':
+        return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
+      case 'viewer':
+        return { badgeColor: 'user', output: 'Viewer', color: 'success' };
+      case 'editor':
+        return { badgeColor: 'edit-box', output: 'Editor' , color: 'warning'};
+      case 'author':
+        return { badgeColor: 'computer', output: 'Author' , color: 'danger'};
+      default:
+        return { badgeColor: 'default', output: 'default' , color: 'default'};
     }
   };
 
@@ -122,6 +150,7 @@ export default function MainContent() {
 
   return (
     <div className="row d-flex mt-3">
+      {/* Balance Section */}
       <div className="d-flex col-lg-6 balance">
         <div className="card flex-grow-1">
           <div className="card-header">
@@ -159,6 +188,8 @@ export default function MainContent() {
           </div>
         </div>
       </div>
+
+      {/* Ratings Section */}
       <div className="d-flex col-lg-3 ratings">
         <div className="card flex-grow-1">
           <div className="row g-0 flex-grow-1">
@@ -177,6 +208,8 @@ export default function MainContent() {
           </div>
         </div>
       </div>
+
+      {/* Sessions Section */}
       <div className="d-flex col-lg-3 sessions">
         <div className="card flex-grow-1">
           <div className="row flex-grow-1">
@@ -195,6 +228,8 @@ export default function MainContent() {
           </div>
         </div>
       </div>
+
+      {/* Projects Section */}
       <div className="col-lg-8 d-flex table-custom">
         <div className="card flex-grow-1">
           <div className="card-header">
@@ -206,11 +241,9 @@ export default function MainContent() {
               <table className="table user-table border-top">
                 <thead className="table-head">
                   <tr>
-                    {theads_projects.map((thead) => {
-                      return (
-                        <th key={thead}>{thead}</th>
-                      );
-                   })}
+                    {theads_projects.map((thead) => (
+                      <th key={thead}>{thead}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody className="table-content">
@@ -236,6 +269,8 @@ export default function MainContent() {
           </div>
         </div>
       </div>
+
+      {/* Timeline Section */}
       <div className="col-lg-4 d-flex timeline-custom">
         <div className="card flex-grow-1">
           <div className="card-header">
@@ -246,23 +281,25 @@ export default function MainContent() {
               {timeline.map((timeline_info) => {
                 const { badgeColor, output } = getBadgeClass(timeline_info.state);
                 const timelineTime = getTimeFormatted(timeline_info.lastEvent);
-                  return (
-                    <li className="timeline-item">
-                      <span className={`timeline-point timeline-point-${badgeColor}`}></span>
-                      <div className="timeline-event ps-4">
-                        <div className="timeline-header mb-2 pe-4">
-                          <h6 className="mb-0">{timeline_info.title}</h6>
-                          <small className="text-muted">{timelineTime}</small>
-                        </div>
-                        <p>{timeline_info.description}</p>
+                return (
+                  <li className="timeline-item" key={timeline_info.id}>
+                    <span className={`timeline-point timeline-point-${badgeColor}`}></span>
+                    <div className="timeline-event ps-4">
+                      <div className="timeline-header mb-2 pe-4">
+                        <h6 className="mb-0">{timeline_info.title}</h6>
+                        <small className="text-muted">{timelineTime}</small>
                       </div>
-                    </li>
-                  );
-                })}
+                      <p>{timeline_info.description}</p>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
       </div>
+
+      {/* Placeholder Sections */}
       <div className="col-lg-3 d-flex custom-height-3 cs-5">
         <div className="card flex-grow-1">
           <div className="card-header">
@@ -285,7 +322,6 @@ export default function MainContent() {
           </div>
         </div>
       </div>
-
       <div className="col-lg-4 d-flex cs-5 c-order">
         <div className="card flex-grow-1">
           <div className="card-header">
@@ -297,91 +333,48 @@ export default function MainContent() {
           </div>
         </div>
       </div>
-      
+
+      {/* User Table Section */}
       <div className="col-lg-8 d-flex table-custom-2">
         <div className="card flex-grow-1 p-0">
           <div className="table-responsive text-nowrap user-table rounded">
             <table className="table table-sm mb-0">
               <thead className="table-head">
                 <tr style={{ backgroundColor: '#3A3E5B' }}>
-                  <th>User</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Last Active</th>
+                    {thead_user.map((thead) => (
+                      <th key={thead}>{thead}</th>
+                    ))}
                 </tr>
               </thead>
               <tbody className="table-content">
-                <tr>
-                  <td>
-                    <span className="d-flex align-items-center gap-2">
-                      <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                      John Doe
-                    </span>
-                  </td>
-                  <td>john.doe@example.com</td>
-                  <td>
-                    <span className="d-flex align-items-center gap-2 text-heading">
-                      <i className="ri-vip-crown-line ri-22px text-primary"></i> Admin
-                    </span>
-                  </td>
-                  <td><div className="badge bg-label-success rounded-pill lh-xs">Active</div></td>
-                  <td>2023-10-01</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="d-flex align-items-center gap-2">
-                      <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                      Jane Smith
-                    </span>
-                  </td>
-                  <td>jane.smith@example.com</td>
-                  <td>
-                    <span className="d-flex align-items-center gap-2 text-heading">
-                      <i className="ri-edit-box-line ri-22px text-warning"></i> Editor
-                    </span>
-                  </td>
-                  <td><div className="badge bg-label-warning rounded-pill lh-xs">Inactive</div></td>
-                  <td>2023-09-25</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="d-flex align-items-center gap-2">
-                      <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                      Alice Johnson
-                    </span>
-                  </td>
-                  <td>alice.johnson@example.com</td>
-                  <td>
-                    <span className="d-flex align-items-center gap-2 text-heading">
-                      <i className="ri-user-line ri-22px text-success"></i> Viewer
-                    </span>
-                  </td>
-                  <td><div className="badge bg-label-success rounded-pill lh-xs">Active</div></td>
-                  <td>2023-08-15</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span className="d-flex align-items-center gap-2">
-                      <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                      Amy Johnson
-                    </span>
-                  </td>
-                  <td>amy.johnson@example.com</td>
-                  <td>
-                    <span className="d-flex align-items-center gap-2 text-heading">
-                      <i className="ri-computer-line ri-22px text-danger"></i> Author
-                    </span>
-                  </td>
-                  <td><div className="badge bg-label-danger rounded-pill lh-xs">Banned</div></td>
-                  <td>2023-08-15</td>
-                </tr>
+                {users.map((user) => {
+                  const { badgeColor, output, color} = getRoleClass(user.role);
+                  return(
+                    <tr key={user.username}>
+                      <td>
+                        <span className="d-flex align-items-center gap-2">
+                          <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
+                          {user.firstName} {user.lastName}
+                        </span>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>
+                        <span className="d-flex align-items-center gap-2 text-heading">
+                          <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
+                        </span>
+                      </td>
+                      <td><div className="badge bg-label-success rounded-pill lh-xs">{user.isActive ? 'Active' : 'Inactive'}</div></td>
+                      <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
+                    </tr>
+                  );
+              })}
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
+      {/* Placeholder Section */}
       <div className="col-lg-4 d-flex cs-6">
         <div className="card flex-grow-1">
           <div className="card-header">
