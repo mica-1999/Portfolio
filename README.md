@@ -258,6 +258,48 @@ In this example:
 - The `Head` component is used to manage the document head.
 - The `Home` component is the default export of the `pages/index.js` file, making it the home page of the application.
 
+### Layouts in Next.js
+
+Next.js automatically renders the layout component for each page. You do not need to call the layout component explicitly in your page components. This ensures that the layout is consistently applied across all pages.
+
+Example of a layout component in Next.js:
+
+```javascript
+// filepath: /project-root/pages/_app.js
+import '../styles/globals.css';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Header /> {/* Render the Header component */}
+      <Component {...pageProps} /> {/* Render the current page */}
+      <Footer /> {/* Render the Footer component */}
+    </>
+  );
+}
+
+export default MyApp;
+```
+
+In this example:
+- The `MyApp` component is the default export of the `_app.js` file, making it the layout component for the application.
+- The `Header` and `Footer` components are rendered for every page.
+- The `Component` prop represents the current page component, and `pageProps` are the props passed to the current page component.
+
+If you add a `layout.js` file inside a subdirectory (e.g., `/Form`), it will override the parent layout from `/dashboard` and apply only to routes under `/Form`.
+
+### Including Static Files
+
+When including static files such as CSS, JS, and images from the `public` directory, make sure to use a leading slash (`/`) in the path. This ensures that the files are referenced from the root of the project and not relative to the current directory.
+
+Example:
+```html
+<link rel="stylesheet" href="/assets/css/styles.css" />
+<script src="/assets/js/sidebar.js"></script>
+```
+
+This approach ensures that the files are correctly loaded regardless of the current route.
+
 Next.js simplifies the process of building React applications with powerful features and a structured approach to routing and rendering.
 
 ## Future Enhancements

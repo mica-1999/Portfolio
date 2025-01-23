@@ -42,7 +42,7 @@ export default function Sidebar({ currentPath }) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/dashboard/Form" className={active_menu === 'insertForm' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('insertForm')}>
+                  <Link href="/dashboard/form/" className={active_menu === 'insertForm' ? 'nav-link active' : 'nav-link'} onClick={() => handle_menu_click('insertForm')}>
                     Insert Menu
                   </Link>
                 </li>
