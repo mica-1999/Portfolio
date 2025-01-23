@@ -12,6 +12,7 @@ export default function MainContent() {
   const [balanceMonth, setBalanceMonth] = useState(null);
   const [withdrawal, setWithdrawal] = useState(null);
   const [projects, setProjects] = useState([]);
+  const [timeline, setTimeline] = useState([]);
 
   // Error Handling and Loading State
   const [loading, setLoading] = useState(true);
@@ -47,9 +48,23 @@ export default function MainContent() {
       }
     };
 
+    const fetchTimelineData = async () => {
+      try {
+        const response_timeline = await fetch('/api/getTimeline');
+        if (!response_timeline.ok) {
+          throw new Error('Failed to fetch projects data');
+        }
+        const timeline_data = await response_timeline.json();
+        console.log(timeline_data);
+        setTimeline(timeline_data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([fetchBalanceData(), fetchProjectData()]);
+      await Promise.all([fetchBalanceData(), fetchProjectData(), fetchTimelineData()]);
       setLoading(false);
     };
 
@@ -59,16 +74,41 @@ export default function MainContent() {
   const getBadgeClass = (state) => {
     console.log('State:', state, 'Type:', typeof state); // Debug log
     switch (state) {
-      case '0':
+      case 0:
         return { badgeColor: 'danger', output: 'Failed' };
-      case '1':
+      case 1:
         return { badgeColor: 'success', output: 'Completed' };
-      case '2':
+      case 2:
         return { badgeColor: 'warning', output: 'In Progress' };
-      case '3':
+      case 3:
         return { badgeColor: 'secondary', output: 'Not Started' };
       default:
         return { badgeColor: 'default', output: 'default' };
+    }
+  };
+
+  const getTimeFormatted = (time) => {
+    const currentTime = new Date(); // Current time
+    const eventTime = new Date(time); // Timeline time
+  
+    const diffMs = currentTime - eventTime; // Difference in milliseconds
+  
+    // Convert difference to seconds, minutes, hours, and days
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+  
+    // Generate the formatted string
+    if (diffDays > 0) {
+      return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    } else if (diffHours > 0) {
+      const remainingMinutes = diffMinutes % 60;
+      return `${diffHours}h ${remainingMinutes}min ago`;
+    } else if (diffMinutes > 0) {
+      return `${diffMinutes} min ago`;
+    } else {
+      return `${diffSeconds} sec ago`;
     }
   };
 
@@ -203,86 +243,22 @@ export default function MainContent() {
           </div>
           <div className="card-body p-0 pt-4">
             <ul className="timeline card-timeline mb-0">
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-primary"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">New Project</h6>
-                    <small className="text-muted">12 min ago</small>
-                  </div>
-                  <p>Description of the first timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-success"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Project Completed</h6>
-                    <small className="text-muted">1 hour ago</small>
-                  </div>
-                  <p>Description of the second timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-warning"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Warning Issued</h6>
-                    <small className="text-muted">3 hours ago</small>
-                  </div>
-                  <p>Description of the third timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-danger"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Error Occurred</h6>
-                    <small className="text-muted">5 hours ago</small>
-                  </div>
-                  <p>Description of the fourth timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-info"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Information</h6>
-                    <small className="text-muted">1 day ago</small>
-                  </div>
-                  <p>Description of the fifth timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-secondary"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Secondary Event</h6>
-                    <small className="text-muted">2 days ago</small>
-                  </div>
-                  <p>Description of the sixth timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-light"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Light Event</h6>
-                    <small className="text-muted">3 days ago</small>
-                  </div>
-                  <p>Description of the seventh timeline</p>
-                </div>
-              </li>
-              <li className="timeline-item">
-                <span className="timeline-point timeline-point-dark"></span>
-                <div className="timeline-event ps-4">
-                  <div className="timeline-header mb-2 pe-4">
-                    <h6 className="mb-0">Dark Event</h6>
-                    <small className="text-muted">4 days ago</small>
-                  </div>
-                  <p>Description of the eighth timeline</p>
-                </div>
-              </li>
+              {timeline.map((timeline_info) => {
+                const { badgeColor, output } = getBadgeClass(timeline_info.state);
+                const timelineTime = getTimeFormatted(timeline_info.lastEvent);
+                  return (
+                    <li className="timeline-item">
+                      <span className={`timeline-point timeline-point-${badgeColor}`}></span>
+                      <div className="timeline-event ps-4">
+                        <div className="timeline-header mb-2 pe-4">
+                          <h6 className="mb-0">{timeline_info.title}</h6>
+                          <small className="text-muted">{timelineTime}</small>
+                        </div>
+                        <p>{timeline_info.description}</p>
+                      </div>
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         </div>
@@ -313,7 +289,7 @@ export default function MainContent() {
       <div className="col-lg-4 d-flex cs-5 c-order">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">CHANGE ORDER OF THIS TO BOTTOM</h5>
+            <h5 className="card-title">TBD</h5>
             <h6 className="card-subtitle mb-2">TBD</h6>
           </div>
           <div className="card-body p-0">
@@ -409,7 +385,7 @@ export default function MainContent() {
       <div className="col-lg-4 d-flex cs-6">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">STAYS NEXT TO THE CHANGED ORDER CARD</h5>
+            <h5 className="card-title">TBD</h5>
             <h6 className="card-subtitle mb-2">TBD</h6>
           </div>
           <div className="card-body p-0">
