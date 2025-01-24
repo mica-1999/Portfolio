@@ -149,11 +149,53 @@ In this example:
 - `setCount` is a function that updates the value of `count`.
 - The button's `onClick` handler increments the `count` value by `1` each time it is clicked.
 
+### Asynchronous State Updates in React
+
+In React, state updates are asynchronous. This means that when you call a state setter function like `setTotalBalance`, React schedules the state update but does not immediately update the value of the state variable. As a result, if you try to log the state variable immediately after calling the setter function, it will still hold its previous value.
+
+#### Example
+
+```javascript
+const [totalBalance, setTotalBalance] = useState(null);
+
+useEffect(() => {
+  const fetchBalanceData = async () => {
+    try {
+      const response = await fetch('/api/getBalance');
+      if (!response.ok) {
+        throw new Error('Failed to fetch balance data');
+      }
+      const data = await response.json();
+      setTotalBalance(data.totalBalance);
+      console.log(totalBalance); // This will print null because the state update is asynchronous
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  fetchBalanceData();
+}, []);
+```
+
+In the example above, `console.log(totalBalance)` prints `null` because `setTotalBalance` schedules the state update, but the state variable `totalBalance` is not updated immediately. The state update will take effect after the component re-renders.
+
+#### Solution
+
+To see the updated state value, you can use another `useEffect` hook that depends on the state variable:
+
+```javascript
+useEffect(() => {
+  console.log(totalBalance); // This will print the updated value of totalBalance
+}, [totalBalance]);
+```
+
+By adding a `useEffect` hook that depends on `totalBalance`, you can log the updated value after the state has been updated and the component has re-rendered.
+
 ## Using `useEffect` to Store Data Locally
 
 In React, you can use the `useEffect` hook to store data locally in the browser's `localStorage`. This allows you to persist data across page switches or refreshes. Here's how you can do it:
 
-1. **Storing Data in `localStorage`**:
+1. **Storing Data in `localStorage**:
    Use the `useEffect` hook to store data in `localStorage` whenever the data changes.
 
    Example:
@@ -209,6 +251,77 @@ In these examples:
 - The `useEffect` hook with `[data]` as the dependency array runs whenever the `data` state changes, storing the updated data in `localStorage`.
 
 This approach ensures that the data persists across page switches or refreshes, providing a better user experience.
+
+## Organizing Utility Functions
+
+To keep your code organized and maintainable, it's a good practice to separate utility functions into a dedicated `utils` directory. This allows you to import these functions whenever needed and helps with organizing the code better.
+
+### Example
+
+1. **Create a `utils` directory**:
+   Create a directory named `utils` in your project.
+
+2. **Move utility functions to separate files**:
+   Move utility functions like `formatNumber`, `getBadgeClass`, and `getRoleClass` to separate files in the `utils` directory.
+
+   Example:
+   ```javascript
+   // filepath: /src/utils/formatNumber.js
+   export const formatNumber = (number) => {
+     return new Intl.NumberFormat().format(number);
+   };
+   ```
+
+   ```javascript
+   // filepath: /src/utils/getBadgeClass.js
+   export const getBadgeClass = (state) => {
+     switch (state) {
+       case 0:
+         return { badgeColor: 'danger', output: 'Failed' };
+       case 1:
+         return { badgeColor: 'success', output: 'Completed' };
+       case 2:
+         return { badgeColor: 'warning', output: 'In Progress' };
+       case 3:
+         return { badgeColor: 'secondary', output: 'Not Started' };
+       default:
+         return { badgeColor: 'default', output: 'default' };
+     }
+   };
+   ```
+
+   ```javascript
+   // filepath: /src/utils/getRoleClass.js
+   export const getRoleClass = (role) => {
+     switch (role) {
+       case 'admin':
+         return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
+       case 'viewer':
+         return { badgeColor: 'user', output: 'Viewer', color: 'success' };
+       case 'editor':
+         return { badgeColor: 'edit-box', output: 'Editor', color: 'warning' };
+       case 'author':
+         return { badgeColor: 'computer', output: 'Author', color: 'danger' };
+       default:
+         return { badgeColor: 'default', output: 'default', color: 'default' };
+     }
+   };
+   ```
+
+3. **Import utility functions**:
+   Import the utility functions in your components as needed.
+
+   Example:
+   ```javascript
+   // filepath: /src/app/components/Dashboard/MainContent.js
+   import { formatNumber } from '../../../utils/formatNumber';
+   import { getBadgeClass } from '../../../utils/getBadgeClass';
+   import { getRoleClass } from '../../../utils/getRoleClass';
+
+   // ...existing code...
+   ```
+
+By organizing utility functions in a dedicated `utils` directory, you can keep your codebase clean and maintainable, making it easier to manage and scale your project.
 
 ## Next.js
 

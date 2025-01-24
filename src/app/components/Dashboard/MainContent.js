@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { formatNumber } from '../../../utils/formatNumber';
+import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted } from '../../../utils/mainContentUtil';
 
 export default function MainContent() {
   // Array initializations
@@ -19,127 +19,50 @@ export default function MainContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchDataFromApi = async (route) => {
+    try {
+      const response = await fetch(route);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data from ${route}`);
+      }
+      const data = await response.json();
+      return data; // Return the full data
+    } catch (error) {
+      setError(error.message);
+      throw error; // Re-throw so Promise.all can handle it
+    }
+  };
+  
   useEffect(() => {
-    const fetchBalanceData = async () => {
-      try {
-        const response_balance = await fetch('/api/getBalance');
-        if (!response_balance.ok) {
-          throw new Error('Failed to fetch balance data');
-        }
-        const data_balance = await response_balance.json();
-        setTotalBalance(data_balance.totalBalance);
-        setBalanceMonth(data_balance.thisMonth.totalDeposits);
-        setWithdrawal(data_balance.thisMonth.totalWithdrawals);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    const fetchProjectData = async () => {
-      try {
-        const response_project = await fetch('/api/getProjects');
-        if (!response_project.ok) {
-          throw new Error('Failed to fetch projects data');
-        }
-        const data_project = await response_project.json();
-        setProjects(data_project);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    const fetchTimelineData = async () => {
-      try {
-        const response_timeline = await fetch('/api/getTimeline');
-        if (!response_timeline.ok) {
-          throw new Error('Failed to fetch timeline data');
-        }
-        const timeline_data = await response_timeline.json();
-        setTimeline(timeline_data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-
-    const fetchUserData = async () => {
-      try {
-        const response_user = await fetch('/api/getUser');
-        if (!response_user.ok) {
-          throw new Error('Failed to fetch timeline data');
-        }
-        const user_data = await response_user.json();
-        console.log(user_data);
-        setUsers(user_data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([fetchBalanceData(), fetchProjectData(), fetchTimelineData(), fetchUserData()]);
-      setLoading(false);
-    };
+      try {
+        const [balanceData, projects, timeline, users] = await Promise.all([
+          fetchDataFromApi('/api/getBalance'), // Fetch once for balance
+          fetchDataFromApi('/api/getProjects'),
+          fetchDataFromApi('/api/getTimeline'),
+          fetchDataFromApi('/api/getUser'),
+        ]);
+  
+        // Extract and set balance-related states from the single fetch
+        setTotalBalance(balanceData.totalBalance);
+        setBalanceMonth(balanceData.thisMonth.totalDeposits);
+        setWithdrawal(balanceData.thisMonth.totalWithdrawals);
+  
+        // Set other states
+        setProjects(projects);
+        setTimeline(timeline);
+        setUsers(users);
 
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchData();
   }, []);
-
-  const getBadgeClass = (state) => {
-    switch (state) {
-      case 0:
-        return { badgeColor: 'danger', output: 'Failed' };
-      case 1:
-        return { badgeColor: 'success', output: 'Completed' };
-      case 2:
-        return { badgeColor: 'warning', output: 'In Progress' };
-      case 3:
-        return { badgeColor: 'secondary', output: 'Not Started' };
-      default:
-        return { badgeColor: 'default', output: 'default' };
-    }
-  };
-
-  const getRoleClass = (role) => {
-    switch (role) {
-      case 'admin':
-        return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
-      case 'viewer':
-        return { badgeColor: 'user', output: 'Viewer', color: 'success' };
-      case 'editor':
-        return { badgeColor: 'edit-box', output: 'Editor' , color: 'warning'};
-      case 'author':
-        return { badgeColor: 'computer', output: 'Author' , color: 'danger'};
-      default:
-        return { badgeColor: 'default', output: 'default' , color: 'default'};
-    }
-  };
-
-  const getTimeFormatted = (time) => {
-    const currentTime = new Date(); // Current time
-    const eventTime = new Date(time); // Timeline time
   
-    const diffMs = currentTime - eventTime; // Difference in milliseconds
-  
-    // Convert difference to seconds, minutes, hours, and days
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-  
-    // Generate the formatted string
-    if (diffDays > 0) {
-      return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    } else if (diffHours > 0) {
-      const remainingMinutes = diffMinutes % 60;
-      return `${diffHours}h ${remainingMinutes}min ago`;
-    } else if (diffMinutes > 0) {
-      return `${diffMinutes} min ago`;
-    } else {
-      return `${diffSeconds} sec ago`;
-    }
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -363,7 +286,7 @@ export default function MainContent() {
                           <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
                         </span>
                       </td>
-                      <td><div className="badge bg-label-success rounded-pill lh-xs">{user.isActive ? 'Active' : 'Inactive'}</div></td>
+                      <td><div className={`badge bg-label-${user.isActive ? 'success' : 'warning'} rounded-pill lh-xs`}>{user.isActive ? 'Active' : 'Inactive'}</div></td>
                       <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
                     </tr>
                   );
