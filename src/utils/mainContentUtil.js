@@ -1,3 +1,4 @@
+// GETS THE BADGE COLOR AND OUTPUT TEXT FOR THE STATE OF THE PROJECT
 export function getBadgeClass(state) {
     switch (state) {
       case 0:
@@ -13,6 +14,7 @@ export function getBadgeClass(state) {
     }
 };
 
+// GETS THE ROLE BADGE COLOR AND OUTPUT TEXT OF THE USERS
 export function getRoleClass(role) {
     switch (role) {
       case 'admin':
@@ -28,6 +30,7 @@ export function getRoleClass(role) {
     }
 };
 
+// FORMATS THE NUMBER IF IT IS GREATER THAN 10000
 export function formatNumber(num) {
     if (num >= 10000) {
         return (num / 1000).toFixed(1) + 'k';
@@ -35,6 +38,7 @@ export function formatNumber(num) {
     return num;
 }
 
+// GETS THE TIME DIFFERENCE BETWEEN THE CURRENT TIME AND THE EVENT TIME FOR THE TIMELINE
 export function getTimeFormatted(time)  {
   const currentTime = new Date(); // Current time
   const eventTime = new Date(time); // Timeline time
@@ -57,5 +61,34 @@ export function getTimeFormatted(time)  {
     return `${diffMinutes} min ago`;
   } else {
     return `${diffSeconds} sec ago`;
+  }
+};
+
+export function getTagColor(tag) {
+  switch (tag) {
+    case 'HTML':
+      return 'primary'; // var(--bs-primary)
+    case 'CSS':
+      return 'secondary'; // var(--bs-secondary)
+    case 'Javascript':
+      return 'yellow'; // var(--bs-yellow)
+    case 'PHP':
+      return 'purple'; // var(--bs-purple)
+    case 'Python':
+      return 'green'; // var(--bs-green)
+    case 'Java':
+      return 'orange'; // var(--bs-orange)
+    case 'C++':
+      return 'cyan'; // var(--bs-cyan)
+    case 'C#':
+      return 'teal'; // var(--bs-teal)
+    case 'Ruby':
+      return 'pink'; // var(--bs-pink)
+    case 'React':
+      return 'blue'; // var(--bs-blue)
+    case 'Angular':
+      return 'red'; // var(--bs-red)
+    default:
+      return 'default'; // Default color
   }
 };

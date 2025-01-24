@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Define the schema for the Bank collection
+// DEFINING THE SCHEMA FOR THE BANK COLLECTION IN DB
 const bankSchema = new mongoose.Schema({
   totalBalance: { type: Number, required: true },
   thisMonth: {

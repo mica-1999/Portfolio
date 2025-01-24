@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 // DEFINING THE SCHEMA FOR THE USERS COLLECTION IN DB
-
 const userSchema = new mongoose.Schema(
   {
     // Unique Identifier for the User

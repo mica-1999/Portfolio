@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 // DEFINING THE SCHEMA FOR THE PROJECTS COLLECTION IN DB 
-
 const projectSchema = new mongoose.Schema({
     id : { type: Number, required: true},
     title: { type: String, required: true},

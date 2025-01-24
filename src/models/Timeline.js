@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-// DEFINING THE SCHEMA FOR THE PROJECTS COLLECTION IN DB 
-
+// DEFINING THE SCHEMA FOR THE TIMELINE COLLECTION IN DB 
 const timelineSchema = new mongoose.Schema({
     id: { type: Number, required: true, unique: true },
     title: { type: String, required: true },

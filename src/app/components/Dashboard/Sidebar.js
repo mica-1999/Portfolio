@@ -41,7 +41,7 @@ export default function Sidebar() {
               <a className="nav-link position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
               <ul id="projectsSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="#" className={currentPath === '/project1' ? 'nav-link active' : 'nav-link'}>
+                  <Link href="/dashboard/projects/" className={currentPath === '/dashboard/projects' ? 'nav-link active' : 'nav-link'}>
                     Project 1
                   </Link>
                 </li>

@@ -62,7 +62,7 @@ export default function MainContent() {
     };
     fetchData();
   }, []);
-  
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -77,7 +77,13 @@ export default function MainContent() {
       <div className="d-flex col-lg-6 balance">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">Multibanco</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">Multibanco</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
             <h6 className="card-subtitle mb-2">Balance Overview</h6>
           </div>
           <div className="card-body d-flex justify-content-evenly flex-wrap p-0 mb-4">
@@ -156,7 +162,13 @@ export default function MainContent() {
       <div className="col-lg-8 d-flex table-custom">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">Projects</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">Projects</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
             <h6 className="card-subtitle mb-2">#Categories</h6>
           </div>
           <div className="card-body p-0">
@@ -197,7 +209,13 @@ export default function MainContent() {
       <div className="col-lg-4 d-flex timeline-custom">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">Activity Timeline</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">Activity Timeline</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
           </div>
           <div className="card-body p-0 pt-4">
             <ul className="timeline card-timeline mb-0">
@@ -226,7 +244,13 @@ export default function MainContent() {
       <div className="col-lg-3 d-flex custom-height-3 cs-5">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">TBD</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">TBD</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
           </div>
           <div className="card-body p-0">
@@ -237,7 +261,13 @@ export default function MainContent() {
       <div className="col-lg-5 d-flex cs-5">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">TBD</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">TBD</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
           </div>
           <div className="card-body p-0">
@@ -248,7 +278,13 @@ export default function MainContent() {
       <div className="col-lg-4 d-flex cs-5 c-order">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">TBD</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">TBD</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
           </div>
           <div className="card-body p-0">
@@ -261,6 +297,15 @@ export default function MainContent() {
       <div className="col-lg-8 d-flex table-custom-2">
         <div className="card flex-grow-1 p-0">
           <div className="table-responsive text-nowrap user-table rounded">
+            <div className="card-header">
+              <div className="d-flex align-items-center justify-content-between">
+                <h5 className="card-title">Users</h5>
+                <div>
+                  <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                  <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+                </div>
+              </div>
+            </div>
             <table className="table table-sm mb-0">
               <thead className="table-head">
                 <tr style={{ backgroundColor: '#3A3E5B' }}>
@@ -301,7 +346,13 @@ export default function MainContent() {
       <div className="col-lg-4 d-flex cs-6">
         <div className="card flex-grow-1">
           <div className="card-header">
-            <h5 className="card-title">TBD</h5>
+            <div className="d-flex align-items-center justify-content-between">
+              <h5 className="card-title">TBD</h5>
+              <div>
+                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
+                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+              </div>
+            </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
           </div>
           <div className="card-body p-0">

@@ -540,3 +540,12 @@ tbody tr:last-child td {
     width: 180px !important;
     height: 40px;
 }
+
+/* ---------------------------------------------- GENERAL ----------------------------------- */
+.remove-decor{
+    text-decoration: none;
+}
+.tag-div{
+    width: 93%;
+
+}
