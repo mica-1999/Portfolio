@@ -20,30 +20,16 @@ npm install connect-flash dotenv express express-session mongoose next path reac
 ## Getting Started
 1. Clone the repository.
 2. Install the necessary dependencies using `npm install`.
-3. Start the server using `npm start` or `npm run dev`.
+3. Start the server using `node server.js`.
 4. Open your browser and navigate to `http://localhost:3000` to see the project in action.
 
 ## Project Structure
-
-```
-CSS-Weakness/
-├── public/
-│   ├── assets/
-│   └── index.html
-├── src/
-│   ├── app/
-│   │   ├── components/
-│   │   │   └── Dashboard/
-│   │   ├── pages/
-│   │   │   └── api/
-│   │   └── utils/
-│   └── models/
-├── .env
-├── .gitignore
-├── package.json
-├── README.md
-└── server.js
-```
+- `public/`: Contains the static files (HTML, CSS, JavaScript).
+  - `index.html`: The main HTML file.
+  - `styles.css`: The CSS file for styling the HTML.
+- `server.js`: The Express server setup.
+- `src/app/pages/`: This is where we will have our web pages.
+- `src/app/pages/api/`: This is where we are going to do the fetching of data from the database to insert into those pages.
 
 ## JavaScript: Async, Promise, and Await
 
@@ -73,6 +59,33 @@ In this example:
 - The `await` keyword pauses the function execution until the fetch request is resolved.
 - If the fetch request fails, the error is caught and logged using a `try-catch` block.
 
+### Toggling Tags in React
+
+In React, you can use state to manage the selection of tags. The `toggleTag` function is an arrow function that modifies the value of the `selectedTag` state. It uses the ternary operator to check whether the tag is already included in the `selectedTag` array. If it is, the user wants to remove it; if not, the user wants to add it. The function then updates the state value of `selectedTag`.
+
+Example:
+```javascript
+const [selectedTag, setSelectedTag] = useState([]);
+
+const toggleTag = (tag) => {
+  setSelectedTag((prevSelectedTags) =>
+    prevSelectedTags.includes(tag)
+      ? prevSelectedTags.filter((t) => t !== tag) // Remove tag if already selected
+      : [...prevSelectedTags, tag] // Add tag if not selected
+  );
+};
+```
+
+In this example:
+- `selectedTag` is the state variable that holds the array of selected tags.
+- `setSelectedTag` is the function used to update the `selectedTag` state.
+- The `toggleTag` function checks if the `tag` is already included in the `selectedTag` array.
+  - If it is, the function filters out the `tag` from the array (removing it).
+  - If it is not, the function adds the `tag` to the array.
+- The state is then updated with the new array of selected tags.
+
+TLDR: The arrow function `toggleTag` modifies the value of the `selectedTag` parameter by using the ternary operator to check if the tag is included. If it is, the tag is removed; if not, the tag is added. This updated parameter is then used to update the state value of `selectedTag`.
+
 ## React and JSX
 React uses a syntax extension called JSX, which allows you to write HTML-like code within JavaScript. JSX is different from HTML in several ways:
 
@@ -91,13 +104,13 @@ Components are the building blocks of a React application. They are basically fu
 
 Example of a functional component:
 ```javascript
-export default function Name() {
-  return (
-    <div>
-      {/* Your JSX content goes here */}
-    </div>
-  );
+import React from 'react';
+
+function Greeting() {
+  return <h1>Hello, World!</h1>;
 }
+
+export default Greeting;
 ```
 
 Example of nested components:
@@ -186,53 +199,16 @@ function Counter() {
 }
 ```
 
-### Asynchronous State Updates in React
-
-In React, state updates are asynchronous. This means that when you call a state setter function like `setTotalBalance`, React schedules the state update but does not immediately update the value of the state variable. As a result, if you try to log the state variable immediately after calling the setter function, it will still hold its previous value.
-
-#### Example
-
-```javascript
-const [totalBalance, setTotalBalance] = useState(null);
-
-useEffect(() => {
-  const fetchBalanceData = async () => {
-    try {
-      const response = await fetch('/api/getBalance');
-      if (!response.ok) {
-        throw new Error('Failed to fetch balance data');
-      }
-      const data = await response.json();
-      setTotalBalance(data.totalBalance);
-      console.log(totalBalance); // This will print null because the state update is asynchronous
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  fetchBalanceData();
-}, []);
-```
-
-In the example above, `console.log(totalBalance)` prints `null` because `setTotalBalance` schedules the state update, but the state variable `totalBalance` is not updated immediately. The state update will take effect after the component re-renders.
-
-#### Solution
-
-To see the updated state value, you can use another `useEffect` hook that depends on the state variable:
-
-```javascript
-useEffect(() => {
-  console.log(totalBalance); // This will print the updated value of totalBalance
-}, [totalBalance]);
-```
-
-By adding a `useEffect` hook that depends on `totalBalance`, you can log the updated value after the state has been updated and the component has re-rendered.
+In this example:
+- `useState` initializes the state variable `count` with a value of `0`.
+- `setCount` is a function that updates the value of `count`.
+- The button's `onClick` handler increments the `count` value by `1` each time it is clicked.
 
 ## Using `useEffect` to Store Data Locally
 
 In React, you can use the `useEffect` hook to store data locally in the browser's `localStorage`. This allows you to persist data across page switches or refreshes. Here's how you can do it:
 
-1. **Storing Data in `localStorage**:
+1. **Storing Data in `localStorage`**:
    Use the `useEffect` hook to store data in `localStorage` whenever the data changes.
 
    Example:
@@ -289,77 +265,6 @@ In these examples:
 
 This approach ensures that the data persists across page switches or refreshes, providing a better user experience.
 
-## Organizing Utility Functions
-
-To keep your code organized and maintainable, it's a good practice to separate utility functions into a dedicated `utils` directory. This allows you to import these functions whenever needed and helps with organizing the code better.
-
-### Example
-
-1. **Create a `utils` directory**:
-   Create a directory named `utils` in your project.
-
-2. **Move utility functions to separate files**:
-   Move utility functions like `formatNumber`, `getBadgeClass`, and `getRoleClass` to separate files in the `utils` directory.
-
-   Example:
-   ```javascript
-   // filepath: /src/utils/formatNumber.js
-   export const formatNumber = (number) => {
-     return new Intl.NumberFormat().format(number);
-   };
-   ```
-
-   ```javascript
-   // filepath: /src/utils/getBadgeClass.js
-   export const getBadgeClass = (state) => {
-     switch (state) {
-       case 0:
-         return { badgeColor: 'danger', output: 'Failed' };
-       case 1:
-         return { badgeColor: 'success', output: 'Completed' };
-       case 2:
-         return { badgeColor: 'warning', output: 'In Progress' };
-       case 3:
-         return { badgeColor: 'secondary', output: 'Not Started' };
-       default:
-         return { badgeColor: 'default', output: 'default' };
-     }
-   };
-   ```
-
-   ```javascript
-   // filepath: /src/utils/getRoleClass.js
-   export const getRoleClass = (role) => {
-     switch (role) {
-       case 'admin':
-         return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
-       case 'viewer':
-         return { badgeColor: 'user', output: 'Viewer', color: 'success' };
-       case 'editor':
-         return { badgeColor: 'edit-box', output: 'Editor', color: 'warning' };
-       case 'author':
-         return { badgeColor: 'computer', output: 'Author', color: 'danger' };
-       default:
-         return { badgeColor: 'default', output: 'default', color: 'default' };
-     }
-   };
-   ```
-
-3. **Import utility functions**:
-   Import the utility functions in your components as needed.
-
-   Example:
-   ```javascript
-   // filepath: /src/app/components/Dashboard/MainContent.js
-   import { formatNumber } from '../../../utils/formatNumber';
-   import { getBadgeClass } from '../../../utils/getBadgeClass';
-   import { getRoleClass } from '../../../utils/getRoleClass';
-
-   // ...existing code...
-   ```
-
-By organizing utility functions in a dedicated `utils` directory, you can keep your codebase clean and maintainable, making it easier to manage and scale your project.
-
 ## Next.js
 
 Next.js is a React framework that enables server-side rendering and static site generation, providing a powerful way to build fast and user-friendly web applications. It enhances the capabilities of React by allowing you to render pages on the server, generate static pages at build time, and create API routes.
@@ -386,87 +291,57 @@ When you use Next.js in your project, you do not need to load the `react` and `r
 
 Next.js also has a built-in compiler that transforms JSX into valid JavaScript so that the browser can understand it. This means you do not need to use Babel for this purpose. For more information, you can refer to the [Next.js documentation](https://nextjs.org/docs).
 
-### Layouts in Next.js
-
-Next.js automatically renders the layout component for each page. You do not need to call the layout component explicitly in your page components. This ensures that the layout is consistently applied across all pages.
-
-Example of a layout in Next.js:
+Example of a simple page in Next.js:
 
 ```javascript
-// filepath: /src/app/dashboard/layout.js
-import Sidebar from '../components/Dashboard/Sidebar'; // Import the Sidebar component
-import Header from '../components/Dashboard/Header'; // Import the Header component
-import Footer from '../components/Dashboard/Footer'; // Import the Footer component
+// filepath: /project-root/pages/index.js
+import Head from 'next/head';
 
-export const metadata = {
-  title: 'Dashboard for Portfolio',
-  description: 'Stay updated with the latest blog posts from the portfolio.',
-};
-
-export default function DashboardLayout({ children }) {
+export default function Home() {
   return (
-    <html lang="en">
-      <head>
-        {/* Meta and Title */}
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/assets/css/styles.css" />
-      </head>
-      <body>
-      <div className="container-fluid vh-100">
-        <div className="row">
-          <Sidebar/> {/* Render the Sidebar component */}
-          <div className="col-lg-10 offset-lg-2 p-4 card-section">
-            <Header /> {/* Render the Header component */}   
-              {children}
-            <Footer /> {/* Render the Footer component */}
-          </div>
-        </div>
-      </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/assets/js/sidebar.js"></script>
-      </body>
-    </html>
+    <>
+      <Head>
+        <title>Home Page</title>
+      </Head>
+      <h1>Welcome to the Home Page</h1>
+    </>
   );
 }
 ```
 
-### Layout File Structure
+In this example:
+- The `Head` component is used to manage the document head.
+- The `Home` component is the default export of the `pages/index.js` file, making it the home page of the application.
 
-The layout file structure in Next.js allows you to define layouts that apply to specific routes. If you create a `layout.js` file inside a subdirectory, it will override the parent layout and apply only to routes under that subdirectory.
+### Layouts in Next.js
 
-Example file structure:
+Next.js automatically renders the layout component for each page. You do not need to call the layout component explicitly in your page components. This ensures that the layout is consistently applied across all pages.
 
-```
-src/
-├── app/
-│   ├── dashboard/
-│   │   ├── layout.js
-│   │   ├── page.js
-│   │   └── Form/
-│   │       ├── layout.js
-│   │       └── page.js
+Example of a layout component in Next.js:
+
+```javascript
+// filepath: /project-root/pages/_app.js
+import '../styles/globals.css';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Header /> {/* Render the Header component */}
+      <Component {...pageProps} /> {/* Render the current page */}
+      <Footer /> {/* Render the Footer component */}
+    </>
+  );
+}
+
+export default MyApp;
 ```
 
 In this example:
-- The `dashboard/layout.js` file defines a layout that applies to all routes under `/dashboard`.
-- The `dashboard/Form/layout.js` file defines a layout that overrides the parent layout and applies only to routes under `/dashboard/Form`.
+- The `MyApp` component is the default export of the `_app.js` file, making it the layout component for the application.
+- The `Header` and `Footer` components are rendered for every page.
+- The `Component` prop represents the current page component, and `pageProps` are the props passed to the current page component.
+
+If you add a `layout.js` file inside a subdirectory (e.g., `/Form`), it will override the parent layout from `/dashboard` and apply only to routes under `/Form`.
 
 ### Including Static Files
 
@@ -478,4 +353,17 @@ Example:
 <script src="/assets/js/sidebar.js"></script>
 ```
 
-This approach
+This approach ensures that the files are correctly loaded regardless of the current route.
+
+Next.js simplifies the process of building React applications with powerful features and a structured approach to routing and rendering.
+
+## Future Enhancements
+
+- Implement a chat feature using Node.js, storing messages in MongoDB.
+- Integrate login functionality from another project.
+- Add notifications in the top right corner.
+- Integrate AI into the chat feature.
+- Add CRUD functionality for blog posts, projects, and other items in the dashboard.
+- Add APIs for news, Spotify, weather, and other features on the dashboard main page.
+- Track and display the number of visiting users using session data.
+

@@ -1,3 +1,5 @@
+"use client"
+
 export default function Header() {
   return (
     <div className="row d-flex align-items-center">
@@ -10,7 +12,7 @@ export default function Header() {
         <div className="d-flex gap-3 ms-auto align-items-center profile-section">
           <a href="https://www.youtube.com/"><i className="fa-brands fa-youtube fa-lg"></i></a>
           <a href="https://github.com/mica-1999"><i className="fa-brands fa-github fa-lg"></i></a>
-          <i className="fa-solid fa-arrows-rotate fa-lg"></i>
+          <i className="fa-solid fa-arrows-rotate fa-lg" onClick={() => window.location.reload()}></i>
           <i className="fa-regular fa-bell fa-lg"></i>
           <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon" />
         </div>

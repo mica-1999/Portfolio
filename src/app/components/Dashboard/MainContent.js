@@ -15,6 +15,21 @@ export default function MainContent() {
   const [timeline, setTimeline] = useState([]);
   const [users, setUsers] = useState([]);
 
+  //Event Handling
+  const [hidden_sections , setHiddenSections] = useState([]);
+
+  const handle_sections = (section) => {
+    setHiddenSections((prevHiddenSections) => {
+      const updatedSections = prevHiddenSections.includes(section)
+        ? prevHiddenSections.filter((s) => s !== section)
+        : [...prevHiddenSections, section]
+
+        // Log the hidden sections to the console
+    console.log(updatedSections);
+    return updatedSections;
+  });
+  }
+
   // Error Handling and Loading State
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -75,43 +90,45 @@ export default function MainContent() {
     <div className="row d-flex mt-3">
       {/* Balance Section */}
       <div className="d-flex col-lg-6 balance">
-        <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">Multibanco</h5>
-              <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+        <div className="card flex-grow-1" >
+          <div id="1" className={hidden_sections.includes('1') ? 'blur_element' : ''}>
+            <div className="card-header">
+              <div className="d-flex align-items-center justify-content-between">
+                <h5 className="card-title">Multibanco</h5>
+                <div>
+                  <i className="ri-edit-line ri-lg ms-2"></i>
+                  <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('1')}></i>
+                </div>
               </div>
+              <h6 className="card-subtitle mb-2">Balance Overview</h6>
             </div>
-            <h6 className="card-subtitle mb-2">Balance Overview</h6>
-          </div>
-          <div className="card-body d-flex justify-content-evenly flex-wrap p-0 mb-4">
-            <div className="d-flex gap-2">
-              <div className="d-flex justify-content-center align-items-center small-box">
-                <i className="fa-solid fa-euro-sign fa-lg euro-icon"></i>
+            <div className="card-body d-flex justify-content-evenly flex-wrap p-0 mb-4">
+              <div className="d-flex gap-2">
+                <div className="d-flex justify-content-center align-items-center small-box">
+                  <i className="fa-solid fa-euro-sign fa-lg euro-icon"></i>
+                </div>
+                <div className="card-info">
+                  <h5 className="mb-0">{formatNumber(totalBalance)}</h5>
+                  <p className="mb-0">Total Balance</p>
+                </div>
               </div>
-              <div className="card-info">
-                <h5 className="mb-0">{formatNumber(totalBalance)}</h5>
-                <p className="mb-0">Total Balance</p>
+              <div className="d-flex gap-2">
+                <div className="d-flex justify-content-center align-items-center small-box-third">
+                  <i className="fa-solid fa-arrow-up fa-lg third-icon"></i>
+                </div>
+                <div className="card-info">
+                  <h5 className="mb-0">{formatNumber(balanceMonth)}</h5>
+                  <p className="mb-0">This Month</p>
+                </div>
               </div>
-            </div>
-            <div className="d-flex gap-2">
-              <div className="d-flex justify-content-center align-items-center small-box-third">
-                <i className="fa-solid fa-arrow-up fa-lg third-icon"></i>
-              </div>
-              <div className="card-info">
-                <h5 className="mb-0">{formatNumber(balanceMonth)}</h5>
-                <p className="mb-0">This Month</p>
-              </div>
-            </div>
-            <div className="d-flex gap-2 p-0">
-              <div className="d-flex justify-content-center align-items-center small-box-received">
-                <i className="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
-              </div>
-              <div className="card-info">
-                <h5 className="mb-0">{formatNumber(withdrawal)}</h5>
-                <p className="mb-0">New Transactions</p>
+              <div className="d-flex gap-2 p-0">
+                <div className="d-flex justify-content-center align-items-center small-box-received">
+                  <i className="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
+                </div>
+                <div className="card-info">
+                  <h5 className="mb-0">{formatNumber(withdrawal)}</h5>
+                  <p className="mb-0">New Transactions</p>
+                </div>
               </div>
             </div>
           </div>
@@ -161,45 +178,47 @@ export default function MainContent() {
       {/* Projects Section */}
       <div className="col-lg-8 d-flex table-custom">
         <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">Projects</h5>
-              <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+          <div id="2" className={hidden_sections.includes('2') ? 'blur_element' : ''}>
+            <div className="card-header">
+              <div className="d-flex align-items-center justify-content-between">
+                <h5 className="card-title">Projects</h5>
+                <div>
+                  <i className="ri-edit-line ri-lg ms-2"></i>
+                  <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('2')}></i>
+                </div>
               </div>
+              <h6 className="card-subtitle mb-2">#Categories</h6>
             </div>
-            <h6 className="card-subtitle mb-2">#Categories</h6>
-          </div>
-          <div className="card-body p-0">
-            <div className="table-responsive text-nowrap project-table">
-              <table className="table user-table border-top">
-                <thead className="table-head">
-                  <tr>
-                    {theads_projects.map((thead) => (
-                      <th key={thead}>{thead}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="table-content">
-                  {projects.map((project) => {
-                    const { badgeColor, output } = getBadgeClass(project.state);
-                    return (
-                      <tr key={project.id}>
-                        <td>{project.id}</td>
-                        <td>{project.title}</td>
-                        <td>{project.description}</td>
-                        <td>
-                          <div className={`badge bg-label-${badgeColor} rounded-pill lh-xs`}>
-                            {output}
-                          </div>
-                        </td>
-                        <td>{new Date(project.lastUpdated).toLocaleDateString()}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="card-body p-0">
+              <div className="table-responsive text-nowrap project-table">
+                <table className="table user-table border-top">
+                  <thead className="table-head">
+                    <tr>
+                      {theads_projects.map((thead) => (
+                        <th key={thead}>{thead}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="table-content">
+                    {projects.map((project) => {
+                      const { badgeColor, output } = getBadgeClass(project.state);
+                      return (
+                        <tr key={project.id}>
+                          <td>{project.id}</td>
+                          <td>{project.title}</td>
+                          <td>{project.description}</td>
+                          <td>
+                            <div className={`badge bg-label-${badgeColor} rounded-pill lh-xs`}>
+                              {output}
+                            </div>
+                          </td>
+                          <td>{new Date(project.lastUpdated).toLocaleDateString()}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -208,34 +227,36 @@ export default function MainContent() {
       {/* Timeline Section */}
       <div className="col-lg-4 d-flex timeline-custom">
         <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">Activity Timeline</h5>
-              <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+          <div id="3" className={hidden_sections.includes('3') ? 'blur_element' : ''}>
+            <div className="card-header">
+              <div className="d-flex align-items-center justify-content-between">
+                <h5 className="card-title">Activity Timeline</h5>
+                <div>
+                  <i className="ri-edit-line ri-lg ms-2"></i>
+                  <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('3')}></i>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="card-body p-0 pt-4">
-            <ul className="timeline card-timeline mb-0">
-              {timeline.map((timeline_info) => {
-                const { badgeColor, output } = getBadgeClass(timeline_info.state);
-                const timelineTime = getTimeFormatted(timeline_info.lastEvent);
-                return (
-                  <li className="timeline-item" key={timeline_info.id}>
-                    <span className={`timeline-point timeline-point-${badgeColor}`}></span>
-                    <div className="timeline-event ps-4">
-                      <div className="timeline-header mb-2 pe-4">
-                        <h6 className="mb-0">{timeline_info.title}</h6>
-                        <small className="text-muted">{timelineTime}</small>
+            <div className="card-body p-0 pt-4">
+              <ul className="timeline card-timeline mb-0">
+                {timeline.map((timeline_info) => {
+                  const { badgeColor, output } = getBadgeClass(timeline_info.state);
+                  const timelineTime = getTimeFormatted(timeline_info.lastEvent);
+                  return (
+                    <li className="timeline-item" key={timeline_info.id}>
+                      <span className={`timeline-point timeline-point-${badgeColor}`}></span>
+                      <div className="timeline-event ps-4">
+                        <div className="timeline-header mb-2 pe-4">
+                          <h6 className="mb-0">{timeline_info.title}</h6>
+                          <small className="text-muted">{timelineTime}</small>
+                        </div>
+                        <p>{timeline_info.description}</p>
                       </div>
-                      <p>{timeline_info.description}</p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -247,8 +268,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+                <i className="ri-edit-line ri-lg ms-2"></i>
+                <i className="ri-eye-off-line ri-lg ms-2"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
@@ -264,8 +285,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+                <i className="ri-edit-line ri-lg ms-2"></i>
+                <i className="ri-eye-off-line ri-lg ms-2"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
@@ -281,8 +302,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+                <i className="ri-edit-line ri-lg ms-2"></i>
+                <i className="ri-eye-off-line ri-lg ms-2"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
@@ -296,48 +317,47 @@ export default function MainContent() {
       {/* User Table Section */}
       <div className="col-lg-8 d-flex table-custom-2">
         <div className="card flex-grow-1 p-0">
-          <div className="table-responsive text-nowrap user-table rounded">
-            <div className="card-header">
-              <div className="d-flex align-items-center justify-content-between">
-                <h5 className="card-title">Users</h5>
-                <div>
-                  <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                  <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+          <div id="4" className={hidden_sections.includes('4') ? 'blur_element' : ''}>
+            <div className="table-responsive text-nowrap user-table rounded">
+              <div className="card-header">
+                <div className="d-flex align-items-center justify-content-end mt-2">
+                    <i className="ri-edit-line ri-lg ms-2"></i>
+                    <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('4')}></i>
                 </div>
               </div>
+              <table className="table table-sm mb-0">
+                <thead className="table-head">
+                  <tr style={{ backgroundColor: '#3A3E5B' }}>
+                      {thead_user.map((thead) => (
+                        <th key={thead}>{thead}</th>
+                      ))}
+                  </tr>
+                </thead>
+                <tbody className="table-content">
+                  {users.map((user) => {
+                    const { badgeColor, output, color} = getRoleClass(user.role);
+                    return(
+                      <tr key={user.username}>
+                        <td>
+                          <span className="d-flex align-items-center gap-2">
+                            <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
+                            {user.firstName} {user.lastName}
+                          </span>
+                        </td>
+                        <td>{user.email}</td>
+                        <td>
+                          <span className="d-flex align-items-center gap-2">
+                            <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
+                          </span>
+                        </td>
+                        <td><div className={`badge bg-label-${user.isActive ? 'success' : 'warning'} rounded-pill lh-xs`}>{user.isActive ? 'Active' : 'Inactive'}</div></td>
+                        <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
+                      </tr>
+                    );
+                })}
+                </tbody>
+              </table>
             </div>
-            <table className="table table-sm mb-0">
-              <thead className="table-head">
-                <tr style={{ backgroundColor: '#3A3E5B' }}>
-                    {thead_user.map((thead) => (
-                      <th key={thead}>{thead}</th>
-                    ))}
-                </tr>
-              </thead>
-              <tbody className="table-content">
-                {users.map((user) => {
-                  const { badgeColor, output, color} = getRoleClass(user.role);
-                  return(
-                    <tr key={user.username}>
-                      <td>
-                        <span className="d-flex align-items-center gap-2">
-                          <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                          {user.firstName} {user.lastName}
-                        </span>
-                      </td>
-                      <td>{user.email}</td>
-                      <td>
-                        <span className="d-flex align-items-center gap-2 text-heading">
-                          <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
-                        </span>
-                      </td>
-                      <td><div className={`badge bg-label-${user.isActive ? 'success' : 'warning'} rounded-pill lh-xs`}>{user.isActive ? 'Active' : 'Inactive'}</div></td>
-                      <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
-                    </tr>
-                  );
-              })}
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -349,8 +369,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <a className="remove-decor" href="#"><i className="ri-edit-line ri-lg ms-2 text-heading"></i></a>
-                <a className="remove-decor" href="#"><i className="ri-eye-off-line ri-lg ms-2 text-heading"></i></a>
+                <i className="ri-edit-line ri-lg ms-2"></i>
+                <i className="ri-eye-off-line ri-lg ms-2"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>

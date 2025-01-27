@@ -3,13 +3,39 @@ import React, { useState } from "react";
 
 
 export default function Forms() {
-  const state = ["Completed", "In Progress", "Not Started", "Failed"];
-  const tags = ["HTML", "CSS", "Javascript", "PHP", "Python", "Java", "C++", "C#", "Ruby", "React", "Angular"];
+  const state = [
+    {state_text: "Completed", state_value: 1}, 
+    {state_text:"In Progress", state_value: 2}, 
+    {state_text:"Not Started",state_value: 3},
+    {state_text:"Failed", state_value: 0}
+  ];
+
+  const tagsWithColors = [
+    { tag: "HTML", color: "primary" },
+    { tag: "CSS", color: "primary" },
+    { tag: "Javascript", color: "warning" },
+    { tag: "PHP", color: "danger" },
+    { tag: "Python", color: "success" },
+    { tag: "Java", color: "success" },
+    { tag: "C++", color: "dark" },
+    { tag: "C#", color: "light" },
+    { tag: "Ruby", color: "danger" },
+    { tag: "React", color: "primary" },
+    { tag: "Angular", color: "warning" }
+  ];
 
   const [selectedValue, setSelectedValue] = useState("default");
+  const [selectedTag, setSelectedTag] = useState([]);
 
   const handleChange = (value) => {
     setSelectedValue(value);
+  };
+  const toggleTag = (tag) => {
+    setSelectedTag((prevSelectedTags) =>
+      prevSelectedTags.includes(tag)
+        ? prevSelectedTags.filter((t) => t !== tag) // Remove tag if already selected
+        : [...prevSelectedTags, tag] // Add tag if not selected
+    );
   };
 
   return (
@@ -44,23 +70,16 @@ export default function Forms() {
                 >
                   <option value="default">Select a state</option>
                   {state.map((state, index) => (
-                    <option key={index} value={state}>{state}</option>
+                    <option key={index} value={state.state_value}>{state.state_text}</option>
                   ))}
                 </select>
               </div>
             </div>
             <div className="row ">
               <div className="d-flex col-lg-12 overflow-auto tag-div mt-4">
-                 {tags.map((tag, index) => (
-                  <div className="form-check form-check-inline" key={index}>
-                    <input 
-                      className="form-check-input" 
-                      type="checkbox" 
-                      id={`tag${index}`} 
-                      name={`tag${index}`} 
-                      value={tag} 
-                    />
-                    <label className="form-check-label" htmlFor={`tag${index}`}>{tag}</label>
+                 {tagsWithColors.map((tag, index) => (
+                  <div className="form-check form-check-inline p-0 pb-2" key={index}>
+                    <div className={`badge bg-label-${tag.color} rounded-pill tag-selection ${selectedTag.includes(tag.tag) ? "selected" : ""}`} style={{borderColor: selectedTag.includes(tag.tag) ? `var(--${tag.color})` : ""}} name={`tag${index}`} value={tag.tag} onClick={() => toggleTag(tag.tag)}>{tag.tag} </div>
                   </div>
                  ))}
               </div>
