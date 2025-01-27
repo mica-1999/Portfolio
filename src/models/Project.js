@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 const projectSchema = new mongoose.Schema({
     id : { type: Number, required: true},
     title: { type: String, required: true},
-    description: { type: String, required: true},
-    link: { type: String, required: true},
+    description: { type: String, required: false},
+    link: { type: String, required: false},
     image: { type: String, required: false},
-    tags: { type: Array, required: false},
+    tags: { type: Array, required: true},
     state: { type: Number, required: true }, // Changed from String to Number,
-    lastUpdated: { type: Date, required: false},
+    lastUpdated: { type: Date, required: true},
     created: { type: Date, required: true},
     version: { type: String, required: true}
 });

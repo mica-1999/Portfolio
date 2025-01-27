@@ -96,8 +96,8 @@ export default function MainContent() {
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Multibanco</h5>
                 <div>
-                  <i className="ri-edit-line ri-lg ms-2"></i>
-                  <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('1')}></i>
+                  <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                  <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('1')}></i>
                 </div>
               </div>
               <h6 className="card-subtitle mb-2">Balance Overview</h6>
@@ -183,8 +183,8 @@ export default function MainContent() {
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Projects</h5>
                 <div>
-                  <i className="ri-edit-line ri-lg ms-2"></i>
-                  <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('2')}></i>
+                  <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                  <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('2')}></i>
                 </div>
               </div>
               <h6 className="card-subtitle mb-2">#Categories</h6>
@@ -232,8 +232,8 @@ export default function MainContent() {
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Activity Timeline</h5>
                 <div>
-                  <i className="ri-edit-line ri-lg ms-2"></i>
-                  <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('3')}></i>
+                  <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                  <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('3')}></i>
                 </div>
               </div>
             </div>
@@ -268,8 +268,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <i className="ri-edit-line ri-lg ms-2"></i>
-                <i className="ri-eye-off-line ri-lg ms-2"></i>
+                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
@@ -285,8 +285,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <i className="ri-edit-line ri-lg ms-2"></i>
-                <i className="ri-eye-off-line ri-lg ms-2"></i>
+                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
@@ -302,8 +302,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <i className="ri-edit-line ri-lg ms-2"></i>
-                <i className="ri-eye-off-line ri-lg ms-2"></i>
+                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>
@@ -321,8 +321,8 @@ export default function MainContent() {
             <div className="table-responsive text-nowrap user-table rounded">
               <div className="card-header">
                 <div className="d-flex align-items-center justify-content-end mt-2">
-                    <i className="ri-edit-line ri-lg ms-2"></i>
-                    <i className="ri-eye-off-line ri-lg ms-2" onClick={() => handle_sections('4')}></i>
+                    <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                    <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('4')}></i>
                 </div>
               </div>
               <table className="table table-sm mb-0">
@@ -369,8 +369,8 @@ export default function MainContent() {
             <div className="d-flex align-items-center justify-content-between">
               <h5 className="card-title">TBD</h5>
               <div>
-                <i className="ri-edit-line ri-lg ms-2"></i>
-                <i className="ri-eye-off-line ri-lg ms-2"></i>
+                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
+                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
               </div>
             </div>
             <h6 className="card-subtitle mb-2">TBD</h6>

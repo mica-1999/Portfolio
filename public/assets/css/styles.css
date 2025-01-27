@@ -523,6 +523,11 @@ tbody tr:last-child td {
     width: 230px;
     height: 40px;
 }
+.form-n2{
+    width: 92%;
+    height: 40px;
+}
+
 .insert-menu{
     box-shadow: 0 .125rem .375rem 0 rgba(16, 17, 33, .2);
     background-color: #666cff !important; 
@@ -550,6 +555,6 @@ tbody tr:last-child td {
     filter: blur(5px); /* Apply a blur effect */
     transition: filter 0.3s ease; /* Optional: add a smooth transition */
 }
-.ri-eye-off-line{
+.pointer{
     cursor: pointer;
 }
