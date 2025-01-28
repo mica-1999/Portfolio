@@ -4,13 +4,14 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/Portfo
 
 const dbConnect = async () => {
   if (mongoose.connection.readyState >= 1) {
-    console.log('Already connected to the database'); // Debugging line
-    return;
+    return; // If already connected, don't connect again
   }
 
-  mongoose.connect(MONGODB_URI)
-    .then(() => { console.log('Connected to the database!') })
-    .catch((error) => { console.error('Error connecting to the database', error); });
+  try {
+    await mongoose.connect(MONGODB_URI); // Wait for the connection to MongoDB
+    console.log('Connected to the database!'); // Log success message
+  } catch (error) {
+    console.error('Error connecting to the database', error); // Log error message if connection fails
+  }
 };
-
 module.exports = dbConnect;

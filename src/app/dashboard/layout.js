@@ -1,6 +1,6 @@
-import Sidebar from '../components/Dashboard/Sidebar'; // Import the Sidebar component
-import Header from '../components/Dashboard/Header'; // Import the Header component
-import Footer from '../components/Dashboard/Footer'; // Import the Footer component
+import Sidebar from '../components/Dashboard/Sidebar';
+import Header from '../components/Dashboard/Header'; 
+import Footer from '../components/Dashboard/Footer'; 
 
 export const metadata = {
   title: 'Dashboard for Portfolio',

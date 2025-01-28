@@ -20,7 +20,7 @@ npm install connect-flash dotenv express express-session mongoose next path reac
 ## Getting Started
 1. Clone the repository.
 2. Install the necessary dependencies using `npm install`.
-3. Start the server using `node server.js`.
+3. Start the server using `npm start` or `npm run dev`.
 4. Open your browser and navigate to `http://localhost:3000` to see the project in action.
 
 ## Project Structure
@@ -50,7 +50,6 @@ async function fetchData() {
     console.error('Error fetching data:', error);
   }
 }
-
 fetchData();
 ```
 
@@ -59,34 +58,20 @@ In this example:
 - The `await` keyword pauses the function execution until the fetch request is resolved.
 - If the fetch request fails, the error is caught and logged using a `try-catch` block.
 
-### Toggling Tags in React
+### Arrow Functions and Parameter Modification
 
-In React, you can use state to manage the selection of tags. The `toggleTag` function is an arrow function that modifies the value of the `selectedTag` state. It uses the ternary operator to check whether the tag is already included in the `selectedTag` array. If it is, the user wants to remove it; if not, the user wants to add it. The function then updates the state value of `selectedTag`.
+Arrow functions in JavaScript allow you to modify the values of parameters before the actual function call happens. This is particularly useful for conditions and other logic that need to be applied to the parameters.
 
 Example:
 ```javascript
-const [selectedTag, setSelectedTag] = useState([]);
-
-const toggleTag = (tag) => {
-  setSelectedTag((prevSelectedTags) =>
-    prevSelectedTags.includes(tag)
-      ? prevSelectedTags.filter((t) => t !== tag) // Remove tag if already selected
-      : [...prevSelectedTags, tag] // Add tag if not selected
-  );
+const modifyAndCall = (param) => {
+  const modifiedParam = param * 2; // Modify the parameter
+  actualFunction(modifiedParam); // Call the actual function with the modified parameter
 };
+modifyAndCall(5); // Outputs: 10
 ```
 
-In this example:
-- `selectedTag` is the state variable that holds the array of selected tags.
-- `setSelectedTag` is the function used to update the `selectedTag` state.
-- The `toggleTag` function checks if the `tag` is already included in the `selectedTag` array.
-  - If it is, the function filters out the `tag` from the array (removing it).
-  - If it is not, the function adds the `tag` to the array.
-- The state is then updated with the new array of selected tags.
-
-TLDR: The arrow function `toggleTag` modifies the value of the `selectedTag` parameter by using the ternary operator to check if the tag is included. If it is, the tag is removed; if not, the tag is added. This updated parameter is then used to update the state value of `selectedTag`.
-
-## React and JSX
+### React and JSX
 React uses a syntax extension called JSX, which allows you to write HTML-like code within JavaScript. JSX is different from HTML in several ways:
 
 - **JSX Syntax**: JSX uses a syntax that looks similar to HTML but has some differences. For example, JSX uses `className` instead of `class` and `htmlFor` instead of `for`.
@@ -113,31 +98,6 @@ function Greeting() {
 export default Greeting;
 ```
 
-Example of nested components:
-```javascript
-import React from 'react';
-
-function Header() {
-  return <header><h1>Header</h1></header>;
-}
-
-function Footer() {
-  return <footer><p>Footer</p></footer>;
-}
-
-function Layout() {
-  return (
-    <div>
-      <Header />
-      <main><p>Main content</p></main>
-      <Footer />
-    </div>
-  );
-}
-
-export default Layout;
-```
-
 ### Props
 Props (short for properties) are used to pass data from one component to another. They are read-only and cannot be modified by the receiving component.
 
@@ -148,12 +108,11 @@ import React from 'react';
 function Greeting(props) {
   return <h1>Hello, {props.name}!</h1>;
 }
-
 export default Greeting;
 ```
 
 ### State
-State is a built-in object that allows components to create and manage their own data. State can be updated, and when it changes, the component re-renders to reflect the new state.
+State is a built-in object that allows components to create and manage their own data. State can be updated, and when it changes, the component re-renders to reflect the new state. Basically replaces native JS and jQuery when it comes to this.
 
 Example of using state:
 ```javascript
@@ -171,100 +130,66 @@ function Counter() {
     </div>
   );
 }
-
 export default Counter;
 ```
 
 ## React Hooks
 Hooks are functions that let you use state and other React features in functional components. They allow you to "hook into" React's state and lifecycle features from function components. Hooks can only be called at the top level of a component or a custom hook.
 
-### `useState`
-`useState` is a built-in hook that allows you to add state to functional components. It returns an array with two elements: the current state value and a function to update it. The first element is the current state value, and the second element is the function to update that value.
-
-Example usage of `useState`:
-```javascript
-import React, { useState } from 'react';
-
-function Counter() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  );
-}
-```
-
-In this example:
-- `useState` initializes the state variable `count` with a value of `0`.
-- `setCount` is a function that updates the value of `count`.
-- The button's `onClick` handler increments the `count` value by `1` each time it is clicked.
-
 ## Using `useEffect` to Store Data Locally
 
 In React, you can use the `useEffect` hook to store data locally in the browser's `localStorage`. This allows you to persist data across page switches or refreshes. Here's how you can do it:
 
-1. **Storing Data in `localStorage`**:
+1. **Storing Data in `localStorage**:
    Use the `useEffect` hook to store data in `localStorage` whenever the data changes.
 
-   Example:
-   ```javascript
-   import React, { useState, useEffect } from 'react';
+Example:
+```javascript
+import React, { useState, useEffect } from 'react';
 
-   function MyComponent() {
-     const [data, setData] = useState('');
+function MyComponent() {
+  const [data, setData] = useState('');
 
-     useEffect(() => {
-       localStorage.setItem('myData', data);
-     }, [data]);
+  useEffect(() => {
+    localStorage.setItem('myData', data);
+  }, [data]);
 
-     return (
-       <input
-         type="text"
-         value={data}
-         onChange={(e) => setData(e.target.value)}
-       />
-     );
-   }
-   ```
+  return (
+    <input
+      type="text"
+      value={data}
+      onChange={(e) => setData(e.target.value)}
+    />
+  );
+}
+```
 
 2. **Retrieving Data from `localStorage`**:
    Use the `useEffect` hook to retrieve data from `localStorage` when the component mounts.
 
-   Example:
-   ```javascript
-   import React, { useState, useEffect } from 'react';
+Example:
+```javascript
+import React, { useState, useEffect } from 'react';
 
-   function MyComponent() {
-     const [data, setData] = useState('');
+function MyComponent() {
+  const [data, setData] = useState('');
 
-     useEffect(() => {
-       const storedData = localStorage.getItem('myData');
-       if (storedData) {
-         setData(storedData);
-       }
-     }, []);
+  useEffect(() => {
+    const storedData = localStorage.getItem('myData');
+    if (storedData) {
+      setData(storedData);
+    }
+  }, []);
 
-     return (
-       <input
-         type="text"
-         value={data}
-         onChange={(e) => setData(e.target.value)}
-       />
-     );
-   }
-   ```
-
-In these examples:
-- The `useEffect` hook with an empty dependency array (`[]`) runs only once when the component mounts, retrieving the stored data from `localStorage`.
-- The `useEffect` hook with `[data]` as the dependency array runs whenever the `data` state changes, storing the updated data in `localStorage`.
-
-This approach ensures that the data persists across page switches or refreshes, providing a better user experience.
-
+  return (
+    <input
+      type="text"
+      value={data}
+      onChange={(e) => setData(e.target.value)}
+    />
+  );
+}
+```
 ## Next.js
 
 Next.js is a React framework that enables server-side rendering and static site generation, providing a powerful way to build fast and user-friendly web applications. It enhances the capabilities of React by allowing you to render pages on the server, generate static pages at build time, and create API routes.
@@ -272,24 +197,13 @@ Next.js is a React framework that enables server-side rendering and static site 
 ### Routers in Next.js
 
 Next.js provides two different routers for managing your application's routes: the `app` router and the `pages` router.
-
-1. **App Router**: The `app` router is the newer router in Next.js and supports the latest React features, such as React Server Components and Suspense. It offers a more modern approach to building applications but may still be evolving in terms of stability and features.
-
-2. **Pages Router**: The `pages` router is the more stable and widely used router in Next.js. It follows a file-based routing system where each file in the `pages` directory automatically becomes a route in your application. This router is well-documented and has been used in production applications for a longer time.
+This project will be using the newer version, the app directory structure.
 
 ### Using Next.js with React
 
 Next.js integrates seamlessly with React, allowing you to use all the features of React while adding powerful capabilities like server-side rendering and static site generation. Here's how you can use Next.js with React:
 
-- **Pages**: Create a `pages` directory at the root of your project. Each file in this directory represents a route in your application. For example, `pages/index.js` will be the home page, and `pages/about.js` will be the about page.
-
-- **Components**: Organize your React components in a separate directory, such as `components`, and import them into your pages as needed.
-
-- **API Routes**: Create API routes by adding files to the `pages/api` directory. Each file in this directory becomes an API endpoint.
-
-When you use Next.js in your project, you do not need to load the `react` and `react-dom` scripts from external sources like `unpkg.com`. Instead, you can install these packages locally using npm or your preferred package manager. Next.js will manage both `react` and `react-dom` for you.
-
-Next.js also has a built-in compiler that transforms JSX into valid JavaScript so that the browser can understand it. This means you do not need to use Babel for this purpose. For more information, you can refer to the [Next.js documentation](https://nextjs.org/docs).
+When you use Next.js in your project, you do not need to load the `react` and `react-dom` scripts from external sources like `unpkg.com`. Instead, you can install these packages locally using npm or your preferred package manager. Next.js will manage both `react` and `react-dom` for you. Next.js also has a built-in compiler that transforms JSX into valid JavaScript so that the browser can understand it. This means you do not need to use Babel for this purpose.
 
 Example of a simple page in Next.js:
 
@@ -308,10 +222,11 @@ export default function Home() {
   );
 }
 ```
+### Utils Folder 
+The utils folder is a dedicated space for storing utility functions and helper methods that are reusable across the application. These functions are typically designed to perform specific tasks or calculations, format data, handle common logic, or interact with external APIs.
 
-In this example:
-- The `Head` component is used to manage the document head.
-- The `Home` component is the default export of the `pages/index.js` file, making it the home page of the application.
+### Models Folder
+The models folder is used to define and organize the database schemas and models for the project. Since we are using MongoDB in this project, Mongoose is utilized to create schemas that structure the data and enforce consistency within the database collections.
 
 ### Layouts in Next.js
 
@@ -332,16 +247,15 @@ function MyApp({ Component, pageProps }) {
     </>
   );
 }
-
 export default MyApp;
 ```
-
-In this example:
-- The `MyApp` component is the default export of the `_app.js` file, making it the layout component for the application.
-- The `Header` and `Footer` components are rendered for every page.
-- The `Component` prop represents the current page component, and `pageProps` are the props passed to the current page component.
-
 If you add a `layout.js` file inside a subdirectory (e.g., `/Form`), it will override the parent layout from `/dashboard` and apply only to routes under `/Form`.
+
+### Any Page Folder
+In Next.js, when using the new app directory structure, each folder inside the app directory can represent a route. The page.js file within each folder automatically serves as the default for that route. For example, if you have a dashboard folder with a page.js inside it, the route for /dashboard will render the page.js from that folder.
+
+### API Folder
+The api folder in Next.js is responsible for handling server-side requests, such as any CRUD operations (Create, Read, Update, Delete). Each file inside the api folder corresponds to a specific endpoint, and the functions (GET, POST, PUT, DELETE, etc.) within those files define how the server should respond to different HTTP requests. These API routes allow for server-side logic such as interacting with databases, processing form submissions, or handling external API calls.
 
 ### Including Static Files
 
@@ -353,9 +267,19 @@ Example:
 <script src="/assets/js/sidebar.js"></script>
 ```
 
-This approach ensures that the files are correctly loaded regardless of the current route.
-
-Next.js simplifies the process of building React applications with powerful features and a structured approach to routing and rendering.
+### Syntax Section 
+```javascript
+const name_var = require('dependency/library'); // Imports the library or module and assigns it to 'name_var'
+const MONGODB_URI = process.env.MONGODB_URI // Processes the env variable under the name and stores it into variable
+const dbConnect = async () => {} // async function that returns a Promise.
+try{}catch(error){}
+export NameFunction // import {NameFunction} on another component to use it
+const { name, age } = person; // Destructuring an object
+const [first, second] = array; // Destructuring an array
+const newArray = [...oldArray, 4, 5]; // Spread operator
+const newObject = { ...oldObject, newProp: 'value' }; // Spread operator
+const greeting = `Hello, ${name}!`; // Template literal
+```
 
 ## Future Enhancements
 
@@ -366,4 +290,3 @@ Next.js simplifies the process of building React applications with powerful feat
 - Add CRUD functionality for blog posts, projects, and other items in the dashboard.
 - Add APIs for news, Spotify, weather, and other features on the dashboard main page.
 - Track and display the number of visiting users using session data.
-
