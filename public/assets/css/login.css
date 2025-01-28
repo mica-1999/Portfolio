@@ -1,0 +1,31 @@
+body {
+    background-color: #dfd5d5;
+}
+.login-card {
+    background-color: white;
+    width: 475px;
+    height: 650px;
+    border-radius: 16px;
+}
+.form-st{
+    height: 43px;
+    border-radius: 13px;
+    border: 2px solid #E1E1E1;
+}
+.login-card a{
+    text-decoration: none;
+    color: #000;
+}
+.login-card button{
+    background-color: black;
+    color: white;
+    width: 350px;
+    height: 50px;
+    border-radius: 12px;
+}
+.sign-in-btn{
+    border: 2px solid #E1E1E1;
+    border-radius: 13px;;
+    width: 50px;
+    height: 50px;
+}

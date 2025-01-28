@@ -1,5 +1,6 @@
 const express = require('express'); // Import the Express framework
 const next = require('next'); // Import Next.js
+const bcrypt = require('bcryptjs');
 require('dotenv').config(); // Load environment variables from a .env file
 
 const dbConnect = require('../utils/dbConnect'); // Import the dbConnect function to connect to the database

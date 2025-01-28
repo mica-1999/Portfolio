@@ -2,6 +2,7 @@
   "name": "portfolio",
   "version": "1.0.0",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.7",

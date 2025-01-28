@@ -23,9 +23,6 @@ export default function MainContent() {
       const updatedSections = prevHiddenSections.includes(section)
         ? prevHiddenSections.filter((s) => s !== section)
         : [...prevHiddenSections, section]
-
-        // Log the hidden sections to the console
-    console.log(updatedSections);
     return updatedSections;
   });
   }
@@ -48,6 +45,26 @@ export default function MainContent() {
     }
   };
   
+  // Store `hidden_sections` in localStorage when the state changes
+  useEffect(() => {
+    if (hidden_sections.length > 0) {
+      localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
+    }
+  }, [hidden_sections]);
+
+  // Load hidden sections from localStorage when the component mounts
+  useEffect(() => {
+    // Ensure localStorage is accessed only when available
+    if (typeof window !== 'undefined') {
+      const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
+      console.log(savedHiddenSections); // Debugging to check if it's empty or null
+      if (savedHiddenSections) {
+        setHiddenSections(JSON.parse(savedHiddenSections));  // Set state with saved data
+      }
+    }
+  }, []);  // Empty dependency array, runs only once when the component mounts
+
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
