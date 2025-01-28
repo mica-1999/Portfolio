@@ -41,7 +41,7 @@ export default function Forms() {
         </div>
 
         {/* Card Body */}
-        <div className="card-body p-0 ps-3 pt-2">
+        <div className="card-body p-0 p-4">
           <form action="/dashboard/insertForm" method="POST">
             {/* Name Input */}
             <div className="row pb-3">
@@ -51,7 +51,7 @@ export default function Forms() {
                 </label>
                 <input
                   type="text"
-                  className="form-control form-n2"
+                  className="form-control"
                   id="name"
                   name="name"
                   value={formState.name}
@@ -63,14 +63,14 @@ export default function Forms() {
             </div>
 
             {/* Select Inputs */}
-            <div className="row pb-2">
+            <div className="row pb-3">
               {/* Associate To */}
               <div className="col-lg-6">
                 <label htmlFor="associateTo" className="form-label">
                   Associate to
                 </label>
                 <select
-                  className="form-select form-n1"
+                  className="form-select"
                   id="associateTo"
                   name="associateTo"
                   aria-label="Associate to"
@@ -89,7 +89,7 @@ export default function Forms() {
                   Type
                 </label>
                 <select
-                  className="form-select form-n1"
+                  className="form-select"
                   id="type"
                   name="type"
                   aria-label="Type"

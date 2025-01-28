@@ -23,8 +23,8 @@ export default function MainContent() {
       const updatedSections = prevHiddenSections.includes(section)
         ? prevHiddenSections.filter((s) => s !== section)
         : [...prevHiddenSections, section]
-    return updatedSections;
-  });
+      return updatedSections;
+    });
   }
 
   // Error Handling and Loading State
@@ -260,7 +260,7 @@ export default function MainContent() {
                   const { badgeColor, output } = getBadgeClass(timeline_info.state);
                   const timelineTime = getTimeFormatted(timeline_info.lastEvent);
                   return (
-                    <li className="timeline-item" key={timeline_info.id}>
+                    <li className="timeline-item" key={timeline_info.description}>
                       <span className={`timeline-point timeline-point-${badgeColor}`}></span>
                       <div className="timeline-event ps-4">
                         <div className="timeline-header mb-2 pe-4">

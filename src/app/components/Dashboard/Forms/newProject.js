@@ -109,7 +109,7 @@ export default function Forms() {
           </div>
           <h6 className="card-subtitle">Insert new</h6>
         </div>
-        <div className="card-body p-0 ps-3 pt-2">
+        <div className="card-body p-0 p-4">
           <form
             action="/dashboard/insertForm"
             method="POST"
@@ -122,7 +122,7 @@ export default function Forms() {
                 </label>
                 <input
                   type="text"
-                  className="form-control form-n1"
+                  className="form-control"
                   id="name"
                   name="projectName"
                   value={formState.projectName}
@@ -136,7 +136,7 @@ export default function Forms() {
                   State
                 </label>
                 <select
-                  className="form-select form-n1"
+                  className="form-select"
                   id="state"
                   name="selectedState"
                   aria-label="state"
@@ -159,7 +159,7 @@ export default function Forms() {
                 </label>
                 <input
                   type="text"
-                  className="form-control form-n2"
+                  className="form-control"
                   id="description"
                   name="projectDescription"
                   placeholder="Add a brief description"
@@ -173,7 +173,7 @@ export default function Forms() {
               <div className="d-flex col-lg-12 overflow-auto tag-div mt-4">
                 {TAGS_WITH_COLORS.map((tag, index) => (
                   <div
-                    className="form-check form-check-inline p-0 pb-2"
+                    className="form-check form-check-inline p-0 pb-1"
                     key={index}
                   >
                     <div
@@ -196,7 +196,7 @@ export default function Forms() {
               </div>
             </div>
 
-            <div className="row mb-2">
+            <div className="row">
               <div className="col-lg-12 d-flex align-items-center justify-content-center mt-4">
                 <button type="submit" className="btn btn-primary insert-menu">
                   Insert
