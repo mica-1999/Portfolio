@@ -1,6 +1,6 @@
-import Sidebar from '../components/Dashboard/Sidebar';
-import Header from '../components/Dashboard/Header'; 
-import Footer from '../components/Dashboard/Footer'; 
+import Sidebar from '../../components/Dashboard/Sidebar';
+import Header from '../../components/Dashboard/Header'; 
+import Footer from '../../components/Dashboard/Footer'; 
 
 export const metadata = {
   title: 'Dashboard for Portfolio',

@@ -123,7 +123,7 @@ a.dashboard::before { content: "\f0e4"; }
 .nav-link[aria-expanded="true"] {
     background-color: #373951;
     color: inherit !important;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 
 .nav-link {

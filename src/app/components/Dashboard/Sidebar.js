@@ -9,7 +9,7 @@ export default function Sidebar() {
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
       <div className="d-flex align-items-center justify-content-between">
-        <h4><img src="../assets/images/logo.png" alt="logo" width="20" height="20" /> Portfolio</h4>
+        <h4><img src="/assets/images/logo.png" alt="logo" width="20" height="20" /> Portfolio</h4>
         <i className="fa-solid fa-arrow-left fa-lg d-none"></i>
       </div>
       <div className="overflow-auto">
@@ -19,18 +19,18 @@ export default function Sidebar() {
               <a className="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Main</a>
               <ul id="dashboardSubMenu" className="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="/dashboard/" className={currentPath === '/dashboard' ? 'nav-link active' : 'nav-link'}>
+                  <Link href="/pages/dashboard/" className={currentPath === '/pages/dashboard' ? 'nav-link active' : 'nav-link'}>
                     DashBoard
                   </Link>
                 </li>
 
                 <li>
-                  <Link href="/dashboard/form/" className={currentPath === '/dashboard/form' ? 'nav-link active' : 'nav-link'}>
+                  <Link href="/pages/dashboard/form/" className={currentPath === '/pages/dashboard/form' ? 'nav-link active' : 'nav-link'}>
                     Insert Menu
                   </Link>
                 </li>
                 <li>
-                  <Link href="/blog" className={currentPath === '/blog' ? 'nav-link active' : 'nav-link'}>
+                  <Link href="/pages/blog" className={currentPath === '/pages/blog' ? 'nav-link active' : 'nav-link'}>
                     Blog Site
                   </Link>
                 </li>

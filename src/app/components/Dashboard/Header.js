@@ -14,7 +14,7 @@ export default function Header() {
           <a href="https://github.com/mica-1999"><i className="fa-brands fa-github fa-lg"></i></a>
           <i className="fa-solid fa-arrows-rotate fa-lg" onClick={() => window.location.reload()}></i>
           <i className="fa-regular fa-bell fa-lg"></i>
-          <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon" />
+          <img src="/assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon" />
         </div>
       </div>
     </div>

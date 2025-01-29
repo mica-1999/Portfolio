@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import User from "../../../models/User";
 import dbConnect from "../../../utils/dbConnect";
 const bcrypt = require('bcrypt');
+import NextAuth from "next-auth";
 
 export async function POST(req) {
   const body = await req.json();

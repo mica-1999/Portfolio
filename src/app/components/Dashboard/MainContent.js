@@ -96,7 +96,7 @@ export default function MainContent() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="mt-3">Loading...</div>;
   }
 
   if (error) {

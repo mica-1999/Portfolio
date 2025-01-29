@@ -37,7 +37,7 @@ const handleChange = (e) => {
 
     try {
         console.log(JSON.stringify(loginData));
-        const response = await fetch("/api/authUser", {
+        const response = await fetch("/api/auth", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const handleChange = (e) => {
 
         if (typeof window !== "undefined") {
             // Use window.location for client-side navigation
-            window.location.href = '/dashboard';
+            window.location.href = '/pages/dashboard';
           }
     } catch (error) {
         console.error("Error submitting form:", error);

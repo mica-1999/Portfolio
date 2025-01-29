@@ -1,8 +1,8 @@
 import Script from 'next/script'; // Import the Script component for loading external scripts
-import NavBar from '../components/Blog/NavBar'; // Import the NavBar component
-import Categories from '../components/Blog/Categories'; // Import the Categories component
-import BlogItems from '../components/Blog/BlogItems'; // Import the BlogItems component
-import Footer from '../components/Blog/Footer'; // Import the Footer component
+import NavBar from '../../components/Blog/NavBar'; // Import the NavBar component
+import Categories from '../../components/Blog/Categories'; // Import the Categories component
+import BlogItems from '../../components/Blog/BlogItems'; // Import the BlogItems component
+import Footer from '../../components/Blog/Footer'; // Import the Footer component
 
 export default function Blog() {
   return (

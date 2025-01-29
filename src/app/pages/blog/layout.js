@@ -26,7 +26,7 @@ export default function BlogLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
           rel="stylesheet"
         />
-        <link rel="stylesheet" href="assets/css/blog.css" />
+        <link rel="stylesheet" href="/assets/css/blog.css" />
       </head>
       <body>
         {children} {/* The `children` render the current page */}

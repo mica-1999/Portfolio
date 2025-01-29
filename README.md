@@ -14,7 +14,7 @@ This project is focused on learning and mastering advanced concepts in the follo
 To install the required dependencies, run the following command:
 
 ```bash
-npm install connect-flash dotenv express express-session mongoose next path react react-dom
+npm install connect-flash dotenv express express-session mongoose next path react react-dom next-auth
 ```
 
 ## Getting Started
