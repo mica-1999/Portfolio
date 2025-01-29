@@ -1,31 +1,51 @@
 body {
-    background-color: #dfd5d5;
+    background-color: black;
+    background-size: cover;
+    image-rendering: crisp-edges; /* Improves sharpness */
+    color: white;
 }
 .login-card {
-    background-color: white;
-    width: 475px;
-    height: 650px;
-    border-radius: 16px;
+    background-color: #222222;
+    width: 500px;
+    height: 540px;
+    border-radius: 1.5rem;
 }
 .form-st{
+    background-color: #333333;
     height: 43px;
-    border-radius: 13px;
-    border: 2px solid #E1E1E1;
+    width: 87%;
+    border: none;
+    border-radius: 5px;
+}
+.form-st::placeholder{
+    color: #797979 !important;
+}
+.form-st:focus{
+    background-color: #333333;
+    outline: none;
+    color: #797979;
 }
 .login-card a{
     text-decoration: none;
-    color: #000;
+    color: #7FD4FE;
 }
 .login-card button{
-    background-color: black;
-    color: white;
+    background-color: #7FD4FE;
+    color: black;
     width: 350px;
     height: 50px;
+    border:none;
     border-radius: 12px;
 }
 .sign-in-btn{
-    border: 2px solid #E1E1E1;
+    border: 2px solid #7FD4FE;
     border-radius: 13px;;
     width: 50px;
     height: 50px;
+}
+.title {
+    color: #7FD4FE;
+}
+.remember{
+    color: #999999;
 }

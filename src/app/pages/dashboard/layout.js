@@ -2,12 +2,13 @@ import Sidebar from '../../components/Dashboard/Sidebar';
 import Header from '../../components/Dashboard/Header'; 
 import Footer from '../../components/Dashboard/Footer'; 
 
+
 export const metadata = {
   title: 'Dashboard for Portfolio',
   description: 'Stay updated with the latest blog posts from the portfolio.',
 };
 
-export default function DashboardLayout({ children }) {
+const DashboardLayout = ({ children }) => {
   return (
     <html lang="en">
       <head>
@@ -49,3 +50,5 @@ export default function DashboardLayout({ children }) {
     </html>
   );
 }
+// Wrapping the DashboardLayout with the protected page HOC
+export default withProtectedPage(DashboardLayout);

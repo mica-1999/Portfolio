@@ -8,6 +8,7 @@ export default function Sidebar() {
 
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
+      {/* Sidebar Header */}
       <div className="d-flex align-items-center justify-content-between">
         <h4><img src="/assets/images/logo.png" alt="logo" width="20" height="20" /> Portfolio</h4>
         <i className="fa-solid fa-arrow-left fa-lg d-none"></i>
@@ -15,6 +16,7 @@ export default function Sidebar() {
       <div className="overflow-auto">
         <ul className="main-menu nav flex-column mt-3">
           <div id="menuAccordion">
+            {/* Main Menu */}
             <li className="menu-item">
               <a className="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Main</a>
               <ul id="dashboardSubMenu" className="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
@@ -23,7 +25,6 @@ export default function Sidebar() {
                     DashBoard
                   </Link>
                 </li>
-
                 <li>
                   <Link href="/pages/dashboard/form/" className={currentPath === '/pages/dashboard/form' ? 'nav-link active' : 'nav-link'}>
                     Insert Menu
@@ -34,9 +35,9 @@ export default function Sidebar() {
                     Blog Site
                   </Link>
                 </li>
-                
               </ul>
             </li>
+            {/* Projects Menu */}
             <li className="menu-item">
               <a className="nav-link position-relative projects" data-bs-toggle="collapse" href="#projectsSubMenu" role="button" aria-expanded="false" aria-controls="projectsSubMenu">Projects</a>
               <ul id="projectsSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
@@ -57,6 +58,7 @@ export default function Sidebar() {
                 </li>
               </ul>
             </li>
+            {/* Learning Menu */}
             <li className="menu-item">
               <a className="nav-link position-relative learning" data-bs-toggle="collapse" href="#learningSubMenu" role="button" aria-expanded="false" aria-controls="learningSubMenu">Learning</a>
               <ul id="learningSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
@@ -72,9 +74,11 @@ export default function Sidebar() {
                 </li>
               </ul>
             </li>
+            {/* Apps & Pages Header */}
             <li className="menu-header mt-4 mb-2 position-relative">
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
             </li>
+            {/* Apps & Pages Links */}
             <li>
               <Link href="#" className={currentPath === '/email' ? 'nav-link active email' : 'nav-link email'}>
                 Email
@@ -90,6 +94,7 @@ export default function Sidebar() {
                 Calendar
               </Link>
             </li>
+            {/* Music Menu */}
             <li className="menu-item">
               <a className="nav-link position-relative music" data-bs-toggle="collapse" href="#musicSubMenu" role="button" aria-expanded="false" aria-controls="musicSubMenu">Music</a>
               <ul id="musicSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
@@ -105,6 +110,7 @@ export default function Sidebar() {
                 </li>
               </ul>
             </li>
+            {/* Websites Menu */}
             <li className="menu-item">
               <a className="nav-link position-relative useful-websites" data-bs-toggle="collapse" href="#usefulWebsitesSubMenu" role="button" aria-expanded="false" aria-controls="usefulWebsitesSubMenu">Websites</a>
               <ul id="usefulWebsitesSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
@@ -120,9 +126,11 @@ export default function Sidebar() {
                 </li>
               </ul>
             </li>
+            {/* Configs Header */}
             <li className="menu-header mt-4 mb-2 position-relative">
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Configs</span>
             </li>
+            {/* Configs Links */}
             <li>
               <Link href="#" className={currentPath === '/users' ? 'nav-link active users' : 'nav-link users'}>
                 Users

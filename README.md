@@ -281,6 +281,23 @@ const newObject = { ...oldObject, newProp: 'value' }; // Spread operator
 const greeting = `Hello, ${name}!`; // Template literal
 ```
 
+### Authentication with Next.js (NextAuth) / Things Learned
+```javascript
+await bcrypt.compare(user.password, credentials.password) // Bcrypt is assynchronous, it needs await.
+or
+bcrypt.compareSync() //also works.
+```
+
+```javascript
+export const handler = NextAuth({
+  providers: [], // Providers and the authorization for those (e.g., CredentialsProvider, Google, etc.)
+  session: {}, // How the session will be managed (e.g., JWT or database-backed)
+  callbacks: {}, // Custom functions to modify the token or session data
+  pages: {} // Route pages for different session-related activities (e.g., custom sign-in page)
+}
+```
+
+
 ## Future Enhancements
 
 - Implement a chat feature using Node.js, storing messages in MongoDB.
@@ -290,3 +307,7 @@ const greeting = `Hello, ${name}!`; // Template literal
 - Add CRUD functionality for blog posts, projects, and other items in the dashboard.
 - Add APIs for news, Spotify, weather, and other features on the dashboard main page.
 - Track and display the number of visiting users using session data.
+
+
+# Extra
+- Do a better Login Page

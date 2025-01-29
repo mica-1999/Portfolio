@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/Portfolio';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const dbConnect = async () => {
   if (mongoose.connection.readyState >= 1) {

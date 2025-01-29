@@ -1,8 +1,6 @@
 "use client";
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import React, { useState } from "react";
-
 
 const loginMethods =[
     {name: "Google", icon: "ri-google-fill"}, 
@@ -16,11 +14,8 @@ export default function Login() {
     name: "",
     password: ""
   });
+
   const [error, setError] = useState(null); // State for handling errors
-
-
-// Router IN NEXT.JS
-const router = useRouter() // Next.js Router
 
 // STATE UPDATERS
 const handleChange = (e) => {
@@ -55,7 +50,7 @@ const handleChange = (e) => {
         }
         else {
             // Redirect or handle successful login here
-            router.push("/pages/dashboard") // Client-side navigation
+            window.location.href = "/pages/dashboard"; // Redirect after successful login
         }
     } catch (error) {
         console.error("Error submitting form:", error);
@@ -68,14 +63,14 @@ const handleChange = (e) => {
             <div className="row">
                 <div className="d-flex col-lg-12 justify-content-start">
                     <a href="#" onClick={() => window.history.back()}>
-                        <i className="ri-arrow-left-line ri-lg" style={{ fontSize: '1.75rem' }}></i>
+                        <i className="ri-arrow-left-line ri-lg"></i>
                     </a>
                 </div>
             </div>
             <form  action="/api/authUser" method="POST" onSubmit={handleFormSubmission}>
                 <div className="row pt-3">
                     <div className="d-flex col-lg-12 justify-content-center">
-                        <h2 className="title">Welcome</h2>
+                        <h2 className="title">Admin</h2>
                     </div>
                 </div>
                 <div className="row mt-4">
@@ -91,7 +86,7 @@ const handleChange = (e) => {
                 </div>
 
                 <div className="row">
-                    <div className="d-flex col-lg-12 mt-4 align-items-center justify-content-center ps-5 pe-5">
+                    <div className="d-flex col-lg-12 mt-3 align-items-center justify-content-center">
                         <input type="checkbox" id="remember" name="remember" />
                         <label className="ps-2 remember" htmlFor="remember">Remember me</label>
                         <a href="#" className="ms-auto remember">Forgot Password?</a>

@@ -25,7 +25,7 @@ nextApp.prepare().then(() => {
   });
 
   // Start the server
-  const PORT = process.env.PORT || 3000; // Determine the port to listen on
+  const PORT = process.env.PORT; // Determine the port to listen on
   app.listen(PORT, (err) => {
     if (err) throw err; // Throw an error if there is an issue starting the server
     console.log(`Server is running on http://localhost:${PORT}`); // Log the server URL
