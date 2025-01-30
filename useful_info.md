@@ -12,3 +12,6 @@ This happens before rendering the layout, meaning the layout will not be rendere
 If a session exists, the code does not return the redirect. Instead, it returns an empty props object.
 This is because getServerSideProps needs to return an object with the necessary props for the page to be rendered. Since your layout doesn’t require any specific props (besides checking the session), you can return an empty object.
 return { props: {} }: This is the default behavior when you don’t need to pass any specific data to the page. The DashboardLayout will render normally with the children passed to it.
+
+### Authorize in the Provider API
+The authorize function in NextAuth is responsible for authenticating the user when they log in. After verifying the user's credentials (username and password), it can return additional data from the database to be included in the session.

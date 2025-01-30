@@ -16,7 +16,13 @@ export default function MainContent() {
   const [users, setUsers] = useState([]);
 
   //Event Handling
-  const [hidden_sections , setHiddenSections] = useState([]);
+  const [hidden_sections, setHiddenSections] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
+      return savedHiddenSections ? JSON.parse(savedHiddenSections) : [];
+    }
+    return [];
+  });
 
   const handle_sections = (section) => {
     setHiddenSections((prevHiddenSections) => {
@@ -47,9 +53,8 @@ export default function MainContent() {
   
   // Store `hidden_sections` in localStorage when the state changes
   useEffect(() => {
-    if (hidden_sections.length > 0) {
-      localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
-    }
+    localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
+    console.log("Saving to localStorage:", hidden_sections);
   }, [hidden_sections]);
 
   // Load hidden sections from localStorage when the component mounts
@@ -95,6 +100,7 @@ export default function MainContent() {
     fetchData();
   }, []);
 
+  
   if (loading) {
     return <div className="mt-3">Loading...</div>;
   }
@@ -279,7 +285,7 @@ export default function MainContent() {
       </div>
 
       {/* Placeholder Sections */}
-      <div className="col-lg-3 d-flex custom-height-3 cs-5">
+      <div className="col-lg-3 d-flex cs-5">
         <div className="card flex-grow-1">
           <div className="card-header">
             <div className="d-flex align-items-center justify-content-between">

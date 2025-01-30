@@ -169,8 +169,6 @@ a.dashboard::before { content: "\f0e4"; }
     --bs-card-title-spacer-y: 0.875rem;
     --bs-card-cap-padding-y: var(--card-padding-y);
     --bs-card-cap-padding-x: var(--card-padding-x);
-    --bs-card-img-overlay-padding: var(--card-padding-x);
-    --bs-card-group-margin: 1.5rem;
     --bs-card-inner-border-radius: var(--card-border-radius);
     --bs-card-border-width: 0;
     --bs-card-border-color: var(--card-border-color);
@@ -180,12 +178,8 @@ a.dashboard::before { content: "\f0e4"; }
     --bs-card-subtitle-color: var(--secondary-text-color);
     --bs-card-cap-bg: transparent;
     --bs-card-cap-color: var(--primary-text-color);
-    --bs-card-color: ;
     --bs-card-bg: var(--card-bg-color);
-    --bs-card-height: ;
-    background-clip: padding-box;
     box-shadow: var(--card-box-shadow);
-    font-family: var(--bs-font-sans-serif);
 }
 
 .card-body {
@@ -197,11 +191,6 @@ a.dashboard::before { content: "\f0e4"; }
 .ratings .col-lg-6 {
     flex: 0 0 auto;
     width: 50%; /* Default behavior: Set to 50% width */
-}
-
-/* ---------------------------------------------- CUSTOM HEIGHTS ----------------------------------- */
-.custom-height-3 {
-    height: 200px;
 }
 
 /* ---------------------------------------------- TABLE STYLES ----------------------------------- */
@@ -552,14 +541,18 @@ tbody tr:last-child td {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
     transition: all 0.1s ease;
 }
-.blur_element:not(.ri-eye-off-line){
-    filter: blur(5px); /* Apply a blur effect */
-    transition: filter 0.3s ease; /* Optional: add a smooth transition */
-}
 .pointer{
     cursor: pointer;
 }
 
+
+/* BLUR CARDS */
+.blur_element:not(.ri-eye-off-line){
+    filter: blur(5px); /* Apply a blur effect */
+    transition: filter 0.3s ease; /* Optional: add a smooth transition */
+}
+
+/* ---------------------------------------------- DROPDOWN MENU PROFILE ----------------------------------- */
 .dropdown-menu {
     background-color: var(--card-bg-color);
     border: 1px solid var(--card-border-color);
@@ -575,7 +568,7 @@ tbody tr:last-child td {
     padding: var(--card-padding-y) var(--card-padding-x);
 }
 
-.dropdown-item:hover,
+.dropdown-item:hover:not(.logout-btn),
 .dropdown-item:focus:not(.logout-btn) {
     background-color: #373951;
     color: #d7d8ed;
@@ -590,8 +583,10 @@ tbody tr:last-child td {
     border-top: 1px solid var(--card-border-color);
 }
 
-.logout-btn{
+.logout-btn,
+.logout-btn:hover {
     background-color: var(--bs-red);
+    color: #d7d8ed;
 }
 
 @media (max-width: 768px) {

@@ -1,12 +1,26 @@
 "use client";
 import { useState } from "react";
+import { signOut } from "next-auth/react"; 
+import { useSession } from "next-auth/react";
+
 
 export default function Header() {
+  const { data: session, status } = useSession();
+  const { id, username, first_name, last_name, role } = session?.user || {}; // Optional chaining for safety
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  const handle_logout = async () => {
+    try {
+      await signOut({ callbackUrl: "/pages/blog" });
+    } catch (error) {
+      console.error("Failed to sign out", error);
+    }
+  }
 
   return (
     <div className="row d-flex align-items-center">
@@ -33,8 +47,8 @@ export default function Header() {
               <li className="dropdown-header d-flex align-items-center">
                 <img src="/assets/images/profile-icon.png" className="profile-icon dropdown-toggle" alt="Profile Icon" />
                 <div className="ms-2">
-                  <p className="mb-0" style={{ color: "#d7d8ed" }}>John Doe</p>
-                  <small className="text-muted">Admin</small>
+                  <p className="mb-0" style={{ color: "#d7d8ed" }}>{first_name + " " + last_name}</p>
+                  <small className="text-muted">{role}</small>
                 </div>
               </li>
               <hr className="dropdown-divider" />
@@ -42,7 +56,7 @@ export default function Header() {
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-cog me-2"></i>Settings</a></li>
               <hr className="dropdown-divider" />
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-question-circle me-2"></i>FAQ</a></li>
-              <li><button className="dropdown-item logout-btn"><i className="fa-solid fa-sign-out-alt me-2"></i>Logout</button></li>
+              <li><button className="dropdown-item logout-btn" onClick={handle_logout}><i className="fa-solid fa-sign-out-alt me-2"></i>Logout</button></li>
             </ul>
           </div>
         </div>

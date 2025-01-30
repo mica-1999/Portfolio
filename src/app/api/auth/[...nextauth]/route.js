@@ -20,7 +20,7 @@ export const authOptions = {
 
           const user = await usersCollection.findOne({ username: credentials.name });
           if (user && await bcrypt.compare(credentials.password, user.password)) {
-            return { id: user._id, username: user.username };
+            return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.LastName, role: user.role  };
           }
           return null;
         } catch (error) {
@@ -38,6 +38,9 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.first_name = user.first_name; 
+        token.last_name = user.last_name;  
+        token.role = user.role;              
       }
       return token;
     },
@@ -45,6 +48,9 @@ export const authOptions = {
       if (token) {
         session.user.id = token.id;
         session.user.username = token.username;
+        session.user.first_name = token.first_name;  
+        session.user.last_name = token.last_name;    
+        session.user.role = token.role;        
       }
       return session;
     },

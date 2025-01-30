@@ -4,9 +4,10 @@ import Footer from '../../components/Dashboard/Footer';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
+import { SessionProvider } from 'next-auth/react'; // Import SessionProvider
 
 export const metadata = {
-  title: 'Dashboard for Portfolio',
+  title: 'Dashboard',
   description: 'Stay updated with the latest blog posts from the portfolio.',
 };
 
@@ -46,9 +47,11 @@ export default async function DashboardLayout({ children }) {
         <div className="row">
           <Sidebar/> {/* Render the Sidebar component */}
           <div className="col-lg-10 offset-lg-2 p-4 card-section">
+          <SessionProvider session={session}> 
             <Header /> {/* Render the Header component */}
               {children}
             <Footer /> {/* Render the Footer component */}
+          </SessionProvider>
           </div>
         </div>
       </div>
