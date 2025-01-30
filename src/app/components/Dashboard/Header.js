@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
 import { signOut } from "next-auth/react"; 
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 
 export default function Header() {
-  const { data: session, status } = useSession();
-  const { id, username, first_name, last_name, role } = session?.user || {}; // Optional chaining for safety
+  // const { data: session, status } = useSession();
+  // const { id, username, first_name, last_name, role } = session?.user || {}; // Optional chaining for safety
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -47,8 +47,8 @@ export default function Header() {
               <li className="dropdown-header d-flex align-items-center">
                 <img src="/assets/images/profile-icon.png" className="profile-icon dropdown-toggle" alt="Profile Icon" />
                 <div className="ms-2">
-                  <p className="mb-0" style={{ color: "#d7d8ed" }}>{first_name + " " + last_name}</p>
-                  <small className="text-muted">{role}</small>
+                  <p className="mb-0" style={{ color: "#d7d8ed" }}></p>
+                  <small className="text-muted"></small>
                 </div>
               </li>
               <hr className="dropdown-divider" />
