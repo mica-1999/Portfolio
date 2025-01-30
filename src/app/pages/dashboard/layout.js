@@ -1,14 +1,22 @@
 import Sidebar from '../../components/Dashboard/Sidebar';
 import Header from '../../components/Dashboard/Header'; 
-import Footer from '../../components/Dashboard/Footer'; 
-
+import Footer from '../../components/Dashboard/Footer';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../api/auth/[...nextauth]/route.js';
+import { redirect } from 'next/navigation';
 
 export const metadata = {
   title: 'Dashboard for Portfolio',
   description: 'Stay updated with the latest blog posts from the portfolio.',
 };
 
-const DashboardLayout = ({ children }) => {
+export default async function DashboardLayout({ children }) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect('/pages/login'); // Redirect to login if not authenticated
+  }
+
   return (
     <html lang="en">
       <head>
@@ -38,7 +46,7 @@ const DashboardLayout = ({ children }) => {
         <div className="row">
           <Sidebar/> {/* Render the Sidebar component */}
           <div className="col-lg-10 offset-lg-2 p-4 card-section">
-            <Header /> {/* Render the Header component */}   
+            <Header /> {/* Render the Header component */}
               {children}
             <Footer /> {/* Render the Footer component */}
           </div>
@@ -50,5 +58,3 @@ const DashboardLayout = ({ children }) => {
     </html>
   );
 }
-// Wrapping the DashboardLayout with the protected page HOC
-export default withProtectedPage(DashboardLayout);

@@ -109,7 +109,7 @@ export default function Forms() {
           </div>
           <h6 className="card-subtitle">Insert new</h6>
         </div>
-        <div className="card-body p-0 p-4">
+        <div className="card-body p-0 p-3">
           <form
             action="/dashboard/insertForm"
             method="POST"

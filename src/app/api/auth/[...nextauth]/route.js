@@ -1,37 +1,31 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { MongoClient } from "mongodb"
-const bcrypt = require('bcrypt');
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from 'bcrypt';
+import dbConnect from '../../../../utils/dbConnect';
+import mongoose from 'mongoose';
 
-// MongoDB setup (use your connection string here)
-const client = new MongoClient(process.env.MONGODB_URI)
-
-export const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials", // You can name it anything you like
+      name: "Credentials",
       credentials: {
         username: { label: "User", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         try {
-          await client.connect()
-          const db = client.db("Portfolio")
-          const usersCollection = db.collection("users")
+          await dbConnect();
+          const db = mongoose.connection.db;
+          const usersCollection = db.collection("users");
 
-          const user = await usersCollection.findOne({ username: credentials.name })
+          const user = await usersCollection.findOne({ username: credentials.name });
           if (user && await bcrypt.compare(credentials.password, user.password)) {
-            // If credentials are valid, return the user object
-            return { id: user._id, username: user.username }
+            return { id: user._id, username: user.username };
           }
-          // If no user or invalid password, return null
-          return null
+          return null;
         } catch (error) {
-          console.error(error)
-          return null
-        } finally {
-          await client.close()
+          console.error("Error during authorization:", error);
+          return null;
         }
       },
     }),
@@ -41,25 +35,24 @@ export const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Persist the user information in the JWT token
       if (user) {
-        token.id = user.id
-        token.username = user.username
+        token.id = user.id;
+        token.username = user.username;
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
-      // Add the JWT token data to the session
       if (token) {
-        session.user.id = token.id
-        session.user.username = token.username
+        session.user.id = token.id;
+        session.user.username = token.username;
       }
-      return session
+      return session;
     },
   },
   pages: {
-    signIn: "/pages/login", // Custom login page
+    signIn: "/pages/login",
   },
-})
+};
 
-export { handler as GET, handler as POST }
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

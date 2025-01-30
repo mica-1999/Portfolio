@@ -335,6 +335,7 @@ tbody tr:last-child td {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .profile-icon-small {
@@ -557,4 +558,45 @@ tbody tr:last-child td {
 }
 .pointer{
     cursor: pointer;
+}
+
+.dropdown-menu {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-box-shadow);
+    min-width: 200px;
+    right: 0;
+    left: auto;
+}
+
+.dropdown-item {
+    color: var(--primary-text-color);
+    padding: var(--card-padding-y) var(--card-padding-x);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus:not(.logout-btn) {
+    background-color: #373951;
+    color: #d7d8ed;
+}
+
+.dropdown-header {
+    padding: var(--card-padding-y) var(--card-padding-x);
+}
+
+.dropdown-divider {
+    margin: 0;
+    border-top: 1px solid var(--card-border-color);
+}
+
+.logout-btn{
+    background-color: var(--bs-red);
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        right: auto;
+        left: 0;
+    }
 }

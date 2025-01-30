@@ -41,7 +41,7 @@ export default function Forms() {
         </div>
 
         {/* Card Body */}
-        <div className="card-body p-0 p-4">
+        <div className="card-body p-0 p-3">
           <form action="/dashboard/insertForm" method="POST">
             {/* Name Input */}
             <div className="row pb-3">

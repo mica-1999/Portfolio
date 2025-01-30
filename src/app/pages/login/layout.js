@@ -1,10 +1,21 @@
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../api/auth/[...nextauth]/route.js';
+import { redirect } from 'next/navigation';
+
 
 export const metadata = {
   title: 'Login',
   description: 'Stay updated with the latest blog posts from the portfolio.',
 };
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    redirect('/pages/dashboard'); // Redirect to login if not authenticated
+  }
+
+
   return (
     <html lang="en">
       <head>

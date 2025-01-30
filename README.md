@@ -279,12 +279,13 @@ const [first, second] = array; // Destructuring an array
 const newArray = [...oldArray, 4, 5]; // Spread operator
 const newObject = { ...oldObject, newProp: 'value' }; // Spread operator
 const greeting = `Hello, ${name}!`; // Template literal
+
+onMouseEnter{() => {}} or onMouseLeave // For hover effect, React special
 ```
 
 ### Authentication with Next.js (NextAuth) / Things Learned
 ```javascript
 await bcrypt.compare(user.password, credentials.password) // Bcrypt is assynchronous, it needs await.
-or
 bcrypt.compareSync() //also works.
 ```
 
@@ -297,6 +298,33 @@ export const handler = NextAuth({
 }
 ```
 
+useSession
+Purpose: A React Hook for accessing the session in client-side components.
+Usage: Use this in React components to display session data or conditionally render UI based on the session.
+
+getServerSession
+Purpose: A function for accessing the session on the server side.
+Usage: Use this in getServerSideProps, getStaticProps, or API routes to protect pages or fetch session data during server-side rendering (SSR).
+
+getSession
+Purpose: A legacy function for accessing the session on the client side.
+Usage: Rarely used in modern applications. Only consider this if you need to fetch the session outside of a React component or in a non-reactive context.
+
+Simple way to verify if the User is authenticated before loading the page (Protecting Pages)
+```javascript 
+const session = await getServerSession(authOptions);
+
+  if (!session) {
+    console.log('No session found');
+    redirect('/pages/login'); // Redirect to login if not authenticated, since it's done in the layout it will protect all pages
+  }
+
+```
+```javascript
+export { handler as GET, handler as POST } //This is a requirement for Next.js Route Handlers in the App Router.
+```
+
+It ensures your NextAuth API route can handle both GET and POST requests.
 
 ## Future Enhancements
 
@@ -307,7 +335,6 @@ export const handler = NextAuth({
 - Add CRUD functionality for blog posts, projects, and other items in the dashboard.
 - Add APIs for news, Spotify, weather, and other features on the dashboard main page.
 - Track and display the number of visiting users using session data.
-
 
 # Extra
 - Do a better Login Page

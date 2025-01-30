@@ -9,7 +9,6 @@ const dbConnect = async () => {
 
   try {
     await mongoose.connect(MONGODB_URI); // Wait for the connection to MongoDB
-    console.log('Connected to the database!'); // Log success message
   } catch (error) {
     console.error('Error connecting to the database', error); // Log error message if connection fails
   }
