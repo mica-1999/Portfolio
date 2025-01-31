@@ -1,6 +1,7 @@
-import Form_Link from '../../../components/Dashboard/Forms/newMenu'; // Import the Forms component
-import Form_Project from '../../../components/Dashboard/Forms/newProject'; // Import the Forms component
-import Form_Timeline from '../../../components/Dashboard/Forms/newTimeline'; // Import the Forms component
+import Form_Link from '../../../components/Dashboard/Forms/newMenu';
+import Form_Project from '../../../components/Dashboard/Forms/newProject'; 
+import Form_Timeline from '../../../components/Dashboard/Forms/newTimeline'; 
+import Form_Input from '../../../components/Dashboard/Forms/newUser'; 
 
 export default function insert_Forms() {
   return (
@@ -8,6 +9,7 @@ export default function insert_Forms() {
       <Form_Link />
       <Form_Project />
       <Form_Timeline />
+      <Form_Input />
     </div>
   );
 }

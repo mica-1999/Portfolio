@@ -27,12 +27,7 @@ export default function Sidebar() {
                 </li>
                 <li>
                   <Link href="/pages/dashboard/form/" className={currentPath === '/pages/dashboard/form' ? 'nav-link active' : 'nav-link'}>
-                    Insert Menu
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pages/blog" className={currentPath === '/pages/blog' ? 'nav-link active' : 'nav-link'}>
-                    Blog Site
+                    Management
                   </Link>
                 </li>
               </ul>
@@ -79,6 +74,12 @@ export default function Sidebar() {
               <span className="menu-header-text" data-i18n="Apps &amp; Pages">Apps &amp; Pages</span>
             </li>
             {/* Apps & Pages Links */}
+            <li>
+              <Link href="/pages/blog" className={currentPath === '/pages/blog' ? 'nav-link active blog' : 'nav-link blog'}>
+                Blog Site
+              </Link>
+            </li>
+
             <li>
               <Link href="#" className={currentPath === '/email' ? 'nav-link active email' : 'nav-link email'}>
                 Email
