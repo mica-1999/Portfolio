@@ -4,6 +4,7 @@ import Footer from '../../components/Dashboard/Footer';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
+import DashboardClientWrapper from './wrapper.js';
 
 export const metadata = {
   title: 'Dashboard',
@@ -44,12 +45,14 @@ export default async function DashboardLayout({ children }) {
       <body>
       <div className="container-fluid vh-100">
         <div className="row">
+        <DashboardClientWrapper session={session}>
           <Sidebar/> {/* Render the Sidebar component */}
           <div className="col-lg-10 offset-lg-2 p-4 card-section">
             <Header /> {/* Render the Header component */}
               {children}
             <Footer /> {/* Render the Footer component */}
           </div>
+          </DashboardClientWrapper>
         </div>
       </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

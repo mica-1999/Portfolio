@@ -176,6 +176,16 @@ bcrypt.compareSync() //also works.
 Purpose: A React Hook for accessing the session in client-side components.
 Usage: Use this in React components to display session data or conditionally render UI based on the session.
 
+```javascript
+  const { data: session, status } = useSession();
+  const {  first_name, last_name, role } = session?.user || {}; 
+  console.log(session);
+```
+
+#### Session Provider
+Purpose: Provides session data to child components.
+Usage: Needs to be wrapped inside a client-side component. If the layout involves server-side logic, create a Wrapper.js (client-side) to wrap the session provider and pass session data to the child components. (Make sure to include all the components that want to use the useSession hook)
+
 ### getServerSession(config);
 Purpose: A function for accessing the session on the server side.
 Usage: Use this in getServerSideProps, getStaticProps, or API routes to protect pages or fetch session data during server-side rendering (SSR).
@@ -229,6 +239,8 @@ export const authOptions = {
 
   callbacks: {
     // in this case whenever jwt or session function are called we are adding extra information to both those tokens to allow custom manipulation on the UI.
+  }
+  pages: {// define when using the custom login page from Next, it will redirect the client to the login page in case it tries to acesss protected content.
   }
 }
 ```

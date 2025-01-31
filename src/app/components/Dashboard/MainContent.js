@@ -1,8 +1,13 @@
 "use client"
 import { useEffect, useState } from 'react';
 import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted } from '../../../utils/mainContentUtil';
+import { useSession } from 'next-auth/react';
 
 export default function MainContent() {
+  // Session handling 
+  const { data: session, status } = useSession();
+  const { id } = session?.user || {};
+
   // Array initializations
   const theads_projects = ['ID', 'Name', 'Description', 'State', 'Last Updated'];
   const thead_user = ['User', 'Email', 'Role', 'Status', 'Last Active'];
@@ -39,7 +44,7 @@ export default function MainContent() {
 
   const fetchDataFromApi = async (route) => {
     try {
-      const response = await fetch(route);
+      const response = await fetch(`${route}?userId=${id}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch data from ${route}`);
       }

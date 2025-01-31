@@ -30,7 +30,7 @@ export const authOptions = {
             return null;
           }
 
-          return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.LastName, role: user.role  };
+          return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.lastName, role: user.role  };
         } 
         catch (error) {
           console.error("Error during authorization:", error);

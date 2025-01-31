@@ -146,16 +146,6 @@ export default function Sidebar() {
                 DashBoard
               </Link>
             </li>
-            <li>
-              <Link href="#" className={currentPath === '/roles' ? 'nav-link active roles' : 'nav-link roles'}>
-                Roles & Permissions
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className={currentPath === '/others' ? 'nav-link active others' : 'nav-link others'}>
-                Others
-              </Link>
-            </li>
           </div>
         </ul>
       </div>
