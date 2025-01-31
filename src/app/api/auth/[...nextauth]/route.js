@@ -19,11 +19,20 @@ export const authOptions = {
           const usersCollection = db.collection("users");
 
           const user = await usersCollection.findOne({ username: credentials.name });
-          if (user && await bcrypt.compare(credentials.password, user.password)) {
-            return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.LastName, role: user.role  };
+          if(!user){
+            console.log("User not found");
+            return null;
           }
-          return null;
-        } catch (error) {
+
+          const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+          if(!isPasswordValid){
+            console.log("Invalid password");
+            return null;
+          }
+
+          return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.LastName, role: user.role  };
+        } 
+        catch (error) {
           console.error("Error during authorization:", error);
           return null;
         }
@@ -32,6 +41,7 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   },
   callbacks: {
     async jwt({ token, user }) {
