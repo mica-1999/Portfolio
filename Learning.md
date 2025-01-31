@@ -1,4 +1,4 @@
-### React/JS
+# React/JS
 Async functions: return promise, define when there will be an operation
 that requires time. (await for said op)
 
@@ -27,7 +27,7 @@ const modifyAndCall = (param) => {
 modifyAndCall(5); // Outputs: 10
 ```
 
-### React
+# React
 React uses a syntax extension called JSX, which allows you to write HTML-like code within JavaScript. JSX is different from HTML in several ways:
 
 - **JSX Syntax**: JSX uses a syntax that looks similar to HTML but has some differences. For example, JSX uses `className` instead of `class` and `htmlFor` instead of `for`.
@@ -147,7 +147,7 @@ const greeting = `Hello, ${name}!`; // Template literal
 onMouseEnter{() => {}} or onMouseLeave // For hover effect, React special
 ```
 
-### Next.js
+# Next.js
 
 ## Data fetching
 ```javascript
@@ -172,11 +172,11 @@ bcrypt.compareSync() //also works.
 
 ## Auth Page Protection
 
-# useSession
+### useSession
 Purpose: A React Hook for accessing the session in client-side components.
 Usage: Use this in React components to display session data or conditionally render UI based on the session.
 
-# getServerSession(config);
+### getServerSession(config);
 Purpose: A function for accessing the session on the server side.
 Usage: Use this in getServerSideProps, getStaticProps, or API routes to protect pages or fetch session data during server-side rendering (SSR).
 
@@ -194,14 +194,14 @@ if (!session) {
   // since it's done in the layout.js it will protect all pages
 }
 ```
-# getSession
+### getSession
 Purpose: A legacy function for accessing the session on the client side.
 Usage: Rarely used in modern applications. Only consider this if you need to fetch the session outside of a React component or in a non-reactive context.
 
-## Callback Functions
+### Callback Functions
 Functions that allow the user to modify the data being passed between steps, implement custom logic and control the session.
 
-## Providers API
+### Providers API
 The file exports a configuration on how the authentication is gonna work and who's the provider, could be Google, Discord, a mongoDB, etc.
 
 ```javascript
