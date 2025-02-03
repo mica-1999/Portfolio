@@ -24,12 +24,14 @@ export const authOptions = {
             return null;
           }
 
+          // Validate Password
           const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
           if(!isPasswordValid){
             console.log("Invalid password");
             return null;
           }
 
+          // Return user object (without sensitive data)
           return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.lastName, role: user.role  };
         } 
         catch (error) {

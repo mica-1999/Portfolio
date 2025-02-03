@@ -6,7 +6,9 @@ import { useSession } from "next-auth/react";
 
 export default function Header() {
   const { data: session, status } = useSession();
-  const {  first_name, last_name, role } = session?.user || {}; // Optional chaining for safety
+  const first_name = session?.user?.first_name || "Guest";
+  const last_name = session?.user?.last_name || "";
+  const role = session?.user?.role || "User";
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -45,7 +47,7 @@ export default function Header() {
             />
             <ul className={`dropdown-menu mt-2 ${dropdownOpen ? "show" : ""}`} style={{ right: 0, left: "auto" }}>
               <li className="dropdown-header d-flex align-items-center">
-                <img src="/assets/images/profile-icon.png" className="profile-icon dropdown-toggle" alt="Profile Icon" />
+                <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                 <div className="ms-2">
                   <p className="mb-0" style={{ color: "#d7d8ed" }}>{first_name + " " + last_name}</p>
                   <small className="text-muted">{role}</small>
@@ -56,7 +58,7 @@ export default function Header() {
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-cog me-2"></i>Settings</a></li>
               <hr className="dropdown-divider" />
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-question-circle me-2"></i>FAQ</a></li>
-              <li><button className="dropdown-item logout-btn" onClick={handle_logout}><i className="fa-solid fa-sign-out-alt me-2"></i>Logout</button></li>
+              <li><button className="dropdown-item logout-btn" onClick={handle_logout}><i className="fa-solid fa-right-from-bracket me-2"></i>Logout</button></li>
             </ul>
           </div>
         </div>

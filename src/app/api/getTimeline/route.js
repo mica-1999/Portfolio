@@ -8,7 +8,7 @@ export async function GET() {
         const timeline_data = await Timeline.find();
         return NextResponse.json(timeline_data);
     } catch (error) {
-        return NextResponse.json({error:'Couldnt fetch projects data'},{status:500});
+        return NextResponse.json({error:'Couldnt fetch timeline data'},{status:500});
     }
 }
 

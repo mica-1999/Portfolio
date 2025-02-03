@@ -28,7 +28,7 @@ export default function Forms() {
   const [formState, setFormState] = useState({
     projectName: "",
     projectDescription: "",
-    selectedState: "default",
+    selectedState: "",
     selectedTags: [],
   });
 
@@ -37,7 +37,7 @@ export default function Forms() {
     setFormState({
       projectName: "",
       projectDescription: "",
-      selectedState: "default",
+      selectedState: "",
       selectedTags: [],
     });
   };
@@ -89,10 +89,9 @@ export default function Forms() {
       if (!response.ok) {
         throw new Error(result.message || "Something went wrong");
       }
-      // Handle success (e.g., show a success message, redirect, etc.)
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error submitting form:", error);
-      // Handle error (e.g., show an error message)
     }
   };
 
@@ -111,8 +110,6 @@ export default function Forms() {
         </div>
         <div className="card-body p-0 p-3">
           <form
-            action="/dashboard/insertForm"
-            method="POST"
             onSubmit={handleFormSubmission}
           >
             <div className="row">

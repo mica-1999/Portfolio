@@ -12,15 +12,21 @@ export default function MainContent() {
   const theads_projects = ['ID', 'Name', 'Description', 'State', 'Last Updated'];
   const thead_user = ['User', 'Email', 'Role', 'Status', 'Last Active'];
 
-  // State Initialization
-  const [totalBalance, setTotalBalance] = useState(null);
-  const [balanceMonth, setBalanceMonth] = useState(null);
-  const [withdrawal, setWithdrawal] = useState(null);
+  // State Initialization for data coming from DB 
+  const [balanceData, setBalanceData] = useState({
+    totalBalance: null,
+    balanceMonth: null,
+    withdrawal: null,
+  });
   const [projects, setProjects] = useState([]);
   const [timeline, setTimeline] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]); 
 
-  //Event Handling
+  // State Initialization for loading and error handling
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // State Initialization for hidden sections
   const [hidden_sections, setHiddenSections] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
@@ -29,6 +35,7 @@ export default function MainContent() {
     return [];
   });
 
+  // Function to handle the hidden sections
   const handle_sections = (section) => {
     setHiddenSections((prevHiddenSections) => {
       const updatedSections = prevHiddenSections.includes(section)
@@ -38,32 +45,29 @@ export default function MainContent() {
     });
   }
 
-  // Error Handling and Loading State
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Store `hidden_sections` in localStorage whenever the blur button is clicked
+  useEffect(() => {
+    localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
+  }, [hidden_sections]);
 
+  // Fetch data from the API based on the route and the user ID
   const fetchDataFromApi = async (route) => {
     try {
       const response = await fetch(`${route}?userId=${id}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch data from ${route}`);
       }
-      const data = await response.json();
-      return data; // Return the full data
+      return await response.json();
     } catch (error) {
-      setError(error.message);
-      throw error; // Re-throw so Promise.all can handle it
+      console.error(`Error fetching data from ${route}:`, error);
+      setError(`Failed to fetch data from ${route}. Please try again later.`);
+      return null; // Return null to indicate failure
     }
   };
-  
-  // Store `hidden_sections` in localStorage when the state changes
-  useEffect(() => {
-    localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
-    console.log("Saving to localStorage:", hidden_sections);
-  }, [hidden_sections]);
 
-  // Load hidden sections from localStorage when the component mounts
+  // Runs once when the component is mounted
   useEffect(() => {
+
     // Ensure localStorage is accessed only when available
     if (typeof window !== 'undefined') {
       const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
@@ -72,10 +76,8 @@ export default function MainContent() {
         setHiddenSections(JSON.parse(savedHiddenSections));  // Set state with saved data
       }
     }
-  }, []);  // Empty dependency array, runs only once when the component mounts
 
-
-  useEffect(() => {
+    // Fetch data from the API
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -85,20 +87,22 @@ export default function MainContent() {
           fetchDataFromApi('/api/getTimeline'),
           fetchDataFromApi('/api/getUser'),
         ]);
-  
-        // Extract and set balance-related states from the single fetch
-        setTotalBalance(balanceData.totalBalance);
-        setBalanceMonth(balanceData.thisMonth.totalDeposits);
-        setWithdrawal(balanceData.thisMonth.totalWithdrawals);
-  
-        // Set other states
-        setProjects(projects);
-        setTimeline(timeline);
-        setUsers(users);
-
-      } catch (error) {
+        
+        // Set the state with the fetched data
+        setBalanceData({
+          totalBalance: balanceData.totalBalance,
+          balanceMonth: balanceData.thisMonth.totalDeposits,
+          withdrawal: balanceData.thisMonth.totalWithdrawals,
+        });
+        setProjects(projects || []);
+        setTimeline(timeline || []);
+        setUsers(users || []);
+      } 
+      catch (error) {
         console.error("Failed to fetch data:", error);
-      } finally {
+        setError("An unexpected error occurred. Please try again.");
+      } 
+      finally {
         setLoading(false);
       }
     };
@@ -136,7 +140,7 @@ export default function MainContent() {
                   <i className="fa-solid fa-euro-sign fa-lg euro-icon"></i>
                 </div>
                 <div className="card-info">
-                  <h5 className="mb-0">{formatNumber(totalBalance)}</h5>
+                  <h5 className="mb-0">{formatNumber(balanceData.totalBalance)}</h5>
                   <p className="mb-0">Total Balance</p>
                 </div>
               </div>
@@ -145,7 +149,7 @@ export default function MainContent() {
                   <i className="fa-solid fa-arrow-up fa-lg third-icon"></i>
                 </div>
                 <div className="card-info">
-                  <h5 className="mb-0">{formatNumber(balanceMonth)}</h5>
+                  <h5 className="mb-0">{formatNumber(balanceData.balanceMonth)}</h5>
                   <p className="mb-0">This Month</p>
                 </div>
               </div>
@@ -154,7 +158,7 @@ export default function MainContent() {
                   <i className="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
                 </div>
                 <div className="card-info">
-                  <h5 className="mb-0">{formatNumber(withdrawal)}</h5>
+                  <h5 className="mb-0">{formatNumber(balanceData.withdrawal)}</h5>
                   <p className="mb-0">New Transactions</p>
                 </div>
               </div>

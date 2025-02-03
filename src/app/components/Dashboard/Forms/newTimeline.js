@@ -47,20 +47,22 @@ export default function Forms() {
     }
     
     try {
-        const response = await fetch("/api/getTimeline", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formState),
-        });
-        const result = await response.json();
+      const response = await fetch("/api/getTimeline", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formState),
+      });
 
-        if (!response.ok) {
-            throw new Error(result.message || "Something went wrong");
-          }
-    } catch (error) {
+      const result = await response.json();
+
+      if (!response.ok) {
         throw new Error(result.message || "Something went wrong");
+      }
+    } 
+    catch (error) {
+      console.error(error);
     }
   }
 
@@ -129,7 +131,7 @@ export default function Forms() {
                   value={formState.state}
                   onChange={handleInputChange("state")}
                 >
-                  <option value="default">Select a project</option>
+                  <option value="">Select a project</option>
                   {STATES.map((state,index) => {
                     return(
                         <option value={state.value} key={index}>{state.text}</option>

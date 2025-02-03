@@ -15,7 +15,8 @@ export default async function DashboardLayout({ children }) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect('/login'); // Redirect to login if not authenticated
+    redirect('/pages/login'); // Redirect to login if not authenticated
+    return null;
   }
 
   return (

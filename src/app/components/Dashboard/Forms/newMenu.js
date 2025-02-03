@@ -16,13 +16,9 @@ export default function Forms() {
     }));
   };
   
-  // RESET FORM
-  const handleReset = () => {
-    setFormState({
-      name: "",
-      associateTo: "",
-      type: "",
-    });
+   // RESET FORM
+   const handleReset = () => {
+    setFormState({ name: "", associateTo: "", type: "" });
   };
 
   return (

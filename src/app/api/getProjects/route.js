@@ -1,16 +1,6 @@
 import { NextResponse } from "next/server";
 import Project from "../../../models/Project";
 import dbConnect from "../../../utils/dbConnect";
-import Joi from "joi";
-
-let id_project = 8;
-
-const projectSchema = Joi.object({
-  name: Joi.string().min(1).required(),
-  description: Joi.string().min(1).required(),
-  state: Joi.number().integer().required(),
-  tags: Joi.array().items(Joi.string()).required(),
-});
 
 export async function GET() {
   await dbConnect();
