@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted } from '../../../utils/mainContentUtil';
+import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted } from '/src/utils/mainContentUtil';
 import { useSession } from 'next-auth/react';
 
 export default function MainContent() {
@@ -292,62 +292,8 @@ export default function MainContent() {
           </div>
         </div>
       </div>
-
-      {/* Placeholder Sections */}
-      <div className="col-lg-3 d-flex cs-5">
-        <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">TBD</h5>
-              <div>
-                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
-                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
-              </div>
-            </div>
-            <h6 className="card-subtitle mb-2">TBD</h6>
-          </div>
-          <div className="card-body p-0">
-            {/* Content for this card */}
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-5 d-flex cs-5">
-        <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">TBD</h5>
-              <div>
-                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
-                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
-              </div>
-            </div>
-            <h6 className="card-subtitle mb-2">TBD</h6>
-          </div>
-          <div className="card-body p-0">
-            {/* Content for this card */}
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-4 d-flex cs-5 c-order">
-        <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">TBD</h5>
-              <div>
-                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
-                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
-              </div>
-            </div>
-            <h6 className="card-subtitle mb-2">TBD</h6>
-          </div>
-          <div className="card-body p-0">
-            {/* Content for this card */}
-          </div>
-        </div>
-      </div>
-
       {/* User Table Section */}
-      <div className="col-lg-8 d-flex table-custom-2">
+      <div className="col-lg-12 d-flex table-custom-2">
         <div className="card flex-grow-1 p-0">
           <div id="4" className={hidden_sections.includes('4') ? 'blur_element' : ''}>
             <div className="table-responsive text-nowrap user-table rounded">
@@ -390,25 +336,6 @@ export default function MainContent() {
                 </tbody>
               </table>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Placeholder Section */}
-      <div className="col-lg-4 d-flex cs-6">
-        <div className="card flex-grow-1">
-          <div className="card-header">
-            <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">TBD</h5>
-              <div>
-                <i className="ri-edit-line ri-lg ms-2 pointer"></i>
-                <i className="ri-eye-off-line ri-lg ms-2 pointer"></i>
-              </div>
-            </div>
-            <h6 className="card-subtitle mb-2">TBD</h6>
-          </div>
-          <div className="card-body p-0">
-            {/* Content for this card */}
           </div>
         </div>
       </div>

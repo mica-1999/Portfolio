@@ -16,18 +16,30 @@ export default function Sidebar() {
       <div className="overflow-auto">
         <ul className="main-menu nav flex-column mt-3">
           <div id="menuAccordion">
-            {/* Main Menu */}
+            {/* Home Menu */}
+            <li>
+              <Link href="/pages/dashboard" className={currentPath === '/pages/dashboard' ? 'nav-link active main' : 'nav-link main'}>
+                Main
+              </Link>
+            </li>
+            
+            {/* Management Menu */}
             <li className="menu-item">
-              <a className="nav-link position-relative dashboards" data-bs-toggle="collapse" href="#dashboardSubMenu" role="button" aria-expanded="true" aria-controls="dashboardSubMenu">Main</a>
-              <ul id="dashboardSubMenu" className="sub-menu nav collapse show" data-bs-parent="#menuAccordion">
+              <a className="nav-link position-relative management" data-bs-toggle="collapse" href="#managementSubMenu" role="button" aria-expanded="false" aria-controls="managementSubMenu">Management</a>
+              <ul id="managementSubMenu" className="sub-menu nav collapse" data-bs-parent="#menuAccordion">
                 <li>
-                  <Link href="/pages/dashboard/" className={currentPath === '/pages/dashboard' ? 'nav-link active' : 'nav-link'}>
-                    DashBoard
+                  <Link href="/pages/dashboard/management/user" className={currentPath === '/pages/dashboard/management/user' ? 'nav-link active' : 'nav-link'}>
+                    Users
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pages/dashboard/form/" className={currentPath === '/pages/dashboard/form' ? 'nav-link active' : 'nav-link'}>
-                    Management
+                  <Link href="/pages/dashboard/management/project" className={currentPath === '/pages/dashboard/management/project' ? 'nav-link active' : 'nav-link'}>
+                    Projects
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pages/dashboard/management/timeline" className={currentPath === '/pages/dashboard/management/timeline' ? 'nav-link active' : 'nav-link'}>
+                    TimeLine
                   </Link>
                 </li>
               </ul>

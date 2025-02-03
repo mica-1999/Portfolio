@@ -1,8 +1,8 @@
-import Sidebar from '../../components/Dashboard/Sidebar';
-import Header from '../../components/Dashboard/Header'; 
-import Footer from '../../components/Dashboard/Footer';
+import Sidebar from '/src/app/components/Dashboard/Sidebar';
+import Header from '/src/app/components/Dashboard/Header'; 
+import Footer from '/src/app/components/Dashboard/Footer';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../api/auth/[...nextauth]/route.js';
+import { authOptions } from '/src/app/api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
 import DashboardClientWrapper from './wrapper.js';
 

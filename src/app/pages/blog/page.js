@@ -1,7 +1,7 @@
-import NavBar from '../../components/Blog/NavBar'; // Import the NavBar component
-import Categories from '../../components/Blog/Categories'; // Import the Categories component
-import BlogItems from '../../components/Blog/BlogItems'; // Import the BlogItems component
-import Footer from '../../components/Blog/Footer'; // Import the Footer component
+import NavBar from '/src/app/components/Blog/NavBar'; // Import the NavBar component
+import Categories from '/src/app/components/Blog/Categories'; // Import the Categories component
+import BlogItems from '/src/app/components/Blog/BlogItems'; // Import the BlogItems component
+import Footer from '/src/app/components/Blog/Footer'; // Import the Footer component
 
 export default function Blog() {
   return (

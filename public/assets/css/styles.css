@@ -44,6 +44,7 @@
     --bs-light: #46445b;
     --bs-dark: #d7d5ec;
     --bs-gray: rgba(234, 234, 255, 0.06);
+
 }
 
 /* ---------------------------------------------- BODY STYLES ----------------------------------- */
@@ -79,7 +80,9 @@ a.calendar::before,
 a.users::before,
 a.posts::before,
 a.dashboard::before,
-a.blog::before { /* Add the blog class here */
+a.blog::before,
+.menu-item a.management::before,
+a.main::before { /* Add the management and main classes here */
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     position: absolute;
@@ -99,7 +102,9 @@ a.calendar::before { content: "\f073"; }
 a.users::before { content: "\f0c0"; }
 a.posts::before { content: "\f044"; }
 a.dashboard::before { content: "\f0e4"; }
-a.blog::before { content: "\f02d"; } /* Add the icon for the blog class */
+a.blog::before { content: "\f02d"; }
+.menu-item a.management::before { content: "\f0c0"; } /* Add the icon for the management class */
+a.main::before { content: "\f015"; } /* Add the icon for the main class */
 
 .menu-item > a::after {
     content: "\f105";
@@ -110,8 +115,6 @@ a.blog::before { content: "\f02d"; } /* Add the icon for the blog class */
     top: 50%;
     transform: translateY(-50%);
 }
-
-
 
 .sub-menu a::before {
     content: "\2022";
@@ -601,4 +604,64 @@ tbody tr:last-child td {
         right: auto;
         left: 0;
     }
+}
+
+
+/* ---------------------------------------------- MANAGE USER STYLES ----------------------------------- */
+.filters select{
+    height: 45px;
+    background: transparent;
+    color: #D4D5EA;
+    border-radius: .5rem;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0.09rem solid #464963; /* Smaller border */
+}
+.filters select option{
+    background: #30334E;
+    color: #D4D5EA;
+}
+
+/* Styles for select inputs with arrow */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 30px; /* Space for the arrow */
+}
+
+.select-wrapper::after {
+    content: "\f078"; /* Font Awesome down arrow */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--primary-text-color);
+}
+.border-bottom{
+    border-bottom: 0.1rem solid #464963 !important; /* Smaller border */
+}
+.searchInput{
+    width: 215px;
+    background: transparent;
+    border: 0.09rem solid #464963; /* Smaller border */
+    color: #D4D5EA; /* Ensure the text color stays #D4D5EA */
+}
+.searchInput::placeholder{
+    color: #D4D5EA;
+}
+.searchInput:focus{
+    color : #D4D5EA;
+    background: transparent;
+    outline: none;
+}
+.adduserBtn{
+    background-color: #5C61E6;
+    width: 150px;
 }
