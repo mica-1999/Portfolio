@@ -24,7 +24,7 @@ export const dataMenu = [
           page: "/pages/dashboard/management/project",
         },
         {
-          name: "TimeLine",
+          name: "Timeline",
           icon: "timeline",
           page: "/pages/dashboard/management/timeline",
         },
