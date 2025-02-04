@@ -16,7 +16,6 @@ export default async function DashboardLayout({ children }) {
 
   if (!session) {
     redirect('/pages/login'); // Redirect to login if not authenticated
-    return null;
   }
 
   return (

@@ -17,13 +17,13 @@ export function getBadgeClass(state) {
 // GETS THE ROLE BADGE COLOR AND OUTPUT TEXT OF THE USERS
 export function getRoleClass(role) {
     switch (role) {
-      case 'admin':
+      case 'admin' || "Admin":
         return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
-      case 'viewer':
+      case 'viewer' || "Viewer":
         return { badgeColor: 'user', output: 'Viewer', color: 'success' };
-      case 'editor':
+      case 'editor' || "Editor":
         return { badgeColor: 'edit-box', output: 'Editor' , color: 'warning'};
-      case 'author':
+      case 'author' || "Author":
         return { badgeColor: 'computer', output: 'Author' , color: 'danger'};
       default:
         return { badgeColor: 'default', output: 'default' , color: 'default'};
@@ -66,29 +66,28 @@ export function getTimeFormatted(time)  {
 
 export function getTagColor(tag) {
   switch (tag) {
-    case 'HTML':
-      return 'primary'; // var(--bs-primary)
-    case 'CSS':
-      return 'secondary'; // var(--bs-secondary)
-    case 'Javascript':
-      return 'yellow'; // var(--bs-yellow)
-    case 'PHP':
-      return 'purple'; // var(--bs-purple)
-    case 'Python':
-      return 'green'; // var(--bs-green)
-    case 'Java':
-      return 'orange'; // var(--bs-orange)
-    case 'C++':
-      return 'cyan'; // var(--bs-cyan)
-    case 'C#':
-      return 'teal'; // var(--bs-teal)
-    case 'Ruby':
-      return 'pink'; // var(--bs-pink)
-    case 'React':
-      return 'blue'; // var(--bs-blue)
-    case 'Angular':
-      return 'red'; // var(--bs-red)
-    default:
-      return 'default'; // Default color
+    case 'HTML': return { color: 'blue', tag: 'HTML' };
+    case 'CSS': return { color: 'purple', tag: 'CSS' };
+    case 'Javascript': return { color: 'yellow', tag: 'Javascript' };
+    case 'PHP': return { color: 'red', tag: 'PHP' };
+    case 'Python': return { color: 'green', tag: 'Python' };
+    case 'Java': return { color: 'green', tag: 'Java' };
+    case 'C++': return { color: 'black', tag: 'C++' };
+    case 'C#': return { color: 'gray', tag: 'C#' };
+    case 'Ruby': return { color: 'red', tag: 'Ruby' };
+    case 'React': return { color: 'blue', tag: 'React' };
+    case 'Angular': return { color: 'orange', tag: 'Angular' };
+    case 'Node.js': return { color: 'green', tag: 'Node.js' };
+    case 'Express': return { color: 'gray', tag: 'Express' };
+    case 'MongoDB': return { color: 'green', tag: 'MongoDB' };
+    case 'Vue.js': return { color: 'green', tag: 'Vue.js' };
+    case 'Firebase': return { color: 'orange', tag: 'Firebase' };
+    case 'Tailwind CSS': return { color: 'cyan', tag: 'Tailwind CSS' };
+    case 'Next.js': return { color: 'black', tag: 'Next.js' };
+    case 'Bootstrap': return { color: 'blue', tag: 'Bootstrap' };
+    case 'API': return { color: 'cyan', tag: 'API' };
+    case 'Socket.IO': return { color: 'black', tag: 'Socket.io' };
+    case 'Material UI': return { color: 'blue', tag: 'Material UI' };
+    default: return { color: 'gray', tag: 'default' };
   }
-};
+}

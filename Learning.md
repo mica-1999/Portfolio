@@ -26,6 +26,10 @@ const modifyAndCall = (param) => {
 };
 modifyAndCall(5); // Outputs: 10
 ```
+## JS Methods
+```javascript
+${menu.subMenu.some(subMenu => subMenu.page === currentPath) ? 'show' : ''} // .some checks if an element in the array satisfies a condition
+```
 
 # React
 React uses a syntax extension called JSX, which allows you to write HTML-like code within JavaScript. JSX is different from HTML in several ways:

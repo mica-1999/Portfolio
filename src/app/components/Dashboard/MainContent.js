@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted } from '/src/utils/mainContentUtil';
 import { useSession } from 'next-auth/react';
+import { fetchDataFromApi } from '/src/utils/apiUtils';
 
 export default function MainContent() {
   // Session handling 
@@ -50,20 +51,7 @@ export default function MainContent() {
     localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
   }, [hidden_sections]);
 
-  // Fetch data from the API based on the route and the user ID
-  const fetchDataFromApi = async (route) => {
-    try {
-      const response = await fetch(`${route}?userId=${id}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch data from ${route}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error(`Error fetching data from ${route}:`, error);
-      setError(`Failed to fetch data from ${route}. Please try again later.`);
-      return null; // Return null to indicate failure
-    }
-  };
+
 
   // Runs once when the component is mounted
   useEffect(() => {
@@ -71,7 +59,6 @@ export default function MainContent() {
     // Ensure localStorage is accessed only when available
     if (typeof window !== 'undefined') {
       const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
-      console.log(savedHiddenSections); // Debugging to check if it's empty or null
       if (savedHiddenSections) {
         setHiddenSections(JSON.parse(savedHiddenSections));  // Set state with saved data
       }
@@ -82,10 +69,10 @@ export default function MainContent() {
       setLoading(true);
       try {
         const [balanceData, projects, timeline, users] = await Promise.all([
-          fetchDataFromApi('/api/getBalance'), // Fetch once for balance
-          fetchDataFromApi('/api/getProjects'),
-          fetchDataFromApi('/api/getTimeline'),
-          fetchDataFromApi('/api/getUser'),
+          fetchDataFromApi('/api/getBalance', id), // Fetch once for balance
+          fetchDataFromApi('/api/getProjects', id),
+          fetchDataFromApi('/api/getTimeline', id),
+          fetchDataFromApi('/api/getUser', id),
         ]);
         
         // Set the state with the fetched data

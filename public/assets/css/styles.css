@@ -45,6 +45,42 @@
     --bs-dark: #d7d5ec;
     --bs-gray: rgba(234, 234, 255, 0.06);
 
+    --tagColor-blue-bg: rgba(0, 123, 255, 0.2);
+    --tagColor-blue-text: #007bff;
+    --tagColor-blue-border: #007bff;
+
+    --tagColor-purple-bg: rgba(102, 16, 242, 0.2);
+    --tagColor-purple-text: #6610f2;
+    --tagColor-purple-border: #6610f2;
+
+    --tagColor-yellow-bg: rgba(255, 193, 7, 0.2);
+    --tagColor-yellow-text: #ffc107;
+    --tagColor-yellow-border: #ffc107;
+
+    --tagColor-red-bg: rgba(220, 53, 69, 0.2);
+    --tagColor-red-text: #dc3545;
+    --tagColor-red-border: #dc3545;
+
+    --tagColor-green-bg: rgba(40, 167, 69, 0.2);
+    --tagColor-green-text: #28a745;
+    --tagColor-green-border: #28a745;
+
+    --tagColor-orange-bg: rgba(255, 87, 34, 0.2);
+    --tagColor-orange-text: #ff5722;
+    --tagColor-orange-border: #ff5722;
+
+    --tagColor-cyan-bg: rgba(0, 188, 212, 0.2);
+    --tagColor-cyan-text: #00bcd4;
+    --tagColor-cyan-border: #00bcd4;
+
+    --tagColor-gray-bg: rgba(108, 117, 125, 0.2);
+    --tagColor-gray-text: #6c757d;
+    --tagColor-gray-border: #6c757d;
+
+    --tagColor-black-bg: rgba(33, 37, 41, 0.2);
+    --tagColor-black-text: #212529;
+    --tagColor-black-border: #212529;
+
 }
 
 /* ---------------------------------------------- BODY STYLES ----------------------------------- */
@@ -244,6 +280,19 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
 tbody tr:last-child td {
     border-bottom: none;
 }
+/* Ensure table cells are aligned properly */
+th, td {
+    vertical-align: middle; /* Align content vertically */
+    padding: 0.75rem; /* Adjust padding as needed */
+}
+
+/* Add styles to limit the width of the description and make it wrap to the next line if it exceeds the maximum width */
+.description-cell {
+    max-width: 200px; /* Adjust the max width as needed */
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+}
+
 /* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
 @media (max-width: 1345px) {
     .table-custom, .timeline-custom, .table-custom-2 {
@@ -609,7 +658,7 @@ tbody tr:last-child td {
 
 /* ---------------------------------------------- MANAGE USER STYLES ----------------------------------- */
 .filters select{
-    height: 45px;
+    height: 48px;
     background: transparent;
     color: #D4D5EA;
     border-radius: .5rem;
@@ -645,16 +694,18 @@ tbody tr:last-child td {
     color: var(--primary-text-color);
 }
 .border-bottom{
-    border-bottom: 0.1rem solid #464963 !important; /* Smaller border */
+    border-bottom: 0.09rem solid #7B7C95 !important; /* Smaller border */
 }
 .searchInput{
     width: 215px;
+    height:40px;
     background: transparent;
     border: 0.09rem solid #464963; /* Smaller border */
     color: #D4D5EA; /* Ensure the text color stays #D4D5EA */
 }
 .searchInput::placeholder{
-    color: #D4D5EA;
+    font-size: 0.8125rem;
+    color: #7B7C95;
 }
 .searchInput:focus{
     color : #D4D5EA;
@@ -665,3 +716,54 @@ tbody tr:last-child td {
     background-color: #5C61E6;
     width: 150px;
 }
+.exportBtn,
+.exportBtn:hover{
+    background: transparent;
+    width: 150px;
+    color: #6D788D
+}
+.manageTable {
+    width: 100%;
+}
+
+/* Custom styles for cCheckbox */
+.cCheckbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #B2B3CA;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+    vertical-align: middle; /* Align vertically */
+    margin: 0; /* Remove default margin */
+}
+
+.cCheckbox:checked {
+    background-color: #666cff;
+    border-color: #666cff;
+}
+
+.cCheckbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: #666cff;
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+}
+
+.cCheckbox:hover {
+    border-color: #5c61e6;
+}
+
+
+
+

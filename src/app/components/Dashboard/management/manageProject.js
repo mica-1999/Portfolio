@@ -1,27 +1,30 @@
 "use client";
 import { useEffect, useState } from "react"; 
 import { fetchDataFromApi } from '/src/utils/apiUtils';
-import { getRoleClass } from '/src/utils/mainContentUtil';
+import { getBadgeClass, getTagColor } from "/src/utils/mainContentUtil";
 
-export default function ManageUser() {
-    const ROLES = ["Admin", "Viewer", "Editor", "Author"];
-    const STATUS = ["Active", "Inactive", "Pending", "Suspended"]
-    const THEAD = ['User', 'Email', 'Role', 'Status', 'Last Active'];
-    const [users, setUsers] = useState([]); // Initialize as an empty array
+export default function ManageProject() {
+    const STATUS = ["Completed", "In Progress", "Not Started", "Failed"];
+    const CATEGORIES = ["Web", "Mobile", "Game", "Other"];
+    const TIME_RANGES = ["Last 7 days", "Last 30 days", "Last 6 months", "Last year", "All time"];
+
+    const THEAD = ['Title', 'Description', 'Tags', 'Status', 'Last Active'];
+
+    const [projects, setProjects] = useState([]); // Initialize as an empty array
     const [selectAll, setSelectAll] = useState(false); // State for header checkbox
-    const [selectedUsers, setSelectedUsers] = useState({}); // State for individual checkboxes
+    const [selectedProjects, setSelectedProjects] = useState({}); // State for individual checkboxes
 
     useEffect(() => {
-        const fetchUsers = async () => {
+        const fetchProjects = async () => {
             try {
-                const response = await fetchDataFromApi("/api/getUser");
-                setUsers(response || []);
+                const response = await fetchDataFromApi("/api/getProjects");
+                setProjects(response || []);
             } 
             catch (error) {
                 console.error('Error fetching data:', error);
             } 
         }
-        fetchUsers();    
+        fetchProjects();    
     }, []);
 
     // Handle header checkbox change
@@ -29,23 +32,23 @@ export default function ManageUser() {
         const isChecked = e.target.checked;
         setSelectAll(isChecked);
         // Update all individual checkboxes
-        const updatedSelectedUsers = {};
-        users.forEach((user) => {
-            updatedSelectedUsers[user.username] = isChecked;
+        const updatedSelectedProjects = {};
+        projects.forEach((project) => {
+            updatedSelectedProjects[project.title] = isChecked;
         });
-        setSelectedUsers(updatedSelectedUsers);
+        setSelectedProjects(updatedSelectedProjects);
     };
 
     // Handle individual checkbox change
-    const handleUserCheckboxChange = (username) => {
-        const updatedSelectedUsers = {
-            ...selectedUsers,
-            [username]: !selectedUsers[username],
+    const handleProjectCheckboxChange = (title) => {
+        const updatedSelectedProjects = {
+            ...selectedProjects,
+            [title]: !selectedProjects[title],
         };
-        setSelectedUsers(updatedSelectedUsers);
+        setSelectedProjects(updatedSelectedProjects);
 
         // Check if all checkboxes are selected
-        const allSelected = Object.values(updatedSelectedUsers).every((val) => val);
+        const allSelected = Object.values(updatedSelectedProjects).every((val) => val);
         setSelectAll(allSelected);
     };
 
@@ -60,21 +63,9 @@ export default function ManageUser() {
                         <div className="col-lg-4">
                             <div className="select-wrapper">
                                 <select className="form-select">
-                                    <option key="default" value="">Select a role</option>
-                                    {ROLES.map((role) => (
-                                        <option key={role} value={role}>{role}</option>
-                                        )
-                                    )}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4">
-                            <div className="select-wrapper">
-                                <select className="form-select">
-                                <option key="default" value="">Select a plan</option>
-                                    {STATUS.map((status) => (
-                                        <option key={status} value={status}>{status}</option>
+                                    <option key="default" value="">Select a category</option>
+                                    {CATEGORIES.map((category) => (
+                                        <option key={category} value={category}>{category}</option>
                                         )
                                     )}
                                 </select>
@@ -92,6 +83,18 @@ export default function ManageUser() {
                                 </select>
                             </div>
                         </div>
+
+                        <div className="col-lg-4">
+                            <div className="select-wrapper">
+                                <select className="form-select">
+                                <option key="default" value="">Select a time range</option>
+                                    {TIME_RANGES.map((range) => (
+                                        <option key={range} value={range}>{range}</option>
+                                        )
+                                    )}
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
@@ -100,8 +103,8 @@ export default function ManageUser() {
                                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                             </div>
                             <div className="d-flex gap-3">
-                                <input type="text" className="form-control searchInput" placeholder="Search User" />
-                                <button className="btn btn-primary adduserBtn">Add New User</button>
+                                <input type="text" className="form-control searchInput" placeholder="Search Project" />
+                                <button className="btn btn-primary adduserBtn">Add Project</button>
                             </div>
                         </div>
                     </div>
@@ -119,32 +122,40 @@ export default function ManageUser() {
                                     {THEAD.map((thead) => (
                                     <th key={thead}>{thead}</th>
                                     ))}
-                                    <th>Actions</th>
+                                    <th className="d-flex justify-content-center">Actions</th>
                                 
                                 </tr>
                             </thead>
                             <tbody className="table-content">
-                                {users.map((user) => {
-                                    const { badgeColor, output, color} = getRoleClass(user.role);
+                                {projects.map((project) => {
+                                    const { badgeColor, output} = getBadgeClass(project.state);
                                     return(
-                                        <tr key={user.username}>
+                                        <tr key={project.title}>
                                             <td>
-                                            <input className="cCheckbox" type="checkbox" checked={selectedUsers[user.username] || false} onChange={() => handleUserCheckboxChange(user.username)} />
+                                            <input className="cCheckbox" type="checkbox" checked={selectedProjects[project.title] || false} onChange={() => handleProjectCheckboxChange(project.title)} />
                                             </td>
-                                            <td>
-                                                <span className="d-flex align-items-center gap-2">
-                                                <img src="/assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                                                {user.firstName} {user.lastName}
-                                                </span>
+                                            <td>{project.title}</td>
+                                            <td className="description-cell">{project.description}</td>
+                                            <td><div className="d-flex gap-1">
+                                            {project.tags.map((tag, index) => {
+                                                const { color, tag: tagName } = getTagColor(tag);
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className="badge rounded-pill tag-selection"
+                                                        style={{
+                                                            backgroundColor: `var(--tagColor-${color}-bg)`, // Light background color
+                                                            color: `var(--tagColor-${color}-text)`, // Text color
+                                                            border: `1px solid var(--tagColor-${color}-border)`, // Border matches text color
+                                                        }}
+                                                    >
+                                                        {tagName}
+                                                    </div>
+                                                );
+                                            })}</div>
                                             </td>
-                                            <td>{user.email}</td>
-                                            <td>
-                                                <span className="d-flex align-items-center gap-2">
-                                                <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
-                                                </span>
-                                            </td>
-                                            <td><div className={`badge bg-label-${user.isActive ? 'success' : 'warning'} rounded-pill lh-xs`}>{user.isActive ? 'Active' : 'Inactive'}</div></td>
-                                            <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
+                                            <td><div className={`badge bg-label-${badgeColor} rounded-pill lh-xs`}>{output}</div></td>
+                                            <td>{new Date(project.lastUpdated).toLocaleDateString()}</td>
                                             <td>
                                                 <div className="d-flex gap-2">
                                                     <button className="btn btn-sm btn-info">
@@ -153,11 +164,10 @@ export default function ManageUser() {
                                                     <button className="btn btn-sm btn-primary">
                                                         <i className="ri-edit-line"></i>
                                                     </button>
-                                                    {user.firstName !== "Micael" ? 
+                                                    
                                                     <button className="btn btn-sm btn-danger">
                                                         <i className="ri-delete-bin-line"></i>
                                                     </button>
-                                                    : null}
                                                 </div>
                                             </td>
                                         </tr>

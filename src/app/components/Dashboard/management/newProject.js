@@ -9,19 +9,7 @@ const STATES = [
   { text: "Failed", value: 0 },
 ];
 
-const TAGS_WITH_COLORS = [
-  { tag: "HTML", color: "primary" },
-  { tag: "CSS", color: "primary" },
-  { tag: "Javascript", color: "warning" },
-  { tag: "PHP", color: "danger" },
-  { tag: "Python", color: "success" },
-  { tag: "Java", color: "success" },
-  { tag: "C++", color: "dark" },
-  { tag: "C#", color: "light" },
-  { tag: "Ruby", color: "danger" },
-  { tag: "React", color: "primary" },
-  { tag: "Angular", color: "warning" },
-];
+
 
 export default function Forms() {
   // SINGLE STATE OBJECT FOR FORM DATA
