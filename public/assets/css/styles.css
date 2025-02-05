@@ -594,7 +594,77 @@ tbody tr:last-child td { border-bottom: none; }
 }
 
 .cCheckbox:hover {border-color: #5c61e6;}
+
 /* ----------------------------------------------
    MANAGEMENT TIMELINE COMPONENTS STYLES
 ---------------------------------------------- */
 .projectTimeline{height: 400px; background-color: #3A3F5C;}
+
+.manage-timeline {
+    position: relative;
+    padding-left: 3rem;
+    margin: 0 0 0 30px;
+    color: white;
+}
+.manage-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 35px;
+    width: 4px;
+    height: 96%;
+    background: var(--card-bg-color);
+}
+.manage-timeline .manage-timeline-container {position: relative;margin-bottom: 2.5rem;}
+.manage-timeline .manage-timeline-icon {
+    position: absolute;
+    left: -64px;
+    top: 15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    text-align: center;
+    background: var(--bs-secondary);
+}
+.manage-timeline .manage-timeline-body {
+    background: var(--card-bg-color);
+    border-radius: 0.375rem;
+    padding: 20px 20px 15px;
+    box-shadow: var(--card-box-shadow);
+}
+.manage-timeline .manage-timeline-body::before {
+    content: '';
+    background: inherit;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    left: -10px;
+    transform: rotate(45deg);
+    border-radius: 0 0 0 2px;
+}
+.manage-timeline .manage-timeline-title .badge {
+    background: var(--bs-secondary);
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.manage-timeline .manage-timeline-subtitle {
+    font-weight: 300;
+    font-style: italic;
+    opacity: .4;
+    margin-top: 16px;  
+    font-size: 11px;
+}
+
+.add-event-icon {
+    font-size: 25px;
+    color: var(--bs-white);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.add-event-icon:hover {
+    color: var(--bs-indigo);
+}

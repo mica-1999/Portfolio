@@ -14,6 +14,34 @@ export function getBadgeClass(state) {
     }
 };
 
+// GETS THE EVENT COLOR BASED ON THE STATUS
+export function getEventColor(status) {
+  switch (status.toLowerCase()) {
+    case 'planned':
+      return 'var(--bs-blue)';
+    case 'in progress':
+      return 'var(--bs-green)';
+    case 'delayed':
+      return 'var(--bs-orange)';
+    case 'on hold':
+      return 'var(--bs-yellow)';
+    case 'completed':
+      return 'var(--badge-success-bg)';
+    case 'cancelled':
+      return 'var(--bs-red)';
+    case 'failed':
+      return 'var(--badge-danger-bg)';
+    case 'under review':
+      return 'var(--bs-purple)';
+    case 'awaiting approval':
+      return 'var(--bs-cyan)';
+    case 'archived':
+      return 'var(--bs-gray-dark)';
+    default:
+      return 'var(--bs-gray-dark)'; // Default if status is unknown
+  }
+};
+
 // GETS THE ROLE BADGE COLOR AND OUTPUT TEXT OF THE USERS
 export function getRoleClass(role) {
     switch (role) {
