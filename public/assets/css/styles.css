@@ -1,16 +1,25 @@
-/* ---------------------------------------------- ROOT VARIABLES ----------------------------------- */
+/* ----------------------------------------------
+   ROOT STYLES
+---------------------------------------------- */
 :root {
+    /* Primary Colors */
     --primary-bg-color: #282A42;
     --primary-text-color: #d7d8ed;
     --secondary-text-color: #9698af;
+
+    /* Card Styles */
     --card-bg-color: #30334e;
     --card-border-color: #464963;
     --card-box-shadow: 0 0.25rem 0.875rem 0 rgba(16, 17, 33, 0.26);
     --card-border-radius: 0.625rem;
     --card-padding-y: 0.65rem;
     --card-padding-x: 0.65rem;
+
+    /* Font Settings */
     --bs-font-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     --bs-body-font-size: 0.9375rem;
+
+    /* Badge Colors */
     --badge-success-bg: #3b4f48;
     --badge-success-color: #72e128;
     --badge-warning-bg: #514848;
@@ -19,6 +28,8 @@
     --badge-secondary-color: #6d788d;
     --badge-danger-bg: #51374d;
     --badge-danger-color: #ff4d49;
+
+    /* Bootstrap Colors */
     --bs-blue: #26c6f9;
     --bs-indigo: #666cff;
     --bs-purple: #6f42c1;
@@ -45,45 +56,39 @@
     --bs-dark: #d7d5ec;
     --bs-gray: rgba(234, 234, 255, 0.06);
 
+    /* Tag Colors */
     --tagColor-blue-bg: rgba(0, 123, 255, 0.2);
     --tagColor-blue-text: #007bff;
     --tagColor-blue-border: #007bff;
-
     --tagColor-purple-bg: rgba(102, 16, 242, 0.2);
     --tagColor-purple-text: #6610f2;
     --tagColor-purple-border: #6610f2;
-
     --tagColor-yellow-bg: rgba(255, 193, 7, 0.2);
     --tagColor-yellow-text: #ffc107;
     --tagColor-yellow-border: #ffc107;
-
     --tagColor-red-bg: rgba(220, 53, 69, 0.2);
     --tagColor-red-text: #dc3545;
     --tagColor-red-border: #dc3545;
-
     --tagColor-green-bg: rgba(40, 167, 69, 0.2);
     --tagColor-green-text: #28a745;
     --tagColor-green-border: #28a745;
-
     --tagColor-orange-bg: rgba(255, 87, 34, 0.2);
     --tagColor-orange-text: #ff5722;
     --tagColor-orange-border: #ff5722;
-
     --tagColor-cyan-bg: rgba(0, 188, 212, 0.2);
     --tagColor-cyan-text: #00bcd4;
     --tagColor-cyan-border: #00bcd4;
-
     --tagColor-gray-bg: rgba(108, 117, 125, 0.2);
     --tagColor-gray-text: #6c757d;
     --tagColor-gray-border: #6c757d;
-
     --tagColor-black-bg: rgba(33, 37, 41, 0.2);
     --tagColor-black-text: #212529;
     --tagColor-black-border: #212529;
-
 }
 
-/* ---------------------------------------------- BODY STYLES ----------------------------------- */
+/* ----------------------------------------------
+   GLOBAL STYLES
+---------------------------------------------- */
 html {
     color-scheme: dark;
 }
@@ -94,11 +99,14 @@ body {
     font-family: var(--bs-font-sans-serif);
     font-size: var(--bs-body-font-size);
 }
-.row>* {
+
+.row > * {
     margin-top: 0.5rem;
 }
 
-/* ---------------------------------------------- SIDEBAR STYLES ----------------------------------- */
+/* ----------------------------------------------
+   SIDEBAR STYLES
+---------------------------------------------- */
 .main-menu a {
     color: var(--primary-text-color);
     position: relative;
@@ -118,7 +126,7 @@ a.posts::before,
 a.dashboard::before,
 a.blog::before,
 .menu-item a.management::before,
-a.main::before { /* Add the management and main classes here */
+a.main::before {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     position: absolute;
@@ -139,8 +147,8 @@ a.users::before { content: "\f0c0"; }
 a.posts::before { content: "\f044"; }
 a.dashboard::before { content: "\f0e4"; }
 a.blog::before { content: "\f02d"; }
-.menu-item a.management::before { content: "\f0c0"; } /* Add the icon for the management class */
-a.main::before { content: "\f015"; } /* Add the icon for the main class */
+.menu-item a.management::before { content: "\f0c0"; }
+a.main::before { content: "\f015"; }
 
 .menu-item > a::after {
     content: "\f105";
@@ -161,17 +169,13 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
     transform: translateY(-50%);
 }
 
-.nav-link:hover,
-.nav-link:focus,
-.nav-link[aria-expanded="true"] {
+.nav-link:hover, .nav-link:focus, .nav-link[aria-expanded="true"] {
     background-color: #373951;
     color: inherit !important;
     margin-bottom: 1px;
 }
 
-.nav-link {
-    border-radius: 13px;
-}
+.nav-link { border-radius: 13px; }
 
 .menu-header .menu-header-text {
     padding-left: 5px;
@@ -205,16 +209,16 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
     color: inherit !important;
 }
 
-/* ---------------------------------------------- CARD STYLES ----------------------------------- */
+/* ----------------------------------------------
+   CARD STYLES
+---------------------------------------------- */
 .card {
     margin-top: 0.75rem;
     padding: var(--card-padding-y) var(--card-padding-x);
     --bs-card-title-spacer-y: 0.875rem;
     --bs-card-cap-padding-y: var(--card-padding-y);
     --bs-card-cap-padding-x: var(--card-padding-x);
-    --bs-card-inner-border-radius: var(--card-border-radius);
-    --bs-card-border-width: 0;
-    --bs-card-border-color: var(--card-border-color);
+    --bs-card-border-width: 0; /* Also looks good without this */
     --bs-card-border-radius: var(--card-border-radius);
     --bs-card-box-shadow: var(--card-box-shadow);
     --bs-card-title-color: var(--primary-text-color);
@@ -229,6 +233,7 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
     color: var(--primary-text-color);
 }
 
+
 /* General styles for .col-lg-6 inside .sessions and .ratings */
 .sessions .col-lg-6,
 .ratings .col-lg-6 {
@@ -236,24 +241,25 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
     width: 50%; /* Default behavior: Set to 50% width */
 }
 
-/* ---------------------------------------------- TABLE STYLES ----------------------------------- */
+/* ----------------------------------------------
+   GENERAL TABLE STYLES
+---------------------------------------------- */
 .table thead tr th {
     padding-block: 1.426rem;
     font-size: .8125rem;
-    letter-spacing: .2px;
     text-transform: uppercase;
     color: #d7d8ed !important;
 }
-.border-top {
-    border-top: 1px solid #464963 !important;
-}
-.table-content td{
-    color: #b2b3ca;
-    padding-block: 1.426rem;
-}
+.table-content td { color: #b2b3ca; padding-block: 1.426rem; }
+th, td { vertical-align: middle;  padding: 0.75rem;}
+.border-top {border-top: 1px solid #464963 !important; }
+tbody tr:last-child td { border-bottom: none; }
+.table-sm>:not(caption)>*>* { padding: 1.426rem 1.25rem; }
 
-/* CHANGES FOR DIFFERENT TABLES */
-/* PROJECT TABLE STYLES */
+/* ----------------------------------------------
+   PROJECT TABLE STYLES
+---------------------------------------------- */
+.project-table { max-height: 350px; }
 .project-table tr,
 .project-table th,
 .project-table td {
@@ -261,11 +267,9 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
     border-bottom: 1px solid #464963;
 }
 
-/* PROJECT TABLE STYLES */
-.project-table {
-    max-height: 350px; /* Set the maximum height */
-}
-/* USER TABLE STYLES */ 
+/* ----------------------------------------------
+   USER TABLE STYLES
+---------------------------------------------- */
 .user-table td {
     background-color: transparent !important;
     border-bottom: 1px solid #464963;
@@ -274,26 +278,26 @@ a.main::before { content: "\f015"; } /* Add the icon for the main class */
     background-color: #3A3E5B;
     border-bottom: 1px solid #464963;
 }
-.table-sm>:not(caption)>*>* {
-    padding: 1.426rem 1.25rem;
+.profile-icon-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
-tbody tr:last-child td {
-    border-bottom: none;
-}
-/* Ensure table cells are aligned properly */
-th, td {
-    vertical-align: middle; /* Align content vertically */
-    padding: 0.75rem; /* Adjust padding as needed */
-}
-
-/* Add styles to limit the width of the description and make it wrap to the next line if it exceeds the maximum width */
+.ri-22px{font-size: 22px;}
+/* ----------------------------------------------
+   DESCRIPTION CELL IN TABLE STYLES
+---------------------------------------------- */
 .description-cell {
-    max-width: 200px; /* Adjust the max width as needed */
-    white-space: normal; /* Allow text to wrap */
-    word-wrap: break-word; /* Break long words */
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
-/* ---------------------------------------------- MEDIA QUERIES ----------------------------------- */
+/* ----------------------------------------------
+   MEDIA QUERIES
+---------------------------------------------- */
+
+/* Screens ≤ 1345px */
 @media (max-width: 1345px) {
     .table-custom, .timeline-custom, .table-custom-2 {
         flex: 0 0 100%;
@@ -308,6 +312,7 @@ th, td {
     }
 }
 
+/* Screens ≤ 1227px */
 @media (max-width: 1227px) {
     .responsive-action {
         display: none !important;
@@ -328,6 +333,7 @@ th, td {
     }
 }
 
+/* Screens ≤ 1070px */
 @media (max-width: 1070px) {
     .balance {
         flex: 0 0 100%;
@@ -338,136 +344,111 @@ th, td {
         max-width: 50%;
     }
 }
-@media (max-width: 765px){
-    .footer-links-section{
+/* Screens ≤ 765px */
+@media (max-width: 765px) {
+    .footer-links-section {
         justify-content: center !important;
     }
     .footer-link {
         display: none !important;
     }
-    
+    .dropdown-menu {
+        right: auto;
+        left: 0;
+    }
 }
 
-@media (max-width: 575px){
+/* Screens ≤ 575px */
+@media (max-width: 575px) {
     .ratings, .sessions {
         flex: 0 0 100% !important;
         max-width: 100% !important;
     }
 }
 
-/* ---------------------------------------------- SCROLLBAR STYLES ----------------------------------- */
-.overflow-auto::-webkit-scrollbar {
-    width: 13px;
-}
-
-.overflow-auto::-webkit-scrollbar-track {
-    background: var(--primary-bg-color);
-}
-.overflow-auto {
-    scrollbar-gutter: stable;
-}
-
+/* ----------------------------------------------
+   SCROLLBAR STYLES
+---------------------------------------------- */
+.overflow-auto::-webkit-scrollbar {width: 13px;}
+.overflow-auto::-webkit-scrollbar-track {background: var(--primary-bg-color);}
+.overflow-auto {scrollbar-gutter: stable;}
 .overflow-auto::-webkit-scrollbar-thumb {
     background-color: var(--card-border-color);
     border-radius: 10px;
     border: 3px solid var(--primary-bg-color);
     transition: 0.8s ease;
 }
+.overflow-auto::-webkit-scrollbar-thumb:hover {background-color: #B2B3C7;}
 
-.overflow-auto::-webkit-scrollbar-thumb:hover {
-    background-color: #B2B3C7;
-}
-
-/* ---------------------------------------------- PROFILE ICON ----------------------------------- */
+/* ----------------------------------------------
+   HEADER COMPONENT STYLES
+---------------------------------------------- */
 .profile-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
 }
-
-.profile-icon-small {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
-
-/* ---------------------------------------------- ICON SIZES ----------------------------------- */
-.fa-lg {
-    font-size: 1.5rem;
-}
-
-/* ---------------------------------------------- SEARCH LINK ----------------------------------- */
 .search-link {
     color: var(--primary-text-color);
     text-decoration: none;
 }
-.search-link:hover {
-    cursor: pointer;
+.search-link:hover {cursor: pointer;}
+
+.profile-section a {color: var(--primary-text-color);text-decoration: none;}
+.profile-section a .fa-youtube:hover {color: red;}
+.profile-section a .fa-github:hover {color: black;}
+.profile-section .fa-arrows-rotate:hover {cursor: pointer;color: green;}
+.profile-section .fa-bell:hover {cursor: pointer;color: yellow;}
+
+.dropdown-menu {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-box-shadow);
+    min-width: 200px;
+    right: 0;
+    left: auto;
+}
+.dropdown-item {color: var(--primary-text-color);padding: var(--card-padding-y) var(--card-padding-x);}
+.dropdown-item:hover:not(.logout-btn),
+.dropdown-item:focus:not(.logout-btn) {
+    background-color: #373951;
+    color: #d7d8ed;
+}
+.dropdown-header {padding: var(--card-padding-y) var(--card-padding-x);}
+.dropdown-divider {margin: 0;border-top: 1px solid var(--card-border-color);}
+.logout-btn,
+.logout-btn:hover {
+    background-color: var(--bs-red);
+    color: #d7d8ed;
 }
 
-/* ---------------------------------------------- SMALL BOXES ----------------------------------- */
-.euro-icon {
-    color: #666CFF;
-}
-.small-box {
-    background-color: #393C6A;
+/* ----------------------------------------------
+   MAIN COMPONENT STYLES
+---------------------------------------------- */
+.fa-lg {font-size: 1.5rem;}
+
+.euro-icon {color: #666CFF;}
+
+.small-box, .small-box-received, .small-box-third {
     padding: 0.7rem;
     border-radius: 0.4rem;
     width: 40px;
     height: 40px;
 }
-.balance-received-icon {
-    color: var(--badge-danger-color) !important;
-}
+.small-box {background-color: #393C6A;}
+.small-box-received {background-color: var(--badge-danger-bg) !important;}
+.balance-received-icon {color: var(--badge-danger-color) !important;}
+.small-box-third {background-color: var(--badge-success-bg) !important;}
+.third-icon {color: var(--badge-success-color) !important;}
 
-.small-box-received {
-    background-color: var(--badge-danger-bg) !important;
-    padding: 0.7rem;
-    border-radius: 0.4rem;
-    width: 40px;
-    height: 40px;
-}
+.bg-label-primary {background-color: #393c6a !important;color: #666cff !important;}
+.bg-label-success {background-color: var(--badge-success-bg) !important;color: var(--badge-success-color) !important;}
+.bg-label-warning {background-color: var(--badge-warning-bg) !important;color: var(--badge-warning-color) !important;}
+.bg-label-secondary {background-color: var(--badge-secondary-bg) !important;color: var(--badge-secondary-color) !important;}
+.bg-label-danger {background-color: var(--badge-danger-bg) !important;color: var(--badge-danger-color) !important;}
 
-.third-icon {
-    color: var(--badge-success-color) !important;
-}
-
-.small-box-third {
-    background-color: var(--badge-success-bg) !important;
-    padding: 0.7rem;
-    border-radius: 0.4rem;
-    width: 40px;
-    height: 40px;
-}
-
-/* ---------------------------------------------- BADGES ----------------------------------- */
-.bg-label-primary {
-    background-color: #393c6a !important;
-    color: #666cff !important;
-}
-
-.bg-label-success {
-    background-color: var(--badge-success-bg) !important;
-    color: var(--badge-success-color) !important;
-}
-
-.bg-label-warning {
-    background-color: var(--badge-warning-bg) !important;
-    color: var(--badge-warning-color) !important;
-}
-
-.bg-label-secondary {
-    background-color: var(--badge-secondary-bg) !important;
-    color: var(--badge-secondary-color) !important;
-}
-
-.bg-label-danger {
-    background-color: var(--badge-danger-bg) !important;
-    color: var(--badge-danger-color) !important;
-}
-
-/* ---------------------------------------------- TIMELINE STYLES ----------------------------------- */
 .timeline {
     position: relative;
     height: 100%;
@@ -493,170 +474,47 @@ th, td {
     border-radius: 50%;
     box-shadow: 0 0 0 10px #30334e;
 }
-.timeline .timeline-item .timeline-point-primary {
-    background-color: var(--bs-primary);
-}
-.timeline .timeline-item .timeline-point-success {
-    background-color: var(--bs-success);
-}
-.timeline .timeline-item .timeline-point-warning {
-    background-color: var(--bs-warning);
-}
-.timeline .timeline-item .timeline-point-danger {
-    background-color: var(--bs-danger);
-}
-.timeline .timeline-item .timeline-point-info {
-    background-color: var(--bs-info);
-}
-.timeline .timeline-item .timeline-point-secondary {
-    background-color: var(--bs-secondary);
-}
-.timeline .timeline-item .timeline-point-light {
-    background-color: var(--bs-light);
-}
-.timeline .timeline-item .timeline-point-dark {
-    background-color: var(--bs-dark);
-}
+.timeline .timeline-item .timeline-point-primary {background-color: var(--bs-primary);}
+.timeline .timeline-item .timeline-point-success {background-color: var(--bs-success);}
+.timeline .timeline-item .timeline-point-warning {background-color: var(--bs-warning);}
+.timeline .timeline-item .timeline-point-danger {background-color: var(--bs-danger);}
+.timeline .timeline-item .timeline-point-info {background-color: var(--bs-info);}
+.timeline .timeline-item .timeline-point-secondary {background-color: var(--bs-secondary);}
+.timeline .timeline-item .timeline-point-light {background-color: var(--bs-light);}
+.timeline .timeline-item .timeline-point-dark {background-color: var(--bs-dark);}
+
 .timeline .timeline-item .timeline-event {
     position: relative;
     width: 100%;
     min-height: 4rem;
     border-radius: .375rem;
 }
-.timeline-event p {
-    color: #b2b3ca;
-}
+.timeline-event p {color: #b2b3ca;}
 .timeline .timeline-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
 }
-.text-muted {
-    --bs-text-opacity: 1;
-    color: #7b7c95 !important;
-}
+.text-muted {--bs-text-opacity: 1;color: #7b7c95 !important;}
 
-/* ---------------------------------------------- FOOTER STYLES ----------------------------------- */
-.footer-links-section a {
-    color: #666cff;
-    text-decoration: none;
-}
+.blur_element:not(.ri-eye-off-line){filter: blur(5px);transition: filter 0.3s ease;}
 
-/* ---------------------------------------------- ROLE ICON STYLES ----------------------------------- */
-.ri-22px{
-    font-size: 22px;
-}
-/* ---------------------------------------------- PROFILE SECTION STYLES ----------------------------------- */
-.profile-section a {
-    color: var(--primary-text-color);
-    text-decoration: none;
-}
-.profile-section a .fa-youtube:hover {
-    color: red;
-}
-.profile-section a .fa-github:hover {
-    color: black;
-}
-.profile-section .fa-arrows-rotate:hover {
-    cursor: pointer;
-    color: green;
-}
-.profile-section .fa-bell:hover {
-    cursor: pointer;
-    color: yellow;
-}
+/* ----------------------------------------------
+   FOOTER COMPONENT STYLES
+---------------------------------------------- */
+.footer-links-section a {color: #666cff;text-decoration: none;}
 
-/* ---------------------------------------------- FORM PAGE ----------------------------------- */
-.form-n1{
-    width: 230px;
-    height: 40px;
-}
-.form-n2{
-    width: 92%;
-    height: 40px;
-}
+/* ----------------------------------------------
+   GENERAL PURPOSE STYLES
+---------------------------------------------- */
+.remove-decor{text-decoration: none;}
+.pointer{cursor: pointer;}
+.border-bottom{border-bottom: 0.09rem solid #7B7C95 !important;}
 
-.insert-menu{
-    box-shadow: 0 .125rem .375rem 0 rgba(16, 17, 33, .2);
-    background-color: #666cff !important; 
-    border-radius: 0.5rem !important;
-    width: 180px !important;
-    height: 40px;
-}
-
-/* ---------------------------------------------- GENERAL ----------------------------------- */
-.remove-decor{
-    text-decoration: none;
-}
-.tag-div{
-    width: 97%;
-}
-.tag-selection{
-    cursor: pointer;
-}
-.selected{
-    border: 2px solid;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
-    transition: all 0.1s ease;
-}
-.pointer{
-    cursor: pointer;
-}
-
-
-/* BLUR CARDS */
-.blur_element:not(.ri-eye-off-line){
-    filter: blur(5px); /* Apply a blur effect */
-    transition: filter 0.3s ease; /* Optional: add a smooth transition */
-}
-
-/* ---------------------------------------------- DROPDOWN MENU PROFILE ----------------------------------- */
-.dropdown-menu {
-    background-color: var(--card-bg-color);
-    border: 1px solid var(--card-border-color);
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--card-box-shadow);
-    min-width: 200px;
-    right: 0;
-    left: auto;
-}
-
-.dropdown-item {
-    color: var(--primary-text-color);
-    padding: var(--card-padding-y) var(--card-padding-x);
-}
-
-.dropdown-item:hover:not(.logout-btn),
-.dropdown-item:focus:not(.logout-btn) {
-    background-color: #373951;
-    color: #d7d8ed;
-}
-
-.dropdown-header {
-    padding: var(--card-padding-y) var(--card-padding-x);
-}
-
-.dropdown-divider {
-    margin: 0;
-    border-top: 1px solid var(--card-border-color);
-}
-
-.logout-btn,
-.logout-btn:hover {
-    background-color: var(--bs-red);
-    color: #d7d8ed;
-}
-
-@media (max-width: 768px) {
-    .dropdown-menu {
-        right: auto;
-        left: 0;
-    }
-}
-
-
-/* ---------------------------------------------- MANAGE USER STYLES ----------------------------------- */
+/* ----------------------------------------------
+   MANAGEMENT COMPONENTS STYLES
+---------------------------------------------- */
 .filters select{
     height: 48px;
     background: transparent;
@@ -665,25 +523,16 @@ th, td {
     background-color: rgba(0, 0, 0, 0);
     border: 0.09rem solid #464963; /* Smaller border */
 }
-.filters select option{
-    background: #30334E;
-    color: #D4D5EA;
-}
-
-/* Styles for select inputs with arrow */
-.select-wrapper {
-    position: relative;
-}
-
+.filters select option{background: #30334E;color: #D4D5EA;}
+.select-wrapper {position: relative;}
 .select-wrapper select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    padding-right: 30px; /* Space for the arrow */
+    padding-right: 30px;
 }
-
 .select-wrapper::after {
-    content: "\f078"; /* Font Awesome down arrow */
+    content: "\f078";
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     position: absolute;
@@ -693,9 +542,6 @@ th, td {
     pointer-events: none;
     color: var(--primary-text-color);
 }
-.border-bottom{
-    border-bottom: 0.09rem solid #7B7C95 !important; /* Smaller border */
-}
 .searchInput{
     width: 215px;
     height:40px;
@@ -703,30 +549,21 @@ th, td {
     border: 0.09rem solid #464963; /* Smaller border */
     color: #D4D5EA; /* Ensure the text color stays #D4D5EA */
 }
-.searchInput::placeholder{
-    font-size: 0.8125rem;
-    color: #7B7C95;
-}
+.searchInput::placeholder{font-size: 0.8125rem;color: #7B7C95;}
 .searchInput:focus{
     color : #D4D5EA;
     background: transparent;
     outline: none;
 }
-.adduserBtn{
-    background-color: #5C61E6;
-    width: 150px;
-}
+
+.addBtn{background-color: #5C61E6;width: 150px;}
 .exportBtn,
 .exportBtn:hover{
     background: transparent;
     width: 150px;
     color: #6D788D
 }
-.manageTable {
-    width: 100%;
-}
 
-/* Custom styles for cCheckbox */
 .cCheckbox {
     appearance: none;
     -webkit-appearance: none;
@@ -743,11 +580,7 @@ th, td {
     margin: 0; /* Remove default margin */
 }
 
-.cCheckbox:checked {
-    background-color: #666cff;
-    border-color: #666cff;
-}
-
+.cCheckbox:checked {background-color: #666cff;border-color: #666cff;}
 .cCheckbox:checked::after {
     content: '';
     position: absolute;
@@ -760,56 +593,8 @@ th, td {
     transform: translate(-50%, -50%);
 }
 
-.cCheckbox:hover {
-    border-color: #5c61e6;
-}
-/* ---------------------------------------------- TIMELINE STYLES ----------------------------------- */
-.hori-timeline .events {
-    border-top: 3px solid #e9ecef;
-}
-.hori-timeline .events .event-list {
-    display: block;
-    position: relative;
-    text-align: center;
-    padding-top: 70px;
-    margin-right: 0;
-}
-.hori-timeline .events .event-list:before {
-    content: "";
-    position: absolute;
-    height: 36px;
-    border-right: 2px dashed #dee2e6;
-    top: 0;
-}
-.hori-timeline .events .event-list .event-date {
-    position: absolute;
-    top: 38px;
-    left: 0;
-    right: 0;
-    width: 75px;
-    margin: 0 auto;
-    border-radius: 4px;
-    padding: 2px 4px;
-}
-@media (min-width: 1140px) {
-    .hori-timeline .events .event-list {
-        display: inline-block;
-        width: 24%;
-        padding-top: 45px;
-    }
-    .hori-timeline .events .event-list .event-date {
-        top: -12px;
-    }
-}
-.bg-soft-primary {
-    background-color: rgba(64,144,203,.3)!important;
-}
-.bg-soft-success {
-    background-color: rgba(71,189,154,.3)!important;
-}
-.bg-soft-danger {
-    background-color: rgba(231,76,94,.3)!important;
-}
-.bg-soft-warning {
-    background-color: rgba(249,213,112,.3)!important;
-}
+.cCheckbox:hover {border-color: #5c61e6;}
+/* ----------------------------------------------
+   MANAGEMENT TIMELINE COMPONENTS STYLES
+---------------------------------------------- */
+.projectTimeline{height: 400px; background-color: #3A3F5C;}

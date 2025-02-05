@@ -104,14 +104,14 @@ export default function ManageProject() {
                             </div>
                             <div className="d-flex gap-3">
                                 <input type="text" className="form-control searchInput" placeholder="Search Project" />
-                                <button className="btn btn-primary adduserBtn">Add Project</button>
+                                <button className="btn btn-primary addBtn">Add Project</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="card-body d-flex  flex-wrap p-0 mb-4">
-                    <div className="table-responsive text-nowrap user-table manageTable">
+                    <div className="table-responsive text-nowrap user-table manageTable w-100">
                         <table className="table table-sm mb-0">
                             <thead className="table-head">
                                 <tr style={{ backgroundColor: '#3A3E5B' }}>

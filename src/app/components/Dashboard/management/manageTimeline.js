@@ -91,52 +91,62 @@ export default function ManageProject() {
                     </div>
                 </div>
 
-                <div className="card-body p-0 pt-4">
-                    <h4 className="card-title mb-5 ms-4">Project #1</h4>
+                <div className="card-body p-0 p-4">
+                    <div className="row d-flex align-items-center p-2">
+                        <div className="col-lg-6">
+                            <div className="card projectTimeline">                    
+                                <div className="card-header">
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <h5 className="card-title">Project Name</h5>
+                                    </div>
+                                    <h6 className="card-subtitle mb-2">ID #</h6>
+                                </div>
+                                <div className="card-body">
 
-                    <div className="hori-timeline ps-2 pe-2" dir="ltr">
-                        <ul className="list-inline events pt-5">
-                            <li className="list-inline-item event-list">
-                                <div className="">
-                                    <div className="event-date bg-soft-primary text-primary">2 June</div>
-                                    <h5 className="font-size-16">Event One</h5>
-                                    <p className="text-muted"></p>
-                                    <div>
-                                        <a href="#" className="btn btn-primary btn-sm">Read more</a>
+
+                                <div class="timeline">
+                                    <div class="timeline-container primary">
+                                        <div class="timeline-icon">
+                                            <i class="far fa-grin-wink"></i>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <h4 class="timeline-title"><span class="badge">Primary</span></h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
+                                            <p class="timeline-subtitle">1 Hours Ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-container danger">
+                                        <div class="timeline-icon">
+                                            <i class="far fa-grin-hearts"></i>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <h4 class="timeline-title"><span class="badge">Danger</span></h4>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam necessitatibus numquam earum ipsa fugiat veniam suscipit, officiis repudiandae, eum recusandae neque dignissimos. Cum fugit laboriosam culpa, repellendus esse commodi deserunt.</p>
+                                            <p class="timeline-subtitle">2 Hours Ago</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li className="list-inline-item event-list">
-                                <div className="">
-                                    <div className="event-date bg-soft-success text-success">5 June</div>
-                                    <h5 className="font-size-16">Event Two</h5>
-                                    <p className="text-muted"></p>
-                                    <div>
-                                        <a href="#" className="btn btn-primary btn-sm">Read more</a>
-                                    </div>
+
+
                                 </div>
-                            </li>
-                            <li className="list-inline-item event-list">
-                                <div className="">
-                                    <div className="event-date bg-soft-danger text-danger">7 June</div>
-                                    <h5 className="font-size-16">Event Three</h5>
-                                    <p className="text-muted"></p>
-                                    <div>
-                                        <a href="#" className="btn btn-primary btn-sm">Read more</a>
+                            </div>
+                        </div>
+                        <div className="col-lg-6">
+                            <div className="card projectTimeline">                    
+                            <div className="card-header">
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <h5 className="card-title">Project Name</h5>
                                     </div>
+                                    <h6 className="card-subtitle mb-2">ID #</h6>
                                 </div>
-                            </li>
-                            <li className="list-inline-item event-list">
-                                <div className="">
-                                    <div className="event-date bg-soft-warning text-warning">8 June</div>
-                                    <h5 className="font-size-16">Event Four</h5>
-                                    <p className="text-muted"></p>
-                                    <div>
-                                        <a href="#" className="btn btn-primary btn-sm">Read more</a>
-                                    </div>
+                                <div className="card-body">
+                                    
+
+
                                 </div>
-                            </li>
-                        </ul>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
