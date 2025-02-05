@@ -594,6 +594,70 @@ tbody tr:last-child td { border-bottom: none; }
 }
 
 .cCheckbox:hover {border-color: #5c61e6;}
+/* ----------------------------------------------
+   MANAGEMENT USER COMPONENTS STYLES
+---------------------------------------------- */
+.add-user-form {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100%;
+    background-color: #30334E;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.add-user-form.show {
+    transform: translateX(0);
+}
+
+.add-user-form .form-container {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.add-user-form .form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    color: #D4D5EA;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background: transparent;
+}
+.sInput{
+    background-color: transparent;
+    height: 48px;
+    color: #D4D5EA;
+    border: 1px solid #595b75;
+}
+.sInput:focus{
+    border-color: #666CFF;
+    background-color: transparent;
+    color: #D4D5EA;
+}
+.sInput:hover{border-color: #9FA1B8;}
+.sInput::placeholder{color: transparent;}
+.sInput:focus::placeholder {color: #73758E;}
+.addItem{
+    width: 100px;
+    color: #fff;
+    background-color: #666cff;
+    border-color: #666cff;
+}
+.cancelItem{
+    width: 100px;
+    color: #6d788d;
+    border-color: #6d788d;
+    background: rgba(0, 0, 0, 0);
+}
+
 
 /* ----------------------------------------------
    MANAGEMENT TIMELINE COMPONENTS STYLES

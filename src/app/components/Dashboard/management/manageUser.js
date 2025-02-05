@@ -7,9 +7,10 @@ export default function ManageUser() {
     const ROLES = ["Admin", "Viewer", "Editor", "Author"];
     const STATUS = ["Active", "Inactive", "Pending", "Suspended"]
     const THEAD = ['User', 'Email', 'Role', 'Status', 'Last Active'];
-    const [users, setUsers] = useState([]); // Initialize as an empty array
-    const [selectAll, setSelectAll] = useState(false); // State for header checkbox
-    const [selectedUsers, setSelectedUsers] = useState({}); // State for individual checkboxes
+    const [users, setUsers] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
+    const [selectedUsers, setSelectedUsers] = useState({});
+    const [addUserDiv, setAddUserDiv] = useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -50,6 +51,7 @@ export default function ManageUser() {
     };
 
     return(
+        
         <div className="d-flex col-lg-12 mt-4">
             <div className="card flex-grow-1 p-0" >
                 <div className="card-header filters">
@@ -101,7 +103,7 @@ export default function ManageUser() {
                             </div>
                             <div className="d-flex gap-3">
                                 <input type="text" className="form-control searchInput" placeholder="Search User" />
-                                <button className="btn btn-primary addBtn">Add New User</button>
+                                <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add New User</button>
                             </div>
                         </div>
                     </div>
@@ -167,6 +169,37 @@ export default function ManageUser() {
                         </table>
                     </div>
                 </div>  
+            </div>
+
+            {/* Add New User form sliding in from the right */}
+            <div className={`add-user-form ${addUserDiv ? 'show' : ''}`}>
+                <div className="form-container d-flex flex-column mt-2">
+                    <div className="d-flex justify-content-between bottom-border">
+                        <h5>Add User</h5>
+                        <button className="btn-close" onClick={() => setAddUserDiv(false)}></button>
+                    </div>
+                    <hr></hr>
+                    <form className="d-flex flex-column mt-3">
+                        {/* Form fields */}
+                        <div className="form-group">
+                            <label htmlFor="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="Insert Name" className="form-control sInput" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Insert Name" className="form-control sInput" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input type="email" id="email" placeholder="Insert Email" className="form-control sInput" />
+                        </div>
+                        {/* Additional fields for role, status, etc. */}
+                        <div className="d-flex mt-2 gap-3">
+                            <button type="submit" className="btn  addItem">Submit</button>
+                            <button type="button" className="btn cancelItem" onClick={() => setAddUserDiv(false)}>Cancel</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
