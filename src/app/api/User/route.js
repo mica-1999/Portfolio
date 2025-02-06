@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import User from "/src/models/User";
 import dbConnect from "/src/utils/dbConnect";
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import { getRandUserPassword } from "/src/utils/apiUtils"
+
+const hashPassword = async (password) => {
+    return await bcrypt.hash(password, 10);
+}
 
 export async function GET() {
     await dbConnect();
@@ -33,16 +39,21 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Invalid phone number' }, { status: 400 });
   }
   
+  const { username, password } = getRandUserPassword(firstName, lastName);
+  console.log(username, password);
+  const genPassword = await hashPassword(password);
+
   try {
     const projects = Array.isArray(linkedProject) ? linkedProject.map(project => mongoose.Types.ObjectId(project)) : [];
     const newUser = new User({
-        username: 'default',
-        password: 'Vermelho123_',
+        username: username,
+        password: genPassword,
         firstName: firstName,
         lastName: lastName,
         email: email,
         phone: phone,
         role: role,
+        isActive: 'active',
         projects: projects
     });
 

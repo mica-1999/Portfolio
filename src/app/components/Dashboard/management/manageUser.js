@@ -1,15 +1,22 @@
 "use client";
 import { useEffect, useState } from "react"; 
 import { fetchDataFromApi } from '/src/utils/apiUtils';
-import { getRoleClass } from '/src/utils/mainContentUtil';
+import { getRoleClass, getActiveColor } from '/src/utils/mainContentUtil';
 
 export default function ManageUser() {
     const ROLES = ["Admin", "Viewer", "Editor", "Author"];
-    const STATUS = ["Active", "Inactive", "Pending", "Suspended"]
     const THEAD = ['User', 'Email', 'Role', 'Status', 'Last Active'];
+    const STATUS = ["Active", "Inactive", "Pending", "Suspended"]
     const [users, setUsers] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState({});
+
+    //Filters 
+    const [filters, setFilters] = useState({
+        role: '',
+        plan: '',
+        status: ''
+    });
 
     // Add New States
     const [addUserDiv, setAddUserDiv] = useState(false);
@@ -190,10 +197,10 @@ export default function ManageUser() {
                     <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select">
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, role: e.target.value })}>
                                     <option key="default" value="">Select a role</option>
                                     {ROLES.map((role) => (
-                                        <option key={role} value={role}>{role}</option>
+                                        <option key={role} value={role.toLowerCase()}>{role}</option>
                                         )
                                     )}
                                 </select>
@@ -202,10 +209,10 @@ export default function ManageUser() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select">
-                                <option key="default" value="">Select a plan</option>
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, plan: e.target.value })}>
+                                <option key="default" value="">Select a status</option>
                                     {STATUS.map((status) => (
-                                        <option key={status} value={status}>{status}</option>
+                                        <option key={status} value={status.toLowerCase()}>{status}</option>
                                         )
                                     )}
                                 </select>
@@ -214,7 +221,7 @@ export default function ManageUser() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select">
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
                                 <option key="default" value="">Select a status</option>
                                     {STATUS.map((status) => (
                                         <option key={status} value={status}>{status}</option>
@@ -255,8 +262,20 @@ export default function ManageUser() {
                                 </tr>
                             </thead>
                             <tbody className="table-content">
-                                {users.map((user) => {
+                                {users
+                                .filter((user) => {
+                                    if (filters.status && user.status !== filters.status) {
+                                        console.log("entrei aqui")                                       
+                                        return false;
+                                    }
+                                    if (filters.role && user.role !== filters.role) {
+                                        return false;
+                                    }
+                                    return true;
+                                })
+                                .map((user) => {
                                     const { badgeColor, output, color} = getRoleClass(user.role);
+                                    const { colorActive } = getActiveColor(user.isActive);
                                     return(
                                         <tr key={user.username}>
                                             <td>
@@ -274,7 +293,7 @@ export default function ManageUser() {
                                                 <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
                                                 </span>
                                             </td>
-                                            <td><div className={`badge bg-label-${user.isActive ? 'success' : 'warning'} rounded-pill lh-xs`}>{user.isActive ? 'Active' : 'Inactive'}</div></td>
+                                            <td><div className={`badge bg-label-${colorActive} rounded-pill lh-xs`}>{user.isActive.charAt(0).toUpperCase() + user.isActive.slice(1)}</div></td>
                                             <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
                                             <td>
                                                 <div className="d-flex gap-2">

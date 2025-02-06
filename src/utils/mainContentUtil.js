@@ -14,6 +14,21 @@ export function getBadgeClass(state) {
     }
 };
 
+export function getActiveColor(status){
+  switch(status){
+    case 'active': 
+    return { colorActive: 'success' };
+    case 'inactive': 
+      return { colorActive: 'danger' };
+    case 'pending': 
+      return { colorActive: 'warning' };
+    case 'suspended': 
+      return { colorActive: 'secondary' };
+    default: 
+      return { colorActive: 'default' };
+  }
+}
+
 // GETS THE EVENT COLOR BASED ON THE STATUS
 export function getEventColor(status) {
   switch (status.toLowerCase()) {
@@ -44,19 +59,24 @@ export function getEventColor(status) {
 
 // GETS THE ROLE BADGE COLOR AND OUTPUT TEXT OF THE USERS
 export function getRoleClass(role) {
-    switch (role) {
-      case 'admin' || "Admin":
-        return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
-      case 'viewer' || "Viewer":
-        return { badgeColor: 'user', output: 'Viewer', color: 'success' };
-      case 'editor' || "Editor":
-        return { badgeColor: 'edit-box', output: 'Editor' , color: 'warning'};
-      case 'author' || "Author":
-        return { badgeColor: 'computer', output: 'Author' , color: 'danger'};
-      default:
-        return { badgeColor: 'default', output: 'default' , color: 'default'};
-    }
+  switch (role) {
+    case 'admin':
+    case 'Admin':
+      return { badgeColor: 'vip-crown', output: 'Admin', color: 'primary' };
+    case 'viewer':
+    case 'Viewer':
+      return { badgeColor: 'user', output: 'Viewer', color: 'success' };
+    case 'editor':
+    case 'Editor':
+      return { badgeColor: 'edit-box', output: 'Editor', color: 'warning' };
+    case 'author':
+    case 'Author':
+      return { badgeColor: 'computer', output: 'Author', color: 'danger' };
+    default:
+      return { badgeColor: 'default', output: 'default', color: 'default' };
+  }
 };
+
 
 // FORMATS THE NUMBER IF IT IS GREATER THAN 10000
 export function formatNumber(num) {

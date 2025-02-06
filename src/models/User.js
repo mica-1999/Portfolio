@@ -23,7 +23,11 @@ const userSchema = new mongoose.Schema(
     },
 
     // Account Status
-    isActive: { type: Boolean, default: true },
+    isActive: { 
+      type: String,
+      enum: ['active', 'inactive', 'pending', 'suspended'],
+      default: 'pending',
+    },
 
     // Address and Location
     address: {

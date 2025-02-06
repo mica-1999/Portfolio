@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted } from '/src/utils/mainContentUtil';
+import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted, getActiveColor } from '/src/utils/mainContentUtil';
 import { useSession } from 'next-auth/react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 
@@ -84,6 +84,7 @@ export default function MainContent() {
         setProjects(projects || []);
         setTimeline(timeline || []);
         setUsers(users || []);
+        console.log(users);
       } 
       catch (error) {
         console.error("Failed to fetch data:", error);
@@ -300,7 +301,9 @@ export default function MainContent() {
                 </thead>
                 <tbody className="table-content">
                   {users.map((user) => {
+
                     const { badgeColor, output, color} = getRoleClass(user.role);
+                    const { colorActive } = getActiveColor(user.isActive);
                     return(
                       <tr key={user.username}>
                         <td>
@@ -315,7 +318,7 @@ export default function MainContent() {
                             <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
                           </span>
                         </td>
-                        <td><div className={`badge bg-label-${user.isActive ? 'success' : 'warning'} rounded-pill lh-xs`}>{user.isActive ? 'Active' : 'Inactive'}</div></td>
+                        <td><div className={`badge bg-label-${colorActive} rounded-pill lh-xs`}>{user.isActive.charAt(0).toUpperCase() + user.isActive.slice(1)}</div></td>
                         <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
                       </tr>
                     );
