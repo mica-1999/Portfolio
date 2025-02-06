@@ -8,9 +8,9 @@ const dbConnect = async () => {
   }
 
   try {
-    await mongoose.connect(MONGODB_URI); // Wait for the connection to MongoDB
+    await mongoose.connect(MONGODB_URI);
   } catch (error) {
-    console.error('Error connecting to the database', error); // Log error message if connection fails
+    console.error('Error connecting to the database', error);
   }
 };
 module.exports = dbConnect;

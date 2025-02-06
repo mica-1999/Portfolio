@@ -10,12 +10,141 @@ export default function ManageUser() {
     const [users, setUsers] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState({});
+
+    // Add New States
     const [addUserDiv, setAddUserDiv] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        role: '',
+        linkedProject: []
+    });
+    const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState({});
+
+
+    const handleInputChange = (field) => (e) => {
+        setFormData({
+            ...formData,
+            [field]: e.target.value,
+        });
+        if (errors[field]) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                [field]: '',
+            }));
+        }
+    } 
+    
+    const handleReset = () => {
+        setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            role: '',
+            linkedProject: []
+        });
+        setErrors({});
+        setSuccess({});
+    }
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const errorsFound = Object.values(errors).some((error) => error);
+
+        if (errorsFound) {
+            alert('Please fill in all fields correctly');
+            return;
+        }
+        try {
+            const response = await fetch("/api/User", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+              });
+
+            console.log(response);
+            const result = await response.json();
+            
+
+            if (result.error) {
+                alert('Error creating user');
+                return;
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+
+    }
+    
+    const verifyInput = (value, fieldName) => {
+        value = value.trim();
+        let errorMessage = '';
+
+        if (!value.trim()) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                [fieldName]: '',
+            }));
+            setSuccess((prevSuccess) => ({
+                ...prevSuccess,
+                [fieldName]: null, 
+            }));
+            return; 
+        }
+
+        switch (fieldName) {
+            case 'firstName':
+            case 'lastName':
+                if (value.length === 1) {
+                    errorMessage = 'Name must have at least 2 characters';
+                }
+                break;
+            case 'email':
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    errorMessage = 'Invalid email format';
+                }
+                break;
+            case 'phone':
+                const phoneRegex = /^\+?[0-9]{10,15}$/;
+                if (!phoneRegex.test(value)) {
+                    errorMessage = 'Invalid phone number';
+                }
+                break;
+            case 'role':
+                if (value.length === 1) {
+                    errorMessage = 'Role must have at least 2 characters';
+                }
+                break;
+            case 'linkedProject':
+                if (value.length === 1) {
+                    errorMessage = 'Linked Project must have at least 2 characters';
+                }
+                break;
+            default:
+                break;
+        }
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [fieldName]: errorMessage,
+        }));
+        setSuccess((prevSuccess) => ({
+            ...prevSuccess,
+            [fieldName]: !errorMessage,
+        }));
+    };
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetchDataFromApi("/api/getUser");
+                const response = await fetchDataFromApi("/api/User");
                 setUsers(response || []);
             } 
             catch (error) {
@@ -174,25 +303,51 @@ export default function ManageUser() {
             {/* Add New User form sliding in from the right */}
             <div className={`add-user-form ${addUserDiv ? 'show' : ''}`}>
                 <div className="form-container d-flex flex-column mt-2">
-                    <div className="d-flex justify-content-between bottom-border">
-                        <h5>Add User</h5>
-                        <button className="btn-close" onClick={() => setAddUserDiv(false)}></button>
+                    <div className="d-flex align-items-center justify-content-between bottom-border">
+                        <h5 className="m-0">Add User</h5>
+                        <div className="d-flex align-items-center gap-3 float-end">
+                        <i className="ri-refresh-line" onClick={() => handleReset()}></i>
+                        <i className="ri-close-line"  onClick={() => setAddUserDiv(false)}></i>
+                        
+                        </div>
                     </div>
                     <hr></hr>
-                    <form className="d-flex flex-column mt-3">
+                    <form className="d-flex flex-column mt-3" onSubmit={handleSubmit}>
                         {/* Form fields */}
                         <div className="form-group">
+                            <input type="text" id="firstName" name="firstName" placeholder="Michael" value={formData.firstName} className={`form-control sInput ${errors.firstName ? 'errorBorderColor' : success.firstName ? 'successBorderColor' : ''}`} required onChange={handleInputChange('firstName')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
                             <label htmlFor="firstName">First Name</label>
-                            <input type="text" id="firstName" placeholder="Insert Name" className="form-control sInput" />
+                            <div className="errorDiv">{errors.firstName}</div>
                         </div>
                         <div className="form-group">
+                            <input type="text" id="lastName" name="lastName" placeholder="Ribeiro" value={formData.lastName} className={`form-control sInput ${errors.lastName ? 'errorBorderColor' : success.lastName ? 'successBorderColor' : ''}`} required onChange={handleInputChange('lastName')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
                             <label htmlFor="lastName">Last Name</label>
-                            <input type="text" id="lastName" placeholder="Insert Name" className="form-control sInput" />
+                            <div className="errorDiv">{errors.lastName}</div>
                         </div>
                         <div className="form-group">
+                            <input type="email" id="email" name="email" placeholder="example@gmail.com" value={formData.email} className={`form-control sInput ${errors.email ? 'errorBorderColor' : success.email ? 'successBorderColor' : ''}`} required onChange={handleInputChange('email')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" placeholder="Insert Email" className="form-control sInput" />
+                            <div className="errorDiv">{errors.email}</div>
                         </div>
+
+                        <div className="form-group">
+                            <input type="text" id="phone" name="phone" placeholder="+351 964 291 392" value={formData.phone} className={`form-control sInput ${errors.phone ? 'errorBorderColor' : success.phone ? 'successBorderColor' : ''}`} required onChange={handleInputChange('phone')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
+                            <label htmlFor="phone">Phone</label>
+                            <div className="errorDiv">{errors.phone}</div>
+                        </div>
+
+                        <div className="form-group">
+                            <input type="text" id="role" name="role" placeholder="Admin" value={formData.role} className={`form-control sInput ${errors.role ? 'errorBorderColor' : success.role ? 'successBorderColor' : ''}`} required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
+                            <label htmlFor="role">Role</label>
+                            <div className="errorDiv">{errors.role}</div>
+                        </div>
+
+                        <div className="form-group">
+                            <input type="text" id="linkedProject" name="linkedProject" placeholder="Linked Project" value={formData.linkedProject} className={`form-control sInput ${errors.linkedProject ? 'errorBorderColor' : success.linkedProject ? 'successBorderColor' : ''}`} required onChange={handleInputChange('linkedProject')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
+                            <label htmlFor="linkedProject">Linked Project</label>
+                            <div className="errorDiv">{errors.linkedProject}</div>
+                        </div>
+
                         {/* Additional fields for role, status, etc. */}
                         <div className="d-flex mt-2 gap-3">
                             <button type="submit" className="btn  addItem">Submit</button>

@@ -69,10 +69,10 @@ export default function MainContent() {
       setLoading(true);
       try {
         const [balanceData, projects, timeline, users] = await Promise.all([
-          fetchDataFromApi('/api/getBalance', id), // Fetch once for balance
-          fetchDataFromApi('/api/getProjects', id),
-          fetchDataFromApi('/api/getTimeline', id),
-          fetchDataFromApi('/api/getUser', id),
+          fetchDataFromApi('/api/Balance', id),
+          fetchDataFromApi('/api/Projects', id),
+          fetchDataFromApi('/api/Timeline', id),
+          fetchDataFromApi('/api/User', id),
         ]);
         
         // Set the state with the fetched data

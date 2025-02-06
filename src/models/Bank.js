@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
-// DEFINING THE SCHEMA FOR THE BANK COLLECTION IN DB
 const bankSchema = new mongoose.Schema({
-  userId: { type: String, required: true }, // Reference to the User model as a string
+  userId: { type: String, required: true },
   totalBalance: { type: Number, required: true },
   thisMonth: {
     totalDeposits: { type: Number, required: true },
@@ -19,7 +18,6 @@ const bankSchema = new mongoose.Schema({
   ]
 });
 
-// Check if the model already exists before defining it
 const Bank = mongoose.models.Bank || mongoose.model('Bank', bankSchema, 'bank');
 
 module.exports = Bank;

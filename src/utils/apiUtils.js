@@ -15,7 +15,7 @@ export const fetchDataFromApi = async (route, userId) => {
         return await response.json();
     } catch (error) {
         console.error(`Error fetching data from ${route}:`, error);
-        throw error; // Re-throw the error to handle it in the component
+        throw error;
     }
 };
 

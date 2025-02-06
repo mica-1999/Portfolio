@@ -12,7 +12,7 @@ export default function ManageProject() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetchDataFromApi("/api/getProjectTimeline");
+                const response = await fetchDataFromApi("/api/ProjectTimeline");
                 setData(response || []);
                 console.log(response);
 

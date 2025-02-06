@@ -9,6 +9,7 @@ export default function Sidebar() {
   const currentPath = usePathname();
 
   const [mainMenu, setMenu] = useState(dataMenu);
+  
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
       {/* Sidebar Header */}

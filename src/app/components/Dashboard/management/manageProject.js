@@ -17,7 +17,7 @@ export default function ManageProject() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await fetchDataFromApi("/api/getProjects");
+                const response = await fetchDataFromApi("/api/Projects");
                 setProjects(response || []);
             } 
             catch (error) {

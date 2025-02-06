@@ -10,14 +10,12 @@ const loginMethods = [
 ];
 
 export default function Login() {
-  // STATES
   const [loginData, setLoginData] = useState({ name: "", password: "" });
   const [error, setError] = useState(null);
 
   // Router IN NEXT.JS
   const router = useRouter();
 
-  // STATE UPDATERS
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));

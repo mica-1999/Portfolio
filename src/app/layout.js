@@ -1,6 +1,6 @@
 export const metadata = {
-    title: 'My Portfolio', // Global title
-    description: 'Welcome to my portfolio site!', // Global description
+    title: 'My Portfolio', 
+    description: 'Welcome to my portfolio site!',
   };
   
   export default function GlobalLayout({ children }) {

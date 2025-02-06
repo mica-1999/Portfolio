@@ -201,11 +201,11 @@ a.main::before { content: "\f015"; }
 .sub-menu a:focus,
 .sub-menu a[aria-expanded="true"],
 .sub-menu a.active {
-    background-color: #666CFF;
+    background-color: var(--bs-indigo);
     color: inherit !important;
 }
 .main-menu a.active:not([data-bs-toggle="collapse"]) {
-    background-color: #666CFF;
+    background-color: var(--bs-indigo);
     color: inherit !important;
 }
 
@@ -429,7 +429,7 @@ tbody tr:last-child td { border-bottom: none; }
 ---------------------------------------------- */
 .fa-lg {font-size: 1.5rem;}
 
-.euro-icon {color: #666CFF;}
+.euro-icon {color: var(--bs-indigo);}
 
 .small-box, .small-box-received, .small-box-third {
     padding: 0.7rem;
@@ -443,7 +443,7 @@ tbody tr:last-child td { border-bottom: none; }
 .small-box-third {background-color: var(--badge-success-bg) !important;}
 .third-icon {color: var(--badge-success-color) !important;}
 
-.bg-label-primary {background-color: #393c6a !important;color: #666cff !important;}
+.bg-label-primary {background-color: #393c6a !important;color: var(--bs-indigo) !important;}
 .bg-label-success {background-color: var(--badge-success-bg) !important;color: var(--badge-success-color) !important;}
 .bg-label-warning {background-color: var(--badge-warning-bg) !important;color: var(--badge-warning-color) !important;}
 .bg-label-secondary {background-color: var(--badge-secondary-bg) !important;color: var(--badge-secondary-color) !important;}
@@ -503,7 +503,7 @@ tbody tr:last-child td { border-bottom: none; }
 /* ----------------------------------------------
    FOOTER COMPONENT STYLES
 ---------------------------------------------- */
-.footer-links-section a {color: #666cff;text-decoration: none;}
+.footer-links-section a {color: var(--bs-indigo);text-decoration: none;}
 
 /* ----------------------------------------------
    GENERAL PURPOSE STYLES
@@ -580,7 +580,7 @@ tbody tr:last-child td { border-bottom: none; }
     margin: 0; /* Remove default margin */
 }
 
-.cCheckbox:checked {background-color: #666cff;border-color: #666cff;}
+.cCheckbox:checked {background-color: var(--bs-indigo);border-color: var(--bs-indigo);}
 .cCheckbox:checked::after {
     content: '';
     position: absolute;
@@ -588,14 +588,15 @@ tbody tr:last-child td { border-bottom: none; }
     left: 50%;
     width: 10px;
     height: 10px;
-    background-color: #666cff;
+    background-color: var(--bs-indigo);
     border-radius: 2px;
     transform: translate(-50%, -50%);
 }
 
 .cCheckbox:hover {border-color: #5c61e6;}
+
 /* ----------------------------------------------
-   MANAGEMENT USER COMPONENTS STYLES
+   SIDE ADD FORM COMPONENTS STYLES
 ---------------------------------------------- */
 .add-user-form {
     position: fixed;
@@ -609,54 +610,78 @@ tbody tr:last-child td { border-bottom: none; }
     transition: transform 0.3s ease-in-out;
     z-index: 1000; /* Ensure it appears above other content */
 }
-
-.add-user-form.show {
-    transform: translateX(0);
-}
-
+.add-user-form.show {transform: translateX(0);}
 .add-user-form .form-container {
     padding: 20px;
     width: 100%;
     height: 100%;
     overflow-y: auto;
 }
-
-.add-user-form .form-group {
-    margin-bottom: 15px;
-}
+.add-user-form .form-group {margin-bottom: 6px;}
 
 .form-group label {
-    color: #D4D5EA;
-    font-size: 0.8125rem;
+    position: relative;
+    top: -2.2rem;
+    left: 0.8rem;
+    color: #73758E;
+    font-size: 1rem;
     font-weight: 500;
-    background: transparent;
+    background: #30334E;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none; /* Prevents label from being selectable */
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    padding: 0 0.5rem;
+    font-size: 0.8rem;
+    color: var(--bs-indigo);
+    top: -3.6rem;
+    left: 0.5rem;
+}
+.form-group input:not(:focus):not(:placeholder-shown) + label {color: #73758E;}
+.errorDiv{
+    position: relative;
+    font-size: 0.8rem;
+    top: -1.0rem;
+    color: var(--bs-danger);
 }
 .sInput{
     background-color: transparent;
     height: 48px;
     color: #D4D5EA;
     border: 1px solid #595b75;
+    
 }
 .sInput:focus{
-    border-color: #666CFF;
+    border: 2px solid var(--bs-indigo) !important;
     background-color: transparent;
     color: #D4D5EA;
+    box-shadow: none !important;
 }
 .sInput:hover{border-color: #9FA1B8;}
 .sInput::placeholder{color: transparent;}
 .sInput:focus::placeholder {color: #73758E;}
-.addItem{
+.sInput.errorBorderColor + label {color: var(--bs-danger) !important;}
+.sInput.errorBorderColor,.sInput.errorBorderColor:hover {border: 2px solid var(--bs-danger) !important;}
+.sInput.successBorderColor {border: 2px solid var(--tagColor-green-text) !important;}
+.sInput.successBorderColor + label {color: var(--tagColor-green-text) !important;}
+
+.addItem{background-color: var(--bs-indigo);}
+.addItem:hover{background-color: #4f53d2;}
+.addItem,.addItem:hover{
     width: 100px;
     color: #fff;
-    background-color: #666cff;
-    border-color: #666cff;
+    border-color: var(--bs-indigo);
 }
-.cancelItem{
+.cancelItem{background: transparent;}
+.cancelItem:hover{background: #353953;}
+.cancelItem,.cancelItem:hover{
     width: 100px;
     color: #6d788d;
     border-color: #6d788d;
-    background: rgba(0, 0, 0, 0);
 }
+.ri-close-line{font-size: 25px;cursor: pointer;}
+.ri-refresh-line{font-size: 18px;cursor: pointer;}
 
 
 /* ----------------------------------------------
@@ -720,15 +745,4 @@ tbody tr:last-child td { border-bottom: none; }
     opacity: .4;
     margin-top: 16px;  
     font-size: 11px;
-}
-
-.add-event-icon {
-    font-size: 25px;
-    color: var(--bs-white);
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.add-event-icon:hover {
-    color: var(--bs-indigo);
 }

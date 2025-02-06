@@ -5,10 +5,6 @@ export default function insert_Forms() {
     <>
     <div className="row d-flex">
       <ManageTimeline />
-      {/* <Form_Link />
-      <Form_Project />
-      <Form_Timeline />
-      <Form_Input />  */}
     </div>
     </>
   );
