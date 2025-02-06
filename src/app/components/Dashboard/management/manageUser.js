@@ -1,20 +1,23 @@
 "use client";
 import { useEffect, useState } from "react"; 
 import { fetchDataFromApi } from '/src/utils/apiUtils';
-import { getRoleClass, getActiveColor } from '/src/utils/mainContentUtil';
+import { getRoleClass, getActiveColor,filterByTimeRange } from '/src/utils/mainContentUtil';
 
 export default function ManageUser() {
     const ROLES = ["Admin", "Viewer", "Editor", "Author"];
     const THEAD = ['User', 'Email', 'Role', 'Status', 'Last Active'];
     const STATUS = ["Active", "Inactive", "Pending", "Suspended"]
+    const TIME_RANGES = ["Last 7 days", "Last 30 days", "Last 6 months", "Last year", "All time"];
+
     const [users, setUsers] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState({});
-
+    
     //Filters 
     const [filters, setFilters] = useState({
+        name: '',
         role: '',
-        plan: '',
+        time: '',
         status: ''
     });
 
@@ -75,10 +78,8 @@ export default function ManageUser() {
                 body: JSON.stringify(formData),
               });
 
-            console.log(response);
             const result = await response.json();
             
-
             if (result.error) {
                 alert('Error creating user');
                 return;
@@ -86,8 +87,6 @@ export default function ManageUser() {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-
-
     }
     
     const verifyInput = (value, fieldName) => {
@@ -209,7 +208,7 @@ export default function ManageUser() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, plan: e.target.value })}>
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
                                 <option key="default" value="">Select a status</option>
                                     {STATUS.map((status) => (
                                         <option key={status} value={status.toLowerCase()}>{status}</option>
@@ -221,10 +220,10 @@ export default function ManageUser() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
-                                <option key="default" value="">Select a status</option>
-                                    {STATUS.map((status) => (
-                                        <option key={status} value={status}>{status}</option>
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, time: e.target.value })}>
+                                <option key="default" value="">Select a time range</option>
+                                    {TIME_RANGES.map((range) => (
+                                        <option key={range} value={range}>{range}</option>
                                         )
                                     )}
                                 </select>
@@ -238,7 +237,7 @@ export default function ManageUser() {
                                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                             </div>
                             <div className="d-flex gap-3">
-                                <input type="text" className="form-control searchInput" placeholder="Search User" />
+                                <input type="text" className="form-control searchInput" placeholder="Search User" onChange={(e) => setFilters({ ...filters, name: e.target.value })}/>
                                 <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add New User</button>
                             </div>
                         </div>
@@ -264,12 +263,21 @@ export default function ManageUser() {
                             <tbody className="table-content">
                                 {users
                                 .filter((user) => {
-                                    if (filters.status && user.status !== filters.status) {
-                                        console.log("entrei aqui")                                       
+                                    if (filters.status && user.isActive !== filters.status) {
                                         return false;
                                     }
                                     if (filters.role && user.role !== filters.role) {
                                         return false;
+                                    }
+                                    if (filters.time && !filterByTimeRange(user.lastLogin, filters.time)) {
+                                        return false;
+                                    }
+                                    if (filters.name) {
+                                        const searchTerm = filters.name.toLowerCase();
+                                        const fullName = `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`;
+                                        if (!fullName.includes(searchTerm) && !user.email.toLowerCase().includes(searchTerm)) {
+                                            return false;
+                                        }
                                     }
                                     return true;
                                 })

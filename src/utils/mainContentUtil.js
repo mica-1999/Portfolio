@@ -139,3 +139,28 @@ export function getTagColor(tag) {
     default: return { color: 'gray', tag: 'default' };
   }
 }
+
+export function filterByTimeRange(lastActive, timeRange) {
+  const currentTime = new Date();
+  let startTime;
+
+  switch (timeRange) {
+    case "Last 7 days":
+      startTime = new Date(currentTime.setDate(currentTime.getDate() - 7));
+      break;
+    case "Last 30 days":
+      startTime = new Date(currentTime.setMonth(currentTime.getMonth() - 1));
+      break;
+    case "Last 6 months":
+      startTime = new Date(currentTime.setMonth(currentTime.getMonth() - 6));
+      break;
+    case "Last year":
+      startTime = new Date(currentTime.setFullYear(currentTime.getFullYear() - 1));
+      break;
+    case "All time":
+    default:
+      return true; // No filtering for "All time"
+  }
+
+  return new Date(lastActive) >= startTime;
+}
