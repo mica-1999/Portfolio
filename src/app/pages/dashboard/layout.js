@@ -20,17 +20,16 @@ export default async function DashboardLayout({ children }) {
 
   return (
     <>
-    {/* Include the Dashboard-specific CSS */}
     <link rel="stylesheet" href="/assets/css/styles.css" />
     
       <div className="container-fluid vh-100">
         <div className="row">
           <DashboardClientWrapper session={session}>
-            <Sidebar /> {/* Render the Sidebar component */}
+            <Sidebar />
             <div className="col-lg-10 offset-lg-2 p-4 card-section">
-              <Header /> {/* Render the Header component */}
-              {children} {/* Render the content for the page */}
-              <Footer /> {/* Render the Footer component */}
+              <Header /> 
+              {children} 
+              <Footer />
             </div>
           </DashboardClientWrapper>
         </div>

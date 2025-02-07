@@ -23,5 +23,5 @@ export const getRandUserPassword = (fName, lName) => {
     const randomNum = Math.floor(1000 + Math.random() * 9000);
     const value = `${fName.charAt(0).toLowerCase()}${lName.toLowerCase()}${randomNum}`;
     
-    return { username: value, password: value }; // Return an object
+    return { username: value, password: value };
 };

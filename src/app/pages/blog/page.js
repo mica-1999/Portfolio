@@ -7,10 +7,10 @@ export default function Blog() {
   return (
     <>
       <div className="container-fluid vh-100">
-        <NavBar /> {/* Render the NavBar component */}
-        <Categories /> {/* Render the Categories component */}
-        <BlogItems /> {/* Render the BlogItems component */}
-        <Footer /> {/* Render the Footer component */}
+        <NavBar />
+        <Categories />
+        <BlogItems />
+        <Footer /> 
       </div>
     </>
   );
