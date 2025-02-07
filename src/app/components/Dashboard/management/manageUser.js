@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
 import { Modal } from '/src/app/components/utility/Modal';
@@ -11,6 +11,9 @@ const STATUS = ["Active", "Inactive", "Pending", "Suspended"];
 const TIME_RANGES = ["Last 7 days", "Last 30 days", "Last 6 months", "Last year", "All time"];
 
 export default function ManageUser() {
+    // For clicking outside the form to close it
+    const addUserFormRef = useRef(null);
+
     // State Management
     const [users, setUsers] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
@@ -26,6 +29,7 @@ export default function ManageUser() {
         show: false,
         message: ''
     });
+    const [hideBody, setHideBody] = useState(false);
 
     const fetchUsers = async () => {
         try {
@@ -36,10 +40,28 @@ export default function ManageUser() {
         }
     };
 
-    // Fetch Users on ADD/DELETE
+    // Fetch Users and set hideBody
     useEffect(() => {
         fetchUsers();
-    }, [showModal.show,isDeleting]);
+        showModal.show || isDeleting || addUserDiv ? setHideBody(true) : setHideBody(false);
+    }, [showModal.show,isDeleting,addUserDiv]);
+
+    // Handle clicks outside the "Add New User" form
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+        if (addUserDiv && addUserFormRef.current && !addUserFormRef.current.contains(event.target)) {
+            setAddUserDiv(false);
+        }
+        };
+
+        if (addUserDiv) {
+        document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [addUserDiv]);
 
     // Handlers
     const handleInputChange = (field) => (e) => {
@@ -149,10 +171,7 @@ export default function ManageUser() {
         setSelectAll(Object.values(updatedSelectedUsers).every((val) => val));
     };
 
-    
-
     return(
-        
         <div className="d-flex col-lg-12 mt-4">
             {/* Filters and Table Section */}
             <div className="card flex-grow-1 p-0" >
@@ -289,7 +308,7 @@ export default function ManageUser() {
             </div>
 
             {/* Add New User form sliding in from the right */}
-            <div className={`add-user-form ${addUserDiv ? 'show' : ''}`}>
+            <div className={`add-user-form ${addUserDiv ? 'show' : ''}`} ref={addUserFormRef}>
                 <div className="form-container d-flex flex-column mt-2">
                     <div className="d-flex align-items-center justify-content-between bottom-border">
                         <h5 className="m-0">Add User</h5>
@@ -325,7 +344,14 @@ export default function ManageUser() {
                         </div>
 
                         <div className="form-group">
-                            <input type="text" id="role" name="role" placeholder="Admin" value={formData.role} className={`form-control sInput ${errors.role ? 'errorBorderColor' : success.role ? 'successBorderColor' : ''}`} required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
+                            <select className="form-select" id="role" name="role" value={formData.role} required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
+                                <option value="">Select role</option>
+                                {ROLES.map((role) => (
+                                    <option key={role} value={role}>{role}</option>
+                                    )
+                                )}
+                            </select>
+
                             <label htmlFor="role">Role</label>
                             <div className="errorDiv">{errors.role}</div>
                         </div>
@@ -345,6 +371,7 @@ export default function ManageUser() {
                 </div>
             </div>
             <Modal showModal={showModal} setShowModal={setShowModal}/>
+            {hideBody  && <div className="modal-backdrop show"></div>}
         </div>
     );
 }

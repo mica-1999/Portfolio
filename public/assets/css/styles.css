@@ -608,7 +608,7 @@ tbody tr:last-child td { border-bottom: none; }
     box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
-    z-index: 1000; /* Ensure it appears above other content */
+    z-index: 1051;
 }
 .add-user-form.show {transform: translateX(0);}
 .add-user-form .form-container {
@@ -631,7 +631,8 @@ tbody tr:last-child td { border-bottom: none; }
     pointer-events: none; /* Prevents label from being selectable */
 }
 .form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
+.form-group input:not(:placeholder-shown) + label,
+.form-group select:focus + label{
     padding: 0 0.5rem;
     font-size: 0.8rem;
     color: var(--bs-indigo);
@@ -650,9 +651,9 @@ tbody tr:last-child td { border-bottom: none; }
     height: 48px;
     color: #D4D5EA;
     border: 1px solid #595b75;
-    
 }
-.sInput:focus{
+.sInput:focus,
+select:focus {
     border: 2px solid var(--bs-indigo) !important;
     background-color: transparent;
     color: #D4D5EA;
@@ -665,6 +666,22 @@ tbody tr:last-child td { border-bottom: none; }
 .sInput.errorBorderColor,.sInput.errorBorderColor:hover {border: 2px solid var(--bs-danger) !important;}
 .sInput.successBorderColor {border: 2px solid var(--tagColor-green-text) !important;}
 .sInput.successBorderColor + label {color: var(--tagColor-green-text) !important;}
+
+.form-group select {
+    background-color: transparent;
+    height: 48px;
+    color: #D4D5EA;
+    border: 1px solid #595b75;
+}
+.form-group select:placeholder-shown {color: #73758E;}
+.form-group select + label {
+    padding: 0 0.5rem;
+    font-size: 0.8rem;
+    color: #ADAEC6;
+    top: -3.6rem;
+    left: 0.5rem;
+}
+
 
 .addItem{background-color: var(--bs-indigo);}
 .addItem:hover{background-color: #4f53d2;}

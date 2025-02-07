@@ -1,8 +1,6 @@
 export const Modal = ({showModal, setShowModal}) => {
     return showModal.show ? (
-        <>
-            <div className="modal-backdrop show"></div>
-    
+        <>    
             <div className={'modal fade show'} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
