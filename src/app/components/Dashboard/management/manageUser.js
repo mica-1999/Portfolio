@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
+import { Modal } from '/src/app/components/utility/Modal';
 
 // Constants
 const ROLES = ["Admin", "Viewer", "Editor", "Author"];
@@ -59,7 +60,7 @@ export default function ManageUser() {
         const errorsFound = Object.values(errors).some((error) => error);
 
         if (errorsFound) {
-            alert('Please fill in all fields correctly');
+            setShowModal({type: 'error', show: true, message: 'Please fill in all fields correctly'});
             return;
         }
 
@@ -72,7 +73,7 @@ export default function ManageUser() {
 
             const result = await response.json();
             if (result.error) {
-                alert('Error creating user');
+                setShowModal({type: 'error', show: true, message: 'Error creating User. Please try again.'});
                 return;
             }
 
@@ -81,7 +82,7 @@ export default function ManageUser() {
             setShowModal({type: 'success', show: true, message: 'User has been added successfully'});
         } catch (error) {
             console.error('Error creating user:', error);
-            alert('Failed to create user. Please try again.');
+            setShowModal({type: 'error', show: true, message: 'Error creating User. Please try again.'});
         }
     };
 
@@ -96,7 +97,7 @@ export default function ManageUser() {
             setTimeout(() => setisDeleting(false), 100); 
         } catch (error) {
             console.error('Error deleting user:', error);
-            alert('Failed to delete user. Please try again.');
+            setShowModal({type: 'error', show: true, message: 'Failed to delete User. Please try again.'});
             
         }
     }
@@ -343,33 +344,7 @@ export default function ManageUser() {
                     </form>
                 </div>
             </div>
-            {/* Render the modal conditionally */}
-            {showModal.show && (
-                <>
-                    <div className="modal-backdrop show"></div>
-            
-                    <div className={'modal fade show'} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
-                        <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content">
-                                <div className="modal-body">
-                                    <div className="row">
-                                        <div className="d-flex col-lg-12 justify-content-end">
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal({ ...showModal, show: false })}></button>
-                                        </div>
-                                        <div className="d-flex flex-column col-lg-12 align-items-center pb-2">
-                                            <img src="/assets/images/success.png" alt="Success Icon" className="modalSuccess" />
-                                            <h4 className="modalTitle">Action {showModal.type}</h4>
-                                            <p className="modalMessage">{showModal.message}</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="button" className="btn modalClose" data-bs-dismiss="modal" onClick={() => setShowModal({ ...showModal, show: false })}>Nice</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </>
-            )}
+            <Modal showModal={showModal} setShowModal={setShowModal}/>
         </div>
     );
 }
