@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchDataFromApi, modal } from '/src/utils/apiUtils';
+import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
 
 // Constants
@@ -19,20 +19,26 @@ export default function ManageUser() {
     const [formData, setFormData] = useState({firstName: '',lastName: '',email: '',phone: '',role: '',linkedProject: []});
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState({});
-    const [showModal, setShowModal] = useState(false);
+    const [isDeleting, setisDeleting] = useState(false);
+    const [showModal, setShowModal] = useState({
+        type: '',
+        show: false,
+        message: ''
+    });
 
-    // Fetch Users on Component Mount
+    const fetchUsers = async () => {
+        try {
+            const response = await fetchDataFromApi("/api/User");
+            setUsers(response || []);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    // Fetch Users on ADD/DELETE
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetchDataFromApi("/api/User");
-                setUsers(response || []);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
         fetchUsers();
-    }, []);
+    }, [showModal.show,isDeleting]);
 
     // Handlers
     const handleInputChange = (field) => (e) => {
@@ -72,7 +78,7 @@ export default function ManageUser() {
 
             handleReset();
             setAddUserDiv(false);
-            setShowModal(true);
+            setShowModal({type: 'success', show: true, message: 'User has been added successfully'});
         } catch (error) {
             console.error('Error creating user:', error);
             alert('Failed to create user. Please try again.');
@@ -85,6 +91,9 @@ export default function ManageUser() {
                 method: "DELETE",
             });
             const result = await response.json();
+            setShowModal({type: 'success', show: true, message: 'User has been deleted successfully'});
+            setisDeleting(true);
+            setTimeout(() => setisDeleting(false), 100); 
         } catch (error) {
             console.error('Error deleting user:', error);
             alert('Failed to delete user. Please try again.');
@@ -137,10 +146,6 @@ export default function ManageUser() {
         const updatedSelectedUsers = { ...selectedUsers, [username]: !selectedUsers[username] };
         setSelectedUsers(updatedSelectedUsers);
         setSelectAll(Object.values(updatedSelectedUsers).every((val) => val));
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
     };
 
     
@@ -339,24 +344,31 @@ export default function ManageUser() {
                 </div>
             </div>
             {/* Render the modal conditionally */}
-            {showModal && (
-                <div className="modal fade show" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>
-                            </div>
-                            <div className="modal-body">
-                                ...
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCloseModal}>Close</button>
-                                <button type="button" className="btn btn-primary">Understood</button>
+            {showModal.show && (
+                <>
+                    <div className="modal-backdrop show"></div>
+            
+                    <div className={'modal fade show'} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                                <div className="modal-body">
+                                    <div className="row">
+                                        <div className="d-flex col-lg-12 justify-content-end">
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal({ ...showModal, show: false })}></button>
+                                        </div>
+                                        <div className="d-flex flex-column col-lg-12 align-items-center pb-2">
+                                            <img src="/assets/images/success.png" alt="Success Icon" className="modalSuccess" />
+                                            <h4 className="modalTitle">Action {showModal.type}</h4>
+                                            <p className="modalMessage">{showModal.message}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" className="btn modalClose" data-bs-dismiss="modal" onClick={() => setShowModal({ ...showModal, show: false })}>Nice</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </>
             )}
         </div>
     );

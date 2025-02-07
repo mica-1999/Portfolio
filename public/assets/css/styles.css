@@ -746,3 +746,26 @@ tbody tr:last-child td { border-bottom: none; }
     margin-top: 16px;  
     font-size: 11px;
 }
+
+/* ----------------------------------------------
+   MODAL STYLES
+---------------------------------------------- */
+.modalTitle{
+    color: #1F2937;
+    font-size: 20px;
+    font-weight: 600;
+}
+.modalMessage{
+    font-size: 0.875rem;
+    color: #6B7280;
+    line-height: 1.625;
+}
+.modalClose {background-color: #1F2937;transition: background-color 0.2s, color 0.2s;}
+.modalClose, 
+.modalClose:hover {color: white;width: 100%;}
+.modalClose:hover {background-color: #2b394b !important;}
+.modalSuccess{
+    margin-bottom: 1rem;
+    width: 65px;
+    height: 65px;
+}
