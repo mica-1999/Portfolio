@@ -1,66 +1,53 @@
 "use client";
-import { useEffect, useState } from "react"; 
-import { fetchDataFromApi } from '/src/utils/apiUtils';
-import { getRoleClass, getActiveColor,filterByTimeRange } from '/src/utils/mainContentUtil';
+import { useEffect, useState } from "react";
+import { fetchDataFromApi, modal } from '/src/utils/apiUtils';
+import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
+
+// Constants
+const ROLES = ["Admin", "Viewer", "Editor", "Author"];
+const THEAD = ['User', 'Email', 'Role', 'Status', 'Last Active','Actions'];
+const STATUS = ["Active", "Inactive", "Pending", "Suspended"];
+const TIME_RANGES = ["Last 7 days", "Last 30 days", "Last 6 months", "Last year", "All time"];
 
 export default function ManageUser() {
-    const ROLES = ["Admin", "Viewer", "Editor", "Author"];
-    const THEAD = ['User', 'Email', 'Role', 'Status', 'Last Active'];
-    const STATUS = ["Active", "Inactive", "Pending", "Suspended"]
-    const TIME_RANGES = ["Last 7 days", "Last 30 days", "Last 6 months", "Last year", "All time"];
-
+    // State Management
     const [users, setUsers] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const [selectedUsers, setSelectedUsers] = useState({});
-    
-    //Filters 
-    const [filters, setFilters] = useState({
-        name: '',
-        role: '',
-        time: '',
-        status: ''
-    });
-
-    // Add New States
+    const [filters, setFilters] = useState({ name: '', role: '', time: '', status: '' });
     const [addUserDiv, setAddUserDiv] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        role: '',
-        linkedProject: []
-    });
+    const [formData, setFormData] = useState({firstName: '',lastName: '',email: '',phone: '',role: '',linkedProject: []});
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState({});
+    const [showModal, setShowModal] = useState(false);
 
+    // Fetch Users on Component Mount
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await fetchDataFromApi("/api/User");
+                setUsers(response || []);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchUsers();
+    }, []);
 
+    // Handlers
     const handleInputChange = (field) => (e) => {
-        setFormData({
-            ...formData,
-            [field]: e.target.value,
-        });
+        setFormData({ ...formData, [field]: e.target.value });
         if (errors[field]) {
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                [field]: '',
-            }));
+            setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
         }
-    } 
-    
+    };
+
     const handleReset = () => {
-        setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            role: '',
-            linkedProject: []
-        });
+        setFormData({ firstName: '', lastName: '', email: '', phone: '', role: '', linkedProject: [] });
         setErrors({});
         setSuccess({});
-    }
-    
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const errorsFound = Object.values(errors).some((error) => error);
@@ -69,23 +56,39 @@ export default function ManageUser() {
             alert('Please fill in all fields correctly');
             return;
         }
+
         try {
             const response = await fetch("/api/User", {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
-              });
+            });
 
             const result = await response.json();
-            
             if (result.error) {
                 alert('Error creating user');
                 return;
             }
+
+            handleReset();
+            setAddUserDiv(false);
+            setShowModal(true);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error creating user:', error);
+            alert('Failed to create user. Please try again.');
+        }
+    };
+
+    const handleDelete = async (username) => {
+        try {
+            const response = await fetch(`/api/User/?username=${username}`, {
+                method: "DELETE",
+            });
+            const result = await response.json();
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            alert('Failed to delete user. Please try again.');
+            
         }
     }
     
@@ -93,107 +96,66 @@ export default function ManageUser() {
         value = value.trim();
         let errorMessage = '';
 
-        if (!value.trim()) {
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                [fieldName]: '',
-            }));
-            setSuccess((prevSuccess) => ({
-                ...prevSuccess,
-                [fieldName]: null, 
-            }));
-            return; 
+        if (!value) {
+            setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: '' }));
+            setSuccess((prevSuccess) => ({ ...prevSuccess, [fieldName]: null }));
+            return;
         }
 
         switch (fieldName) {
             case 'firstName':
             case 'lastName':
-                if (value.length === 1) {
-                    errorMessage = 'Name must have at least 2 characters';
-                }
+                if (value.length < 2) errorMessage = 'Name must have at least 2 characters';
                 break;
             case 'email':
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) {
-                    errorMessage = 'Invalid email format';
-                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errorMessage = 'Invalid email format';
                 break;
             case 'phone':
-                const phoneRegex = /^\+?[0-9]{10,15}$/;
-                if (!phoneRegex.test(value)) {
-                    errorMessage = 'Invalid phone number';
-                }
+                if (!/^\+?[0-9]{10,15}$/.test(value)) errorMessage = 'Invalid phone number';
                 break;
             case 'role':
-                if (value.length === 1) {
-                    errorMessage = 'Role must have at least 2 characters';
-                }
-                break;
             case 'linkedProject':
-                if (value.length === 1) {
-                    errorMessage = 'Linked Project must have at least 2 characters';
-                }
+                if (value.length < 2) errorMessage = `${fieldName} must have at least 2 characters`;
                 break;
             default:
                 break;
         }
-        setErrors((prevErrors) => ({
-            ...prevErrors,
-            [fieldName]: errorMessage,
-        }));
-        setSuccess((prevSuccess) => ({
-            ...prevSuccess,
-            [fieldName]: !errorMessage,
-        }));
+
+        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: errorMessage }));
+        setSuccess((prevSuccess) => ({ ...prevSuccess, [fieldName]: !errorMessage }));
     };
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetchDataFromApi("/api/User");
-                setUsers(response || []);
-            } 
-            catch (error) {
-                console.error('Error fetching data:', error);
-            } 
-        }
-        fetchUsers();    
-    }, []);
-
-    // Handle header checkbox change
     const handleSelectAll = (e) => {
         const isChecked = e.target.checked;
         setSelectAll(isChecked);
-        // Update all individual checkboxes
         const updatedSelectedUsers = {};
-        users.forEach((user) => {
-            updatedSelectedUsers[user.username] = isChecked;
-        });
+        users.forEach((user) => (updatedSelectedUsers[user.username] = isChecked));
         setSelectedUsers(updatedSelectedUsers);
     };
 
-    // Handle individual checkbox change
     const handleUserCheckboxChange = (username) => {
-        const updatedSelectedUsers = {
-            ...selectedUsers,
-            [username]: !selectedUsers[username],
-        };
+        const updatedSelectedUsers = { ...selectedUsers, [username]: !selectedUsers[username] };
         setSelectedUsers(updatedSelectedUsers);
-
-        // Check if all checkboxes are selected
-        const allSelected = Object.values(updatedSelectedUsers).every((val) => val);
-        setSelectAll(allSelected);
+        setSelectAll(Object.values(updatedSelectedUsers).every((val) => val));
     };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    
 
     return(
         
         <div className="d-flex col-lg-12 mt-4">
+            {/* Filters and Table Section */}
             <div className="card flex-grow-1 p-0" >
                 <div className="card-header filters">
                     <div className="row d-flex align-items-center p-2">
                         <h5 className="card-title">Filters</h5>    
                     </div>
                     <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
+                        
                         <div className="col-lg-4">
                             <div className="select-wrapper">
                                 <select className="form-select" onChange={(e) => setFilters({ ...filters, role: e.target.value })}>
@@ -233,9 +195,7 @@ export default function ManageUser() {
 
                     <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
                         <div className="col-lg-12 d-flex align-items-center justify-content-between">
-                            <div className="d-flex">
-                                <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
-                            </div>
+                            <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                             <div className="d-flex gap-3">
                                 <input type="text" className="form-control searchInput" placeholder="Search User" onChange={(e) => setFilters({ ...filters, name: e.target.value })}/>
                                 <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add New User</button>
@@ -249,24 +209,19 @@ export default function ManageUser() {
                         <table className="table table-sm mb-0">
                             <thead className="table-head">
                                 <tr style={{ backgroundColor: '#3A3E5B' }}>
-                                    <th>
-                                        <input className="cCheckbox" type="checkbox" checked={selectAll}
-                                            onChange={handleSelectAll}/>
-                                    </th>
+                                    <th><input className="cCheckbox" type="checkbox" checked={selectAll} onChange={handleSelectAll}/></th>
                                     {THEAD.map((thead) => (
-                                    <th key={thead}>{thead}</th>
+                                        <th key={thead}>{thead}</th>
                                     ))}
-                                    <th>Actions</th>
-                                
                                 </tr>
                             </thead>
                             <tbody className="table-content">
                                 {users
                                 .filter((user) => {
-                                    if (filters.status && user.isActive !== filters.status) {
+                                    if (filters.status && user.isActive.toLowerCase() !== filters.status.toLowerCase()) {
                                         return false;
                                     }
-                                    if (filters.role && user.role !== filters.role) {
+                                    if (filters.role && user.role.toLowerCase() !== filters.role.toLowerCase()) {
                                         return false;
                                     }
                                     if (filters.time && !filterByTimeRange(user.lastLogin, filters.time)) {
@@ -312,7 +267,7 @@ export default function ManageUser() {
                                                         <i className="ri-edit-line"></i>
                                                     </button>
                                                     {user.firstName !== "Micael" ? 
-                                                    <button className="btn btn-sm btn-danger">
+                                                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(user.username)}>
                                                         <i className="ri-delete-bin-line"></i>
                                                     </button>
                                                     : null}
@@ -377,12 +332,32 @@ export default function ManageUser() {
 
                         {/* Additional fields for role, status, etc. */}
                         <div className="d-flex mt-2 gap-3">
-                            <button type="submit" className="btn  addItem">Submit</button>
+                            <button type="submit" className="btn  addItem" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Submit</button>
                             <button type="button" className="btn cancelItem" onClick={() => setAddUserDiv(false)}>Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
+            {/* Render the modal conditionally */}
+            {showModal && (
+                <div className="modal fade show" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>
+                            </div>
+                            <div className="modal-body">
+                                ...
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleCloseModal}>Close</button>
+                                <button type="button" className="btn btn-primary">Understood</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
