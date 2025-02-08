@@ -6,9 +6,9 @@ export const metadata = {
 export default function BlogLayout({ children }) {
   return (
     <>
-    {/* Include the specific blog CSS */}
-    <link rel="stylesheet" href="/assets/css/blog.css"  />
-    {children}
+      {/* Include the specific blog CSS */}
+      <link rel="stylesheet" href="/assets/css/blog.css" />
+      {children}
     </>
   );
 }

@@ -20,7 +20,7 @@ export default function ManageUser() {
     const [selectedUsers, setSelectedUsers] = useState({});
     const [filters, setFilters] = useState({ name: '', role: '', time: '', status: '' });
     const [addUserDiv, setAddUserDiv] = useState(false);
-    const [formData, setFormData] = useState({firstName: '',lastName: '',email: '',phone: '',role: '',linkedProject: []});
+    const [formData, setFormData] = useState({firstName: '', lastName: '', email: '', phone: '', role: '', linkedProject: []});
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState({});
     const [isDeleting, setisDeleting] = useState(false);
@@ -65,7 +65,8 @@ export default function ManageUser() {
 
     // Handlers
     const handleInputChange = (field) => (e) => {
-        setFormData({ ...formData, [field]: e.target.value });
+        const value = field === 'role' ? e.target.value.toLowerCase() : e.target.value;
+        setFormData({ ...formData, [field]: value });
         if (errors[field]) {
             setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
         }
@@ -344,7 +345,7 @@ export default function ManageUser() {
                         </div>
 
                         <div className="form-group">
-                            <select className="form-select" id="role" name="role" value={formData.role} required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
+                            <select className={`form-select ${success.role ? 'successBorderColor': ''}`} id="role" name="role" required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
                                 <option value="">Select role</option>
                                 {ROLES.map((role) => (
                                     <option key={role} value={role}>{role}</option>

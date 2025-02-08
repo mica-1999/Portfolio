@@ -10,7 +10,7 @@ export default function Blog() {
         <NavBar />
         <Categories />
         <BlogItems />
-        <Footer /> 
+        <Footer />
       </div>
     </>
   );

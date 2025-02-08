@@ -670,10 +670,9 @@ select:focus {
 .form-group select {
     background-color: transparent;
     height: 48px;
-    color: #D4D5EA;
+    color: #73758E;
     border: 1px solid #595b75;
 }
-.form-group select:placeholder-shown {color: #73758E;}
 .form-group select + label {
     padding: 0 0.5rem;
     font-size: 0.8rem;
@@ -681,6 +680,13 @@ select:focus {
     top: -3.6rem;
     left: 0.5rem;
 }
+.form-group select option{background: #30334E;color: #D4D5EA;}
+.form-group select option[value=""]{color: #73758E !important;}
+.form-group select:focus {color: white;}
+.form-group select:not(:focus) {color: white;}
+.form-group select:invalid {color: #73758E;}  /* in case option is default = stays grey */ 
+.form-group select.successBorderColor {border: 2px solid var(--tagColor-green-text) !important;}
+.form-group select.successBorderColor + label {color: var(--tagColor-green-text) !important;}
 
 
 .addItem{background-color: var(--bs-indigo);}

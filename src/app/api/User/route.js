@@ -70,6 +70,7 @@ export async function POST(req) {
         phone: phone,
         role: role,
         isActive: 'active',
+        lastLogin: Date.now(),
         projects: projects
     });
 
