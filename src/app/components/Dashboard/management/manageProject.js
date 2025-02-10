@@ -34,7 +34,7 @@ export default function ManageProject() {
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1); // Current page
-    const [projectsPerPage, setprojectsPerPage] = useState(10); // Projects per page (Adjust as needed)
+    const [projectsPerPage, setprojectsPerPage] = useState(4); // Projects per page (Adjust as needed)
     const indexOfLastProject = currentPage * projectsPerPage; // Index of last project
     const indexOfFirstProject = indexOfLastProject - projectsPerPage; // Index of first project
     const totalPages = Math.ceil(projects.length / projectsPerPage); // Total Pages
@@ -305,7 +305,7 @@ export default function ManageProject() {
                                 </tr>
                             </thead>
                             <tbody className="table-content">
-                                {projects.filter((project) => {
+                                {currentProject.filter((project) => {
                                     if(filters.state !== null && project.state !== filters.state){ return false;}
                                     if(filters.tags.length > 0 && !filters.tags.every((tag) => project.tags.includes(tag))) return false;
                                     if(filters.lastUpdated && !filterByTimeRange(project.lastUpdated, filters.lastUpdated)) return false;
@@ -356,7 +356,7 @@ export default function ManageProject() {
                                                         <i className="ri-edit-line"></i>
                                                     </button>
                                                     
-                                                    <button className="btn btn-sm btn-danger" onClick={() => showConfirmationModal(project.username)}>
+                                                    <button className="btn btn-sm btn-danger" onClick={() => showConfirmationModal(project.title)}>
                                                         <i className="ri-delete-bin-line"></i>
                                                     </button>
                                                 </div>
@@ -366,6 +366,32 @@ export default function ManageProject() {
                                 })}
                             </tbody>
                         </table>
+                    </div>
+                    <div className="row w-100">
+                        <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
+                            <p>Showing {indexOfFirstProject +1} to {Math.min(indexOfLastProject, projects.length)} of {projects.length} entries</p>
+                            <ul className="pagination gap-2">
+                                <li className="page-item arrow">
+                                    <a className="page-link" aria-label="Previous" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                                        <i className="ri-arrow-left-s-line"></i>
+                                    </a>
+                                </li>
+                                {Array.from({ length: totalPages }, (_, i) => (
+                                    <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
+                                        <a className="page-link" onClick={() => paginate(i + 1)}>
+                                            {i + 1}
+                                        </a>
+                                    </li>
+                                ))}
+                                
+                                <li className="page-item arrow">
+                                    <a className="page-link" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} aria-label="Next">
+                                        <i className="ri-arrow-right-s-line"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>  
             </div>
