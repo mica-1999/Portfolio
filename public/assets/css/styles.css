@@ -819,6 +819,7 @@ select:focus {
     border-radius: 50%;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 .page-link:hover,.page-item.arrow .page-link:hover{background-color: #393C6A;}
 .page-item.arrow .page-link:hover i{color: #2B4ECA;}
@@ -828,3 +829,23 @@ select:focus {
     height: 38px;
     border-radius: 30%;
 }
+/* ----------------------------------------------
+   PROJECT MANAGEMENT STYLES
+---------------------------------------------- */
+.tagButton{
+    white-space: normal;
+    text-align: left;
+    color: #D4D5EA !important;
+    background: transparent;
+    height: 48px;
+    border-radius: .5rem;
+    border: 0.09rem solid #464963;
+}
+.tagButton:hover{border: 0.09rem solid #464963;}
+.tagButton::after{display: none;}
+.ulTag{height: 240px;overflow: auto;}
+.custom-tag-li:hover{background-color: #99C8FF}
+.custom-tag-li:hover label{color: black}
+.custom-tag-li{margin-top: -5px;cursor : pointer}
+.form-check-label{color: #D4D5E0}
+.form-check-input{cursor: pointer}

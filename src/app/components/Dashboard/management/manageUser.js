@@ -28,11 +28,12 @@ export default function ManageUser() {
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1); // Current page
-    const [usersPerPage, setUsersPerPage] = useState(4); // Users per page
+    const [usersPerPage, setUsersPerPage] = useState(10); // Users per page (Adjust as needed)
     const indexOfLastUser = currentPage * usersPerPage; // Index of last user
     const indexOfFirstUser = indexOfLastUser - usersPerPage; // Index of first user
     const totalPages = Math.ceil(users.length / usersPerPage); // Total Pages
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser); // Current users on display
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Loading and Fetch Error
     const [loading, setLoading] = useState(false); // Loading state
@@ -337,18 +338,23 @@ export default function ManageUser() {
                     </div>
                     <div className="row w-100">
                         <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
-                            <p>Showing {indexOfFirstUser +1} to {indexOfLastUser} of {users.length} entries</p>
+                            <p>Showing {indexOfFirstUser +1} to {Math.min(indexOfLastUser, users.length)} of {users.length} entries</p>
                             <ul className="pagination gap-2">
                                 <li className="page-item arrow">
-                                    <a className="page-link" href="#" aria-label="Previous">
+                                    <a className="page-link" aria-label="Previous" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
                                         <i className="ri-arrow-left-s-line"></i>
                                     </a>
                                 </li>
-                                <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                <li className="page-item"><a className="page-link" href="#">3</a></li>
+                                {Array.from({ length: totalPages }, (_, i) => (
+                                    <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
+                                        <a className="page-link" onClick={() => paginate(i + 1)}>
+                                            {i + 1}
+                                        </a>
+                                    </li>
+                                ))}
+                                
                                 <li className="page-item arrow">
-                                    <a className="page-link" href="#" aria-label="Next">
+                                    <a className="page-link" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} aria-label="Next">
                                         <i className="ri-arrow-right-s-line"></i>
                                     </a>
                                 </li>
