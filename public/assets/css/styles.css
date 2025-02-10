@@ -253,7 +253,6 @@ a.main::before { content: "\f015"; }
 .table-content td { color: #b2b3ca; padding-block: 1.426rem; }
 th, td { vertical-align: middle;  padding: 0.75rem;}
 .border-top {border-top: 1px solid #464963 !important; }
-tbody tr:last-child td { border-bottom: none; }
 .table-sm>:not(caption)>*>* { padding: 1.426rem 1.25rem; }
 
 /* ----------------------------------------------
@@ -799,4 +798,33 @@ select:focus {
     margin-bottom: 1rem;
     width: 80px;
     height: 80px;
+}
+.modalClose.confCancel{background-color: #C1C1C1;color: white;}
+.modalClose.confCancel:hover{background-color: #a8a8a8;}
+.confSucess{background-color: #dd413e;color: white;}
+.confSucess:hover{background-color: #c23a36;}
+
+/* ----------------------------------------------
+   PAGINATION STYLES
+---------------------------------------------- */
+.page-link,
+.page-item.arrow .page-link{
+    font-size: 14px;
+    border: none;
+    display: flex;
+    width: 38px;
+    height: 38px;
+    color: #D4D5EA;
+    background-color: #3f425c;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+}
+.page-link:hover,.page-item.arrow .page-link:hover{background-color: #393C6A;}
+.page-item.arrow .page-link:hover i{color: #2B4ECA;}
+.active>.page-link, .page-link.active{background-color: var(--bs-indigo) !important}
+.page-item.arrow .page-link{
+    width: 38px;
+    height: 38px;
+    border-radius: 30%;
 }

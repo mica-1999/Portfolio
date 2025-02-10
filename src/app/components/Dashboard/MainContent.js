@@ -116,7 +116,6 @@ export default function MainContent() {
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Multibanco</h5>
                 <div>
-                  <i className="ri-edit-line ri-lg ms-2 pointer"></i>
                   <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('1')}></i>
                 </div>
               </div>
@@ -203,7 +202,6 @@ export default function MainContent() {
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Projects</h5>
                 <div>
-                  <i className="ri-edit-line ri-lg ms-2 pointer"></i>
                   <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('2')}></i>
                 </div>
               </div>
@@ -252,7 +250,6 @@ export default function MainContent() {
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Activity Timeline</h5>
                 <div>
-                  <i className="ri-edit-line ri-lg ms-2 pointer"></i>
                   <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('3')}></i>
                 </div>
               </div>
@@ -287,7 +284,6 @@ export default function MainContent() {
             <div className="table-responsive text-nowrap user-table rounded">
               <div className="card-header">
                 <div className="d-flex align-items-center justify-content-end mt-2">
-                    <i className="ri-edit-line ri-lg ms-2 pointer"></i>
                     <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('4')}></i>
                 </div>
               </div>

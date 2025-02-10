@@ -11,57 +11,74 @@ const STATUS = ["Active", "Inactive", "Pending", "Suspended"];
 const TIME_RANGES = ["Last 7 days", "Last 30 days", "Last 6 months", "Last year", "All time"];
 
 export default function ManageUser() {
-    // For clicking outside the form to close it
-    const addUserFormRef = useRef(null);
+    const addUserFormRef = useRef(null); // Ref for Add User form (hides when clicked outside the div)
 
     // State Management
-    const [users, setUsers] = useState([]);
-    const [selectAll, setSelectAll] = useState(false);
-    const [selectedUsers, setSelectedUsers] = useState({});
-    const [filters, setFilters] = useState({ name: '', role: '', time: '', status: '' });
-    const [addUserDiv, setAddUserDiv] = useState(false);
-    const [formData, setFormData] = useState({firstName: '', lastName: '', email: '', phone: '', role: '', linkedProject: []});
-    const [errors, setErrors] = useState({});
-    const [success, setSuccess] = useState({});
-    const [isDeleting, setisDeleting] = useState(false);
-    const [showModal, setShowModal] = useState({
-        type: '',
-        show: false,
-        message: ''
-    });
-    const [hideBody, setHideBody] = useState(false);
+    const [users, setUsers] = useState([]);  // Array of users
+    const [selectAll, setSelectAll] = useState(false); // Select all checkbox
+    const [selectedUsers, setSelectedUsers] = useState({}); // Selected users
+    const [filters, setFilters] = useState({ name: '', role: '', time: '', status: '' }); // Filters
+    const [addUserDiv, setAddUserDiv] = useState(false); // Add User form toggle
+    const [formData, setFormData] = useState({firstName: '', lastName: '', email: '', phone: '', role: '', linkedProject: []}); // Form data
+    const [errors, setErrors] = useState({}); // Form errors verification
+    const [success, setSuccess] = useState({}); // Form success validation
+    const [showModal, setShowModal] = useState({ type: '',show: false,message: ''}); // Modal state
+    const [deleteUser, setdeleteUser] = useState(''); // Stores username of user to be deleted
+    const [hideBody, setHideBody] = useState(false); // Dark Body toggle
 
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1); // Current page
+    const [usersPerPage, setUsersPerPage] = useState(4); // Users per page
+    const indexOfLastUser = currentPage * usersPerPage; // Index of last user
+    const indexOfFirstUser = indexOfLastUser - usersPerPage; // Index of first user
+    const totalPages = Math.ceil(users.length / usersPerPage); // Total Pages
+    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser); // Current users on display
+
+    // Loading and Fetch Error
+    const [loading, setLoading] = useState(false); // Loading state
+    const [fetchError, setFetchError] = useState(''); // Fetch error
+
+    // Initial Page Render
+    useEffect(() => {
+        fetchUsers();
+    }, [])
+
+    // Hide Body on Pop-up
+    useEffect(() => {
+        showModal.show || addUserDiv ? setHideBody(true) : setHideBody(false);
+    }, [showModal.show,addUserDiv]);
+
+    // Handle clicks outside the "Add New User" form
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (addUserDiv && addUserFormRef.current && !addUserFormRef.current.contains(event.target)) {
+                setAddUserDiv(false);
+            }
+        };
+
+        if (addUserDiv) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [addUserDiv]);
+
+    // Fetch from MongoDB
     const fetchUsers = async () => {
+        setLoading(true);
+        setFetchError('');  
         try {
             const response = await fetchDataFromApi("/api/User");
             setUsers(response || []);
         } catch (error) {
             console.error('Error fetching data:', error);
+            setFetchError('Failed to load users. Please try again.'); // Update error state
+        } finally {
+            setLoading(false);  // Set loading to false once the fetch is complete
         }
     };
-
-    // Fetch Users and set hideBody
-    useEffect(() => {
-        fetchUsers();
-        showModal.show || isDeleting || addUserDiv ? setHideBody(true) : setHideBody(false);
-    }, [showModal.show,isDeleting,addUserDiv]);
-
-    // Handle clicks outside the "Add New User" form
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-        if (addUserDiv && addUserFormRef.current && !addUserFormRef.current.contains(event.target)) {
-            setAddUserDiv(false);
-        }
-        };
-
-        if (addUserDiv) {
-        document.addEventListener("mousedown", handleClickOutside);
-        }
-
-        return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [addUserDiv]);
 
     // Handlers
     const handleInputChange = (field) => (e) => {
@@ -103,6 +120,7 @@ export default function ManageUser() {
             handleReset();
             setAddUserDiv(false);
             setShowModal({type: 'success', show: true, message: 'User has been added successfully'});
+            fetchUsers();
         } catch (error) {
             console.error('Error creating user:', error);
             setShowModal({type: 'error', show: true, message: 'Error creating User. Please try again.'});
@@ -116,18 +134,18 @@ export default function ManageUser() {
             });
             const result = await response.json();
             setShowModal({type: 'success', show: true, message: 'User has been deleted successfully'});
-            setisDeleting(true);
-            setTimeout(() => setisDeleting(false), 100); 
+            fetchUsers();
         } catch (error) {
             console.error('Error deleting user:', error);
             setShowModal({type: 'error', show: true, message: 'Failed to delete User. Please try again.'});
-            
         }
     }
     
     const verifyInput = (value, fieldName) => {
         value = value.trim();
         let errorMessage = '';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?[0-9]{10,15}$/;
 
         if (!value) {
             setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: '' }));
@@ -141,10 +159,10 @@ export default function ManageUser() {
                 if (value.length < 2) errorMessage = 'Name must have at least 2 characters';
                 break;
             case 'email':
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errorMessage = 'Invalid email format';
+                if (!emailRegex.test(value)) errorMessage = 'Invalid email format';
                 break;
             case 'phone':
-                if (!/^\+?[0-9]{10,15}$/.test(value)) errorMessage = 'Invalid phone number';
+                if (!phoneRegex.test(value)) errorMessage = 'Invalid phone number';
                 break;
             case 'role':
             case 'linkedProject':
@@ -171,6 +189,15 @@ export default function ManageUser() {
         setSelectedUsers(updatedSelectedUsers);
         setSelectAll(Object.values(updatedSelectedUsers).every((val) => val));
     };
+
+    const showConfirmationModal = (username,fName, LName) => {
+        setdeleteUser(username);
+        setShowModal({
+            type: 'warning',
+            show: true,
+            message: `Are you sure you want to delete ${fName + " " + LName} ?`,
+        });
+    }
 
     return(
         <div className="d-flex col-lg-12 mt-4">
@@ -230,7 +257,10 @@ export default function ManageUser() {
                     </div>
                 </div>
 
-                <div className="card-body d-flex  flex-wrap p-0 mb-4">
+                <div className="card-body d-flex  flex-wrap p-0 mb-1">
+                    {loading && <div>Loading...</div>}
+                    {fetchError && showModal({type: 'error', show: true, message: fetchError})}
+                    
                     <div className="table-responsive text-nowrap user-table w-100">
                         <table className="table table-sm mb-0">
                             <thead className="table-head">
@@ -242,7 +272,7 @@ export default function ManageUser() {
                                 </tr>
                             </thead>
                             <tbody className="table-content">
-                                {users
+                                {currentUsers
                                 .filter((user) => {
                                     if (filters.status && user.isActive.toLowerCase() !== filters.status.toLowerCase()) {
                                         return false;
@@ -293,7 +323,7 @@ export default function ManageUser() {
                                                         <i className="ri-edit-line"></i>
                                                     </button>
                                                     {user.firstName !== "Micael" ? 
-                                                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(user.username)}>
+                                                    <button className="btn btn-sm btn-danger" onClick={() => showConfirmationModal(user.username,user.firstName, user.lastName)}>
                                                         <i className="ri-delete-bin-line"></i>
                                                     </button>
                                                     : null}
@@ -304,6 +334,27 @@ export default function ManageUser() {
                                 })}
                             </tbody>
                         </table>
+                    </div>
+                    <div className="row w-100">
+                        <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
+                            <p>Showing {indexOfFirstUser +1} to {indexOfLastUser} of {users.length} entries</p>
+                            <ul className="pagination gap-2">
+                                <li className="page-item arrow">
+                                    <a className="page-link" href="#" aria-label="Previous">
+                                        <i className="ri-arrow-left-s-line"></i>
+                                    </a>
+                                </li>
+                                <li className="page-item active"><a className="page-link" href="#">1</a></li>
+                                <li className="page-item"><a className="page-link" href="#">2</a></li>
+                                <li className="page-item"><a className="page-link" href="#">3</a></li>
+                                <li className="page-item arrow">
+                                    <a className="page-link" href="#" aria-label="Next">
+                                        <i className="ri-arrow-right-s-line"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>  
             </div>
@@ -365,13 +416,13 @@ export default function ManageUser() {
 
                         {/* Additional fields for role, status, etc. */}
                         <div className="d-flex mt-2 gap-3">
-                            <button type="submit" className="btn  addItem" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Submit</button>
+                            <button type="submit" className="btn  addItem" >Submit</button>
                             <button type="button" className="btn cancelItem" onClick={() => setAddUserDiv(false)}>Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <Modal showModal={showModal} setShowModal={setShowModal}/>
+            <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteUser={deleteUser}/>
             {hideBody  && <div className="modal-backdrop show"></div>}
         </div>
     );

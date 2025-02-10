@@ -16,6 +16,7 @@ body {
     width: 87%;
     border: none;
     border-radius: 5px;
+    color: #797979;
 }
 .form-st::placeholder{
     color: #797979 !important;
