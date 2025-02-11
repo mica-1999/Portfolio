@@ -92,7 +92,6 @@ When including static files such as CSS, JS, and images from the `public` direct
 - Integrate login functionality from another project.
 - Add notifications in the top right corner.
 - Integrate AI into the chat feature.
-- Add CRUD functionality for blog posts, projects, and other items in the dashboard.
 - Add APIs for news, Spotify, weather, and other features on the dashboard main page.
 - Track and display the number of visiting users using session data.
 
