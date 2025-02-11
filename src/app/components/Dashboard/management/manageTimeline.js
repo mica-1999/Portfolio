@@ -75,7 +75,7 @@ export default function ManageProject() {
                                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                             </div>
                             <div className="d-flex gap-3">
-                                <input type="text" className="form-control searchInput" placeholder="Search Project" />
+                                <input type="text" className="form-control searchInput" placeholder="Search Action" />
                             </div>
                         </div>
                     </div>
@@ -83,39 +83,38 @@ export default function ManageProject() {
 
                 <div className="card-body p-0 p-4">
                     <div className="row d-flex align-items-center p-2">
-
                     {data.map((projectData) => {
                         return projectData.timeline.length > 0 ? (
-                            <div className="col-lg-6" key={projectData._id}>
-                            <div className="card projectTimeline">
+                        <div className="col-lg-6 d-flex timeline-custom" key={projectData._id}>
+                            <div className="card flex-grow-1">
                                 <div className="card-header">
-                                <div className="d-flex align-items-center justify-content-between">
-                                    <h5 className="card-title">{projectData.title}</h5>
-                                    <i className="ri-add-line ri-lg ms-2 add-event-icon"></i>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <h5 className="card-title">{projectData.title}</h5>
+                                    </div>
                                 </div>
-                                <h6 className="card-subtitle mb-2">ID #{projectData.id}</h6>
-                                </div>
-                                <div className="card-body p-0 overflow-auto">
-                                <div className="manage-timeline pt-3">
+                                <div className="card-body p-0 pt-4">
+                                    <ul className="timeline card-timeline mb-0">
                                     {projectData.timeline.map((timeline) => {
                                     const eventColor = getEventColor(timeline.state);
+                                    const timelineTime = getTimeFormatted(timeline.startDate);
                                     return (
-                                        <div className="manage-timeline-container pe-4" key={timeline._id}>
-                                            <div className="manage-timeline-icon" style={{ background: eventColor }}></div>
-                                            <div className="manage-timeline-body">
-                                                <h4 className="manage-timeline-title">
-                                                    <span className="badge" style={{ background: eventColor }}>{timeline.title}</span>
-                                                </h4>
+
+                                            <li className="timeline-item" key={timeline._id}>
+                                            <span className={`timeline-point timeline-point-${eventColor}`}></span>
+                                            <div className="timeline-event ps-4">
+                                                <div className="timeline-header mb-2 pe-4">
+                                                <h6 className="mb-0">{timeline.title}</h6>
+                                                <small className="text-muted">{timelineTime}</small>
+                                                </div>
                                                 <p>{timeline.description}</p>
-                                                <p className="manage-timeline-subtitle">{getTimeFormatted(timeline.startDate)}</p>
                                             </div>
-                                        </div>
-                                    );
-                                    })}
+                                            </li>
+                                        );
+                                        })}
+                                    </ul>
                                 </div>
-                                </div>
-                            </div>
-                            </div>
+                            </div> 
+                        </div>
                         ) : null;
                         })}
                     </div>

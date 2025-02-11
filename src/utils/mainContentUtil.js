@@ -33,27 +33,27 @@ export function getActiveColor(status){
 export function getEventColor(status) {
   switch (status.toLowerCase()) {
     case 'planned':
-      return 'var(--bs-blue)';
+      return 'primary';
     case 'in progress':
-      return 'var(--bs-green)';
+      return 'success';
     case 'delayed':
-      return 'var(--bs-orange)';
+      return 'warning';
     case 'on hold':
-      return 'var(--bs-yellow)';
+      return 'secondary';
     case 'completed':
-      return 'var(--badge-success-bg)';
+      return 'success';
     case 'cancelled':
-      return 'var(--bs-red)';
+      return 'danger';
     case 'failed':
-      return 'var(--badge-danger-bg)';
+      return 'danger';
     case 'under review':
-      return 'var(--bs-purple)';
+      return 'info';
     case 'awaiting approval':
-      return 'var(--bs-cyan)';
+      return 'info';
     case 'archived':
-      return 'var(--bs-gray-dark)';
+      return 'secondary';
     default:
-      return 'var(--bs-gray-dark)'; // Default if status is unknown
+      return 'secondary'; // Default if status is unknown
   }
 };
 
