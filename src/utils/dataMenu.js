@@ -90,7 +90,7 @@ export const menuPages = [
     {
       name: "Chat",
       icon: "chat",
-      page: "/chat",
+      page: "/pages/dashboard/chat",
     },
     {
       name: "Calendar",

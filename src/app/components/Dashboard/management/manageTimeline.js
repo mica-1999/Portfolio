@@ -82,7 +82,7 @@ export default function ManageProject() {
                 </div>
 
                 <div className="card-body p-0 p-4">
-                    <div className="row d-flex align-items-center p-2">
+                    <div className="row d-flex p-2">
                     {data.map((projectData) => {
                         return projectData.timeline.length > 0 ? (
                         <div className="col-lg-6 d-flex timeline-custom" key={projectData._id}>
@@ -90,6 +90,7 @@ export default function ManageProject() {
                                 <div className="card-header">
                                     <div className="d-flex align-items-center justify-content-between">
                                         <h5 className="card-title">{projectData.title}</h5>
+                                        <i className="ri-add-line" style={{ fontSize: '24px', cursor: "pointer"}}></i>
                                     </div>
                                 </div>
                                 <div className="card-body p-0 pt-4">

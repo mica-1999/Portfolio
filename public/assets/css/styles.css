@@ -795,3 +795,29 @@ select:focus {
 .form-check-input{cursor: pointer}
 .formBtn{color: #73758E !important; border: 1px solid #595b75;overflow: hidden;text-overflow: ellipsis; /* Show ellipsis for overflow */}
 .selected-tags{color: #D4D5EA !important}
+
+/* ----------------------------------------------
+   CHAT COMPONENT  STYLES
+---------------------------------------------- */
+.chatApp{
+    height: 75vh;
+    background-color: #343752;
+}
+.searchContChat{
+    border-radius: 25px;
+    background-color: transparent !important;
+    border: 1px solid #595b75;
+}
+.searchContChat:hover{border: 1px solid #9FA1B8;}
+.searchContChat::placeholder{color: #73758E;font-size: 14px;}
+.searchContChat:focus{
+    border: 2px solid var(--bs-indigo) !important;
+}
+.searchSection{
+    flex-basis: 350px;
+    max-width: 350px;
+}
+.chatSection{
+    flex-grow: 1;
+    max-width: calc(100% - 350px);
+}
