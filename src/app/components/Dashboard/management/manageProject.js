@@ -31,10 +31,13 @@ export default function ManageProject() {
     const [deleteProject, setdeleteProject] = useState(''); // Stores name of project to be deleted
     const [hideBody, setHideBody] = useState(false); // Dark Body toggle
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
+    const [tagBtn, setTagBtn] = useState(false);
+    const [formtagBtn, setformTagBtn] = useState(false);
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1); // Current page
-    const [projectsPerPage, setprojectsPerPage] = useState(4); // Projects per page (Adjust as needed)
+    const [projectsPerPage, setprojectsPerPage] = useState(10); // Projects per page (Adjust as needed)
     const indexOfLastProject = currentPage * projectsPerPage; // Index of last project
     const indexOfFirstProject = indexOfLastProject - projectsPerPage; // Index of first project
     const totalPages = Math.ceil(projects.length / projectsPerPage); // Total Pages
@@ -44,11 +47,6 @@ export default function ManageProject() {
     // Loading and Fetch Error
     const [loading, setLoading] = useState(false); // Loading state
     const [fetchError, setFetchError] = useState(''); // Fetch error
-
-    // Testing delete latwr
-    useEffect(() => {
-        console.log(filters.state)
-    }, [filters.state])
 
     // Initial Page Render
     useEffect(() => {
@@ -140,9 +138,9 @@ export default function ManageProject() {
         }
     };
 
-    const handleDelete = async (title) => {
+    const handleDelete = async (id) => {
         try {
-            const response = await fetch(`/api/Project/?title=${title}`, {
+            const response = await fetch(`/api/Projects/?id=${id}`, {
                 method: "DELETE",
             });
             const result = await response.json();
@@ -167,7 +165,7 @@ export default function ManageProject() {
         switch (fieldName) {
             case 'title':
             case 'description':
-                if (value.length < 2) errorMessage = 'Name must have at least 2 characters';
+                if (value.length < 2) errorMessage = 'Must have at least 2 characters';
                 break;
             default:
                 break;
@@ -201,12 +199,12 @@ export default function ManageProject() {
         setSelectAll(allSelected);
     };
 
-    const showConfirmationModal = (title) => {
-        setdeleteProject(title);
+    const showConfirmationModal = (id,title) => {
+        setdeleteProject(id);
         setShowModal({
             type: 'warning',
             show: true,
-            message: `Are you sure you want to delete Project: ${title} ?`,
+            message: `Are you sure you want to delete ${title} ?`,
         });
     }
     
@@ -215,6 +213,13 @@ export default function ManageProject() {
             ? filters.tags.filter((t) => t !== tag)
             : [...filters.tags, tag];
         setFilters({ ...filters, tags: updatedTags });
+    }
+
+    const handleTagChangeForm = (tag) => {
+        const updatedTags = formData.tags.includes(tag)
+            ? formData.tags.filter((t) => t !== tag)
+            : [...formData.tags, tag];
+        setFormData({ ...formData, tags: updatedTags });
     }
     return(
         <div className="d-flex col-lg-12 mt-4">
@@ -239,7 +244,7 @@ export default function ManageProject() {
                         <div className="col-lg-4">
                             <div className="dropdown">
                                 <div className="select-wrapper">
-                                    <button className="btn dropdown-toggle w-100 tagButton" type="button" id="dropdownMenuButton" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                                    <button className={`btn dropdown-toggle w-100 tagButton ${tagBtn ? 'setBorder': ''}`} type="button" id="dropdownMenuButton" onClick={() => { setTagBtn(!tagBtn); setIsDropdownOpen(!isDropdownOpen); }}>
                                         {filters.tags.length === 0 ? 'Select tags' : filters.tags.join(', ') }
                                     </button>
                                     <ul className={`dropdown-menu w-100 ulTag ${isDropdownOpen ? 'show' : ''}`} aria-labelledby="dropdownMenuButton">
@@ -327,7 +332,7 @@ export default function ManageProject() {
                                             </td>
                                             <td>{project.title}</td>
                                             <td className="description-cell">{project.description}</td>
-                                            <td><div className="d-flex gap-1">
+                                            <td><div className="d-flex gap-1 flex-wrap">
                                             {project.tags.map((tag, index) => {
                                                 const { color, tag: tagName } = getTagColor(tag);
                                                 return (
@@ -356,7 +361,7 @@ export default function ManageProject() {
                                                         <i className="ri-edit-line"></i>
                                                     </button>
                                                     
-                                                    <button className="btn btn-sm btn-danger" onClick={() => showConfirmationModal(project.title)}>
+                                                    <button className="btn btn-sm btn-danger" onClick={() => showConfirmationModal(project._id, project.title)}>
                                                         <i className="ri-delete-bin-line"></i>
                                                     </button>
                                                 </div>
@@ -372,7 +377,7 @@ export default function ManageProject() {
                             <p>Showing {indexOfFirstProject +1} to {Math.min(indexOfLastProject, projects.length)} of {projects.length} entries</p>
                             <ul className="pagination gap-2">
                                 <li className="page-item arrow">
-                                    <a className="page-link" aria-label="Previous" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                                    <a className="page-link" aria-label="Previous" onClick={currentPage === 1 ? (e) => e.preventDefault() : () => paginate(currentPage - 1)}>
                                         <i className="ri-arrow-left-s-line"></i>
                                     </a>
                                 </li>
@@ -385,7 +390,7 @@ export default function ManageProject() {
                                 ))}
                                 
                                 <li className="page-item arrow">
-                                    <a className="page-link" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} aria-label="Next">
+                                    <a className="page-link" aria-label="Next" onClick={currentPage === totalPages ? (e) => e.preventDefault() : () => paginate(currentPage + 1)} >
                                         <i className="ri-arrow-right-s-line"></i>
                                     </a>
                                 </li>
@@ -410,53 +415,82 @@ export default function ManageProject() {
                     <form className="d-flex flex-column mt-3" onSubmit={handleSubmit}>
                         {/* Form fields */}
                         <div className="form-group">
-                            <input type="text" id="firstName" name="firstName" placeholder="Michael" value={formData.firstName} className={`form-control sInput ${errors.firstName ? 'errorBorderColor' : success.firstName ? 'successBorderColor' : ''}`} required onChange={handleInputChange('firstName')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
-                            <label htmlFor="firstName">Title</label>
-                            <div className="errorDiv">{errors.firstName}</div>
+                            <input type="text" id="title" name="title" placeholder="Ex: Building a Dashboard" value={formData.title} className={`form-control sInput ${errors.title ? 'errorBorderColor' : success.title ? 'successBorderColor' : ''}`} required onChange={handleInputChange('title')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
+                            <label htmlFor="title">Title</label>
+                            <div className="errorDiv">{errors.title}</div>
                         </div>
 
                         <div className="form-group">
-                            <input type="text" id="phone" name="phone" placeholder="+351 964 291 392" value={formData.phone} className={`form-control sInput ${errors.phone ? 'errorBorderColor' : success.phone ? 'successBorderColor' : ''}`} required onChange={handleInputChange('phone')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
-                            <label htmlFor="phone">Phone</label>
-                            <div className="errorDiv">{errors.phone}</div>
+                            <input type="text" id="version" name="version" placeholder="v1.12" value={formData.version} className={`form-control sInput ${errors.version ? 'errorBorderColor' : success.version ? 'successBorderColor' : ''}`} required onChange={handleInputChange('version')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
+                            <label htmlFor="version">Version</label>
+                            <div className="errorDiv">{errors.version}</div>
                         </div>
 
                         <div className="form-group">
-                            <select className={`form-select ${success.role ? 'successBorderColor': ''}`} id="role" name="role" required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
+                            <select className={`form-select ${success.state ? 'successBorderColor': ''}`} value={formData.state} id="state" name="state" required onChange={handleInputChange('state')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
                                 <option value="">Select status</option>
-                                {STATUS.map((status) => (
-                                    <option key={status} value={status}>{status}</option>
-                                    )
-                                )}
+                                {STATUS.map((state) => {
+                                    const { output } = getBadgeClass(state);
+                                    return <option key={state} value={state}>{output}</option>;
+                                })}
                             </select>
 
-                            <label htmlFor="role">Status</label>
+                            <label htmlFor="state">State</label>
                             <div className="errorDiv">{errors.role}</div>
                         </div>
 
-                        <div className="form-group">
-                            <select className={`form-select ${success.role ? 'successBorderColor': ''}`} id="role" name="role" required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
-                                <option value="">Select tags</option>
-                                {STATUS.map((tags) => (
-                                    <option key={tags} value={tags}>{tags}</option>
-                                    )
-                                )}
-                            </select>
+                            <div className="select-wrapper">
+                                <button className={`btn dropdown-toggle w-100  formBtn tagButton ${formtagBtn ? 'setBorder': ''} ${formData.tags.length > 0 ? 'selected-tags' : ''}`} type="button" id="dropdownForm" onClick={() => { setformTagBtn(!formtagBtn); setIsformDropdownOpen(!isformDropdownOpen); }}>
+                                    {formData.tags.length === 0 ? 'Select tags' : formData.tags.join(';') }
+                                </button>
+                                
+                                <ul className={`dropdown-menu w-100 ulTag ${isformDropdownOpen ? 'show' : ''}`} aria-labelledby="dropdownForm">
+                                    {TAGS.map((tag) => (
+                                    <li key={tag} onClick={() => handleTagChangeForm(tag)} className="custom-tag-li p-2">
+                                        
+                                    <div className="form-check">
+                                        <input
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        id={tag + 'form'}
+                                        checked={formData.tags.includes(tag)}
+                                        onChange={() => handleTagChangeForm(tag)}
+                                        />
+                                        <label className="form-check-label" htmlFor={tag + 'form'}>
+                                                {tag}
+                                        </label>
+                                        <div className="errorDiv">{errors.tag}</div>
+                                    </div>
+                                    </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        
+                        <div className="form-group pt-4">
+                            <textarea
+                                id="description"
+                                name="description"
+                                placeholder="Enter project description"
+                                value={formData.description}
+                                className={`form-control sInput projectDescription ${errors.description ? 'errorBorderColor' : success.description ? 'successBorderColor' : ''}`}
+                                required
+                                onChange={handleInputChange('description')}
+                                onBlur={(e) => verifyInput(e.target.value, e.target.name)}
 
-                            <label htmlFor="role">Tags</label>
-                            <div className="errorDiv">{errors.role}</div>
+                            />
+                            <div className="errorDiv mt-4">{errors.description}</div>
                         </div>
 
 
                         {/* Additional fields for role, status, etc. */}
-                        <div className="d-flex mt-2 gap-3">
+                        <div className="d-flex mt-1 gap-3">
                             <button type="submit" className="btn  addItem" >Submit</button>
                             <button type="button" className="btn cancelItem" onClick={() => setAddProjectDiv(false)}>Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteProject={deleteProject}/>
+            <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteAction={deleteProject}/>
             {hideBody  && <div className="modal-backdrop show"></div>}
         </div>
     );

@@ -1,4 +1,4 @@
-export const Modal = ({showModal, setShowModal, handleDelete, deleteUser}) => {
+export const Modal = ({showModal, setShowModal, handleDelete, deleteAction}) => {
 return showModal.show   ? (
         <>    
             <div className={'modal fade show'} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
@@ -22,7 +22,7 @@ return showModal.show   ? (
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between">
                                     <button type="button" className="btn modalClose confCancel" data-bs-dismiss="modal" onClick={() => setShowModal({ ...showModal, show: false })}>Cancel</button>
-                                    <button type="button" className="btn modalClose confSucess" data-bs-dismiss="modal" onClick={() => handleDelete(deleteUser)}>Yes, do it!</button>
+                                    <button type="button" className="btn modalClose confSucess" data-bs-dismiss="modal" onClick={() => handleDelete(deleteAction)}>Yes, do it!</button>
                                 </div>
                             </>
                         ): 

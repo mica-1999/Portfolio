@@ -201,9 +201,6 @@ export default function MainContent() {
             <div className="card-header">
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Projects</h5>
-                <div>
-                  <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('2')}></i>
-                </div>
               </div>
               <h6 className="card-subtitle mb-2">#Categories</h6>
             </div>
@@ -221,7 +218,7 @@ export default function MainContent() {
                     {projects.map((project) => {
                       const { badgeColor, output } = getBadgeClass(project.state);
                       return (
-                        <tr key={project.id}>
+                        <tr key={project._id}>
                           <td>{project.id}</td>
                           <td>{project.title}</td>
                           <td>{project.description}</td>
@@ -249,9 +246,6 @@ export default function MainContent() {
             <div className="card-header">
               <div className="d-flex align-items-center justify-content-between">
                 <h5 className="card-title">Activity Timeline</h5>
-                <div>
-                  <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('3')}></i>
-                </div>
               </div>
             </div>
             <div className="card-body p-0 pt-4">
@@ -282,11 +276,6 @@ export default function MainContent() {
         <div className="card flex-grow-1 p-0">
           <div id="4" className={hidden_sections.includes('4') ? 'blur_element' : ''}>
             <div className="table-responsive text-nowrap user-table rounded">
-              <div className="card-header">
-                <div className="d-flex align-items-center justify-content-end mt-2">
-                    <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('4')}></i>
-                </div>
-              </div>
               <table className="table table-sm mb-0">
                 <thead className="table-head">
                   <tr style={{ backgroundColor: '#3A3E5B' }}>

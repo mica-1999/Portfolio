@@ -28,11 +28,11 @@ export default function ManageUser() {
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1); // Current page
-    const [usersPerPage, setUsersPerPage] = useState(10); // Users per page (Adjust as needed)
+    const [usersPerPage, setUsersPerPage] = useState(5); // Users per page (Adjust as needed)
     const indexOfLastUser = currentPage * usersPerPage; // Index of last user
     const indexOfFirstUser = indexOfLastUser - usersPerPage; // Index of first user
     const totalPages = Math.ceil(users.length / usersPerPage); // Total Pages
-    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser); // Current users on display
+    const currentUsers = users.length > usersPerPage ? users.slice(indexOfFirstUser, indexOfLastUser): users; // Current users on display
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Loading and Fetch Error
@@ -83,7 +83,7 @@ export default function ManageUser() {
 
     // Handlers
     const handleInputChange = (field) => (e) => {
-        const value = field === 'role' ? e.target.value.toLowerCase() : e.target.value;
+        const value = e.target.value;
         setFormData({ ...formData, [field]: value });
         if (errors[field]) {
             setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
@@ -341,7 +341,7 @@ export default function ManageUser() {
                             <p>Showing {indexOfFirstUser +1} to {Math.min(indexOfLastUser, users.length)} of {users.length} entries</p>
                             <ul className="pagination gap-2">
                                 <li className="page-item arrow">
-                                    <a className="page-link" aria-label="Previous" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                                    <a className="page-link" aria-label="Previous" onClick={currentPage === 1 ? (e) => e.preventDefault() : () => paginate(currentPage - 1)}>
                                         <i className="ri-arrow-left-s-line"></i>
                                     </a>
                                 </li>
@@ -354,7 +354,7 @@ export default function ManageUser() {
                                 ))}
                                 
                                 <li className="page-item arrow">
-                                    <a className="page-link" onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages} aria-label="Next">
+                                    <a className="page-link" onClick={currentPage === totalPages ? (e) => e.preventDefault() : () => paginate(currentPage + 1)} aria-label="Next">
                                         <i className="ri-arrow-right-s-line"></i>
                                     </a>
                                 </li>
@@ -402,10 +402,10 @@ export default function ManageUser() {
                         </div>
 
                         <div className="form-group">
-                            <select className={`form-select ${success.role ? 'successBorderColor': ''}`} id="role" name="role" required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
+                            <select className={`form-select ${success.role ? 'successBorderColor': ''}`} value={formData.role}  id="role" name="role" required onChange={handleInputChange('role')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}>
                                 <option value="">Select role</option>
                                 {ROLES.map((role) => (
-                                    <option key={role} value={role}>{role}</option>
+                                    <option key={role} value={role.toLowerCase()}>{role}</option>
                                     )
                                 )}
                             </select>
@@ -428,7 +428,7 @@ export default function ManageUser() {
                     </form>
                 </div>
             </div>
-            <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteUser={deleteUser}/>
+            <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteAction={deleteUser}/>
             {hideBody  && <div className="modal-backdrop show"></div>}
         </div>
     );

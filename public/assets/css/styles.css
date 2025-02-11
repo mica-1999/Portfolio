@@ -658,13 +658,15 @@ select:focus {
     color: #D4D5EA;
     box-shadow: none !important;
 }
+.sInput.sInput.projectDescription::placeholder {color: #73758E;}
 .sInput:hover{border-color: #9FA1B8;}
-.sInput::placeholder{color: transparent;}
-.sInput:focus::placeholder {color: #73758E;}
+.sInput:not(.projectDescription)::placeholder {color: transparent;}
+.sInput:focus::placeholder:not(.projectDescription) {color: #73758E;}
 .sInput.errorBorderColor + label {color: var(--bs-danger) !important;}
 .sInput.errorBorderColor,.sInput.errorBorderColor:hover {border: 2px solid var(--bs-danger) !important;}
 .sInput.successBorderColor {border: 2px solid var(--tagColor-green-text) !important;}
 .sInput.successBorderColor + label {color: var(--tagColor-green-text) !important;}
+.sInput.projectDescription{height: 150px;}
 
 .form-group select {
     background-color: transparent;
@@ -686,7 +688,6 @@ select:focus {
 .form-group select:invalid {color: #73758E;}  /* in case option is default = stays grey */ 
 .form-group select.successBorderColor {border: 2px solid var(--tagColor-green-text) !important;}
 .form-group select.successBorderColor + label {color: var(--tagColor-green-text) !important;}
-
 
 .addItem{background-color: var(--bs-indigo);}
 .addItem:hover{background-color: #4f53d2;}
@@ -843,9 +844,12 @@ select:focus {
 }
 .tagButton:hover{border: 0.09rem solid #464963;}
 .tagButton::after{display: none;}
+.tagButton.setBorder{border: 0.1rem solid #666CFF}
 .ulTag{height: 240px;overflow: auto;}
 .custom-tag-li:hover{background-color: #99C8FF}
 .custom-tag-li:hover label{color: black}
 .custom-tag-li{margin-top: -5px;cursor : pointer}
-.form-check-label{color: #D4D5E0}
+.form-check-label{color: #D4D5E0; cursor: pointer}
 .form-check-input{cursor: pointer}
+.formBtn{color: #73758E !important; border: 1px solid #595b75;overflow: hidden;text-overflow: ellipsis; /* Show ellipsis for overflow */}
+.selected-tags{color: #D4D5EA !important}
