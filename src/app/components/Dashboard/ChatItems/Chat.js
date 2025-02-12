@@ -1,9 +1,32 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
 export default function Chat() {
   const [activeChat, setactiveChat] = useState(false);
+
+
+  useEffect(() => {
+    // Connect to the socket.io server
+    console.log("Connecting to the server...");
+    const socket = io('http://localhost:3000', { // Replace 3000 with your server's PORT
+      path: '/api/Socket', // Match the path used in the server
+    });
+
+    socket.emit("joinChat", "chatId123"); 
+
+    socket.on("receiveMessage", (message) => {
+      console.log("New message: ", message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+
+  },[])
+
+  
   return(
     <div className="d-flex col-lg-12 mt-1 p-4">
       <div className="card flex-grow-1 p-0 chatApp" >
@@ -71,12 +94,26 @@ export default function Chat() {
 
 
             <div className="d-flex flex-column chatSection w-100 h-100">
-              <div className="chatBox overflow-auto">
-
+              <div className="chatHistory h-100">
+                <ul>
+                  <li className="d-flex justify-content-start h-100 mt-3">
+                    <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
+                    <div className="d-flex flex-column ps-2">
+                      <div className="message">
+                        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                      </div>
+                      <div className="d-flex justify-content-start">
+                      <span className="text-muted timeMsg">10:15 AM</span>
+                      </div>
+                    </div>
+                    
+                  </li>
+                  
+                </ul>
               </div>
-              <div className="d-flex align-items-center p-4">
+              <div className="d-flex align-items-center messageDiv p-4">
                 <form className="d-flex w-100 align-items-center sendMessageForm p-2 ps-4">
-                    <input type="text" className="form-control sendMessageInput" placeholder="Type your message here..." aria-label="Recipient's username" aria-describedby="button-addon2" />
+                    <input type="text" className="sendMessageInput" placeholder="Type your message here..." aria-label="Recipient's username" aria-describedby="button-addon2" />
                     <div className='d-flex gap-3 pe-3'>
                       <i className="ri-mic-line"></i>
                       <i className="ri-link"></i>

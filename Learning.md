@@ -255,3 +255,5 @@ export { handler as GET, handler as POST } //This is a requirement for Next.js R
 
 ### SignIn and SignOut
 When working with app directory, Nextjs just knows that the Provider Configs are in the folder of api/auth/[...nextauth]
+
+### Sockets (Live Chat)

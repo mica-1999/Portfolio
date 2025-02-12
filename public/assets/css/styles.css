@@ -799,7 +799,7 @@ select:focus {
 /* ----------------------------------------------
    CHAT COMPONENT STYLES
 ---------------------------------------------- */
-.chatApp {height: 75vh;background-color: #343752;}
+.chatApp { height: 75vh; background-color: #343752; }
 .searchContChat { border-radius: 25px; background-color: transparent !important; border: 1px solid #595b75; }
 .searchContChat:hover { border: 1px solid #9FA1B8; }
 .searchContChat::placeholder { color: #73758E; font-size: 14px; }
@@ -812,10 +812,7 @@ select:focus {
     border-bottom-left-radius: 0.625rem;
 }
 .searchDiv, .headerDiv { height: 75px; }
-.chatApp .title {
-    color: var(--bs-indigo);
-    font-size: 19px;
-}
+.chatApp .title { color: var(--bs-indigo); font-size: 19px; }
 .chatApp .chatItems {
     height: 60px;
     border-radius: .5rem;
@@ -835,7 +832,7 @@ select:focus {
     cursor: pointer;
 }
 .rightCol { flex-grow: 1; max-width: calc(100% - 350px); }
-.chatSection .sendMessageForm{
+.chatSection .sendMessageForm {
     border: none;
     background-color: var(--card-bg-color);
     height: 55px;
@@ -845,17 +842,42 @@ select:focus {
     background: transparent;
     border: none;
     outline: none !important;
+    height: 50px;
+    width: 75%;
 }
-.sendMessageInput::placeholder{
-    color: #7b7c95
-}
-.sendMessageInput:valid{
-    color: var(--primary-text-color);
-}
-.sendBtn{
+.messageDiv { margin-top: auto; }
+.sendMessageInput::placeholder { color: #7b7c95; }
+.sendMessageInput:valid { color: var(--primary-text-color); }
+.sendBtn {
     background-color: var(--bs-indigo);
     color: var(--primary-text-color);
     border: none;
     border-radius: 0.625rem;
     width: 110px;
+}
+.sendBtn:hover {
+    background-color: #5a5ee1;
+    color: var(--primary-text-color);
+}
+.chatHistory .iconProfileMsg{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+.chatHistory .message {
+    background-color: var(--card-bg-color);
+    border-radius: 0.625rem;
+    padding: 10px;
+    max-width: 450px; /* Set a maximum width for the message container */
+    word-wrap: break-word; /* Ensure long words break and wrap */
+    overflow-wrap: break-word
+}
+.chatHistory .message p{
+    font-size: 0.9375rem;
+    color: #AEAFC6;
+
+    
+}
+.chatHistory .timeMsg{
+    font-size: 0.8125rem;
 }
