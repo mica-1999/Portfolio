@@ -248,7 +248,7 @@ a.main::before { content: "\f015"; }
     padding-block: 1.426rem;
     font-size: .8125rem;
     text-transform: uppercase;
-    color: #d7d8ed !important;
+    color: var(--primary-text-color) !important;
 }
 .table-content td { color: #b2b3ca; padding-block: 1.426rem; }
 th, td { vertical-align: middle;  padding: 0.75rem;}
@@ -413,14 +413,14 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
 .dropdown-item:hover:not(.logout-btn),
 .dropdown-item:focus:not(.logout-btn) {
     background-color: #373951;
-    color: #d7d8ed;
+    color: var(--primary-text-color);
 }
 .dropdown-header {padding: var(--card-padding-y) var(--card-padding-x);}
 .dropdown-divider {margin: 0;border-top: 1px solid var(--card-border-color);}
 .logout-btn,
 .logout-btn:hover {
     background-color: var(--bs-red);
-    color: #d7d8ed;
+    color: var(--primary-text-color);
 }
 
 /* ----------------------------------------------
@@ -471,7 +471,7 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     height: .75rem;
     width: .75rem;
     border-radius: 50%;
-    box-shadow: 0 0 0 10px #30334e;
+    box-shadow: 0 0 0 10px var(--card-bg-color);
 }
 .timeline .timeline-item .timeline-point-primary {background-color: var(--bs-primary);}
 .timeline .timeline-item .timeline-point-success {background-color: var(--bs-success);}
@@ -509,8 +509,8 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
 ---------------------------------------------- */
 .remove-decor{text-decoration: none;}
 .pointer{cursor: pointer;}
-.border-bottom{border-bottom: 0.09rem solid #7B7C95 !important;}
-
+.border-bottom{border-bottom: 1px solid #464963 !important}
+.border-end{border-right: 1px solid #464963 !important}
 /* ----------------------------------------------
    MANAGEMENT COMPONENTS STYLES
 ---------------------------------------------- */
@@ -522,7 +522,7 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     background-color: rgba(0, 0, 0, 0);
     border: 0.09rem solid #464963; /* Smaller border */
 }
-.filters select option{background: #30334E;color: #D4D5EA;}
+.filters select option{background: var(--card-bg-color);color: #D4D5EA;}
 .select-wrapper {position: relative;}
 .select-wrapper select {
     appearance: none;
@@ -603,7 +603,7 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     right: 0;
     width: 400px;
     height: 100%;
-    background-color: #30334E;
+    background-color: var(--card-bg-color);
     box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
@@ -625,7 +625,7 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     color: #73758E;
     font-size: 1rem;
     font-weight: 500;
-    background: #30334E;
+    background: var(--card-bg-color);
     transition: all 0.2s ease-in-out;
     pointer-events: none; /* Prevents label from being selectable */
 }
@@ -681,7 +681,7 @@ select:focus {
     top: -3.6rem;
     left: 0.5rem;
 }
-.form-group select option{background: #30334E;color: #D4D5EA;}
+.form-group select option{background: var(--card-bg-color);color: #D4D5EA;}
 .form-group select option[value=""]{color: #73758E !important;}
 .form-group select:focus {color: white;}
 .form-group select:not(:focus) {color: white;}
@@ -797,27 +797,65 @@ select:focus {
 .selected-tags{color: #D4D5EA !important}
 
 /* ----------------------------------------------
-   CHAT COMPONENT  STYLES
+   CHAT COMPONENT STYLES
 ---------------------------------------------- */
-.chatApp{
-    height: 75vh;
-    background-color: #343752;
-}
-.searchContChat{
-    border-radius: 25px;
-    background-color: transparent !important;
-    border: 1px solid #595b75;
-}
-.searchContChat:hover{border: 1px solid #9FA1B8;}
-.searchContChat::placeholder{color: #73758E;font-size: 14px;}
-.searchContChat:focus{
-    border: 2px solid var(--bs-indigo) !important;
-}
-.searchSection{
+.chatApp {height: 75vh;background-color: #343752;}
+.searchContChat { border-radius: 25px; background-color: transparent !important; border: 1px solid #595b75; }
+.searchContChat:hover { border: 1px solid #9FA1B8; }
+.searchContChat::placeholder { color: #73758E; font-size: 14px; }
+.searchContChat:focus { border: 2px solid var(--bs-indigo) !important; }
+.searchSection {
+    background-color: var(--card-bg-color);
     flex-basis: 350px;
     max-width: 350px;
+    border-top-left-radius: 0.625rem;
+    border-bottom-left-radius: 0.625rem;
 }
-.chatSection{
-    flex-grow: 1;
-    max-width: calc(100% - 350px);
+.searchDiv, .headerDiv { height: 75px; }
+.chatApp .title {
+    color: var(--bs-indigo);
+    font-size: 19px;
+}
+.chatApp .chatItems {
+    height: 60px;
+    border-radius: .5rem;
+    cursor: pointer;
+}
+.chatApp .chatItems.active { background-color: var(--bs-indigo); }
+.chatApp .chatItems.active span { color: white !important; }
+.chatApp .personName {
+    color: var(--primary-text-color);
+    font-weight: 400 !important;
+    font-size: 0.9375rem;
+}
+.chatApp .description { color: var(--secondary-text-color); font-size: 0.8125rem; }
+.rightCol .headerDiv i, .sendMessageForm i {
+    font-size: 20px;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+}
+.rightCol { flex-grow: 1; max-width: calc(100% - 350px); }
+.chatSection .sendMessageForm{
+    border: none;
+    background-color: var(--card-bg-color);
+    height: 55px;
+    border-radius: 0.625rem;
+}
+.sendMessageInput, .sendMessageInput:focus {
+    background: transparent;
+    border: none;
+    outline: none !important;
+}
+.sendMessageInput::placeholder{
+    color: #7b7c95
+}
+.sendMessageInput:valid{
+    color: var(--primary-text-color);
+}
+.sendBtn{
+    background-color: var(--bs-indigo);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 0.625rem;
+    width: 110px;
 }
