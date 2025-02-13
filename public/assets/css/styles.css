@@ -881,3 +881,6 @@ select:focus {
 .chatHistory .timeMsg{
     font-size: 0.8125rem;
 }
+.chatHistory .selfChat{
+    color: #ADAEC6;
+}

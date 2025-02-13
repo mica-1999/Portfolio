@@ -1,26 +1,22 @@
-const express = require('express'); 
-const next = require('next'); // Import Next.js
-const http = require('http'); // Import the http module
-const { Server } = require('socket.io'); // Import socket.io
-require('dotenv').config(); // Load environment variables from a .env file
+const next = require('next');
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
+require('dotenv').config();
 
 const dbConnect = require('../utils/dbConnect'); 
 
-const app = express(); // Create an Express application
 const dev = process.env.NODE_ENV !== 'production'; // Determine if the environment is development or production
-const nextApp = next({ dev }); // Create a Next.js application
-const handle = nextApp.getRequestHandler(); // Get the request handler from Next.js
+const hostname = "localhost";
+const port = 3000;
+const app = next({ dev, hostname, port }); // Create a Next.js application
+const handler = app.getRequestHandler(); // Get the request handler from Next.js
 
-nextApp.prepare().then(() => {
+app.prepare().then(() => {
   dbConnect();
+  const httpServer = createServer(handler);
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
 
-  const server = http.createServer(app);
-
-  // Initialize socket.io and attach it to the HTTP server
-  const io = new Server(server, {
+  const io = new Server(httpServer, {
     path: '/api/Socket', // Match the path used in the client
     cors: {
       origin: '*', // Allow all origins (update this in production)
@@ -41,8 +37,8 @@ nextApp.prepare().then(() => {
     });
 
     // Example: Handle sending a message
-    socket.on('sendMessage', ({ chatId, message }) => {
-      console.log(`New message in chat ${chatId}:`, message);
+    socket.on('sendMessage', ( chatId, message, user ) => {
+      console.log(`New message in chat ${chatId}:`, message , "by User: ", user);
       io.to(chatId).emit('receiveMessage', message); // Broadcast the message to the chat room
     });
 
@@ -53,16 +49,12 @@ nextApp.prepare().then(() => {
   });
 
 
-  // Handle all requests through Next.js
-  app.all('*', (req, res) => {
-    return handle(req, res);
-  });
-
-  // Start the server
-  const PORT = process.env.PORT || 3000;
-  server.listen(PORT, (err) => {
-    
-    if (err) throw err;
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
+  httpServer
+    .once("error", (err) => {
+      console.error(err);
+      process.exit(1);
+    })
+    .listen(port, () => {
+      console.log(`> Ready on http://${hostname}:${port}`);
+    });
 });

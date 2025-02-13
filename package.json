@@ -19,13 +19,15 @@
     "socket.io-client": "^4.8.1"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "node src/app/server.js",
     "build": "next build",
-    "start": "node src/app/server.js"
+    "start": "NODE_ENV=production src/app/node server.js",
+    "lint": "next lint"
   },
   "devDependencies": {
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
+    "concurrently": "^9.1.2",
     "typescript": "5.7.3"
   }
 }

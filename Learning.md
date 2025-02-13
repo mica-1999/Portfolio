@@ -257,3 +257,48 @@ export { handler as GET, handler as POST } //This is a requirement for Next.js R
 When working with app directory, Nextjs just knows that the Provider Configs are in the folder of api/auth/[...nextauth]
 
 ### Sockets (Live Chat)
+The WebSocket Server and the Next.js are both running at the same time in PORT 3000
+
+#### Server
+To create the WebSocket Server the following was done:
+
+```javascript
+const io = new Server(server, {
+    path: '/api/Socket', // Match the path used in the client
+    cors: {
+      origin: '*', // Allow all origins (update this in production)
+      methods: ['GET', 'POST'],
+    },
+  });
+
+  //The path /api/Socket is specified to match where the client will connect.
+  //CORS settings are configured to allow all origins (but should be restricted in production).
+  //WebSocket server is created using Socket.IO and attached to the same HTTP server running the Next.js app.
+```
+
+#### Server Handlers
+```javascript
+  io.on('connection', (socket) => { // The server listens for socket connections
+    console.log(`User connected: ${socket.id}`); // socket.id is a randomly generated identifier for each client connection.
+
+    // Event Handlers: Reacts to specific actions triggered by the client.
+    socket.on('joinChat', (chatId) => {
+      socket.join(chatId);
+      console.log(`User joined chat: ${chatId}`);
+    });
+
+    socket.on('sendMessage', ({ chatId, message }) => {
+      console.log(`New message in chat ${chatId}:`, message);
+      io.to(chatId).emit('receiveMessage', message); 
+    });
+
+    socket.on('disconnect', () => {
+      console.log(`User disconnected: ${socket.id}`);
+    });
+  });
+
+  //socket.on(): Listens for events from the client. The server reacts when the client triggers an event (like sending a message).
+  // socket.emit(): Triggers events from the server to a specific client. The server sends data or an action for the client to handle.
+  //io.emit(): Sends events to all connected clients (not just one).
+  //Client-side .on(): The client listens for events from the server (like receiving a message after it's emitted).
+```

@@ -1,31 +1,108 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { fetchDataFromApi } from '/src/utils/apiUtils';
+import { useSession } from "next-auth/react";
+import { Modal } from '/src/app/components/utility/Modal';
 import io from 'socket.io-client';
 
 export default function Chat() {
+  const { data: session } = useSession();
+  const [users, setUsers] = useState([]); 
+  const [currentUser, setCurrentUser] = useState(null);
   const [activeChat, setactiveChat] = useState(false);
+  const [showModal, setShowModal] = useState({ type: '',show: false,message: ''});
+  const [message, setMessage] = useState("");
 
+  const socketRef = useRef(null);
+
+  // Loading and Fetch Error
+  const [loading, setLoading] = useState(false); // Loading state
+  const [fetchError, setFetchError] = useState(''); // Fetch error
+
+  // For testing purposes 
+  useEffect(() =>{
+
+  },[message])
 
   useEffect(() => {
-    // Connect to the socket.io server
-    console.log("Connecting to the server...");
-    const socket = io('http://localhost:3000', { // Replace 3000 with your server's PORT
-      path: '/api/Socket', // Match the path used in the server
-    });
-
-    socket.emit("joinChat", "chatId123"); 
-
-    socket.on("receiveMessage", (message) => {
-      console.log("New message: ", message);
-    });
+    if (session?.user?.id) {
+      serverConnection(session.user.id, 'connect');
+      setCurrentUser(session.user.id);
+      fetchUsers();
+    }
 
     return () => {
-      socket.disconnect();
+      serverConnection('disconnect');
     };
-
+    
   },[])
 
+  // Fetch from MongoDB
+  const fetchUsers = async () => {
+    setLoading(true);
+    setFetchError('');  
+    try {
+        const response = await fetchDataFromApi("/api/User");
+        setUsers(response || []);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        setFetchError('Failed to load users. Please try again.');
+    } finally {
+        setLoading(false);
+    }
+  };
+
+  const serverConnection = (userID, action) => {
+    try {
+      if (action === 'connect') {
+          socketRef.current = io('http://localhost:3000', {
+            path: '/api/Socket',
+            query: { userID },
+          });
+          socketRef.current.on('connect', () => {
+            console.log('Connected to server with ID: ' + socketRef.current.id);
+          });
+        }
+       else if (action === 'disconnect') {
+        socketRef.current.disconnect();
+        console.log("Disconnected from server");
+      }
+    } catch (error) {
+      console.error('Error connecting to server:', error);
+    }
+  };
+
+  const handleMessageSend = async (e) => {
+    e.preventDefault();
+    
+    if (!currentUser || !message) {
+      console.error("Message or current user is not available.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/Chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: message,
+          userId: currentUser,
+          chatroomId: '1',
+        }),
+      });
+
+      const result = await response.json();
+        if (result.error) {
+          setShowModal({type: 'error', show: true, message: 'Error sending message. Try Again!'});
+          return;
+        }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setShowModal({type: 'error', show: true, message: 'Error sending message. Try Again!'});
+    }
+    socketRef.current.emit("sendMessage", 1 , message, currentUser);
+  }
   
   return(
     <div className="d-flex col-lg-12 mt-1 p-4">
@@ -41,34 +118,35 @@ export default function Chat() {
               <div className="h-100 overflow-auto">
                 <div className="d-flex flex-column ps-1 pe-3">
                   <h5 className="title pt-4 ps-4">Chats </h5>
-                  <div className={`d-flex align-items-center w-100 mt-1 ms-2 ps-3 pe-3 chatItems  ${activeChat ? "active": ""} `} onClick={() => setactiveChat(!activeChat)}>
-                    <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
-                    <div className="d-flex flex-column ps-3 justify-content-center">
-                        <span className="personName">Person Name</span>
-                        <span className="description">Message </span>
-                    </div>
-                    <span className="ms-auto align-self-start text-muted">time ago</span>
-                  </div>
-                  <div className={`d-flex align-items-center w-100 mt-1 ms-2 ps-3 pe-3 chatItems  ${activeChat ? "active": ""} `} onClick={() => setactiveChat(!activeChat)}>
-                    <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
-                    <div className="d-flex flex-column ps-3 justify-content-center">
-                        <span className="personName">Person Name</span>
-                        <span className="description">Message </span>
-                    </div>
-                    <span className="ms-auto align-self-start text-muted">time ago</span>
-                  </div>
-                  
+
+                  {users.filter(user => user._id !== currentUser).map((user) => {
+                    return (
+                      <div key={user._id} className={`d-flex align-items-center w-100 mt-1 ms-2 ps-3 pe-3 chatItems`} onClick={() => setactiveChat(true)}>
+                        <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
+                        <div className="d-flex flex-column ps-3 justify-content-center">
+                            <span className="personName">{user.firstName + " " + user.lastName}</span>
+                            <span className="description">Message </span>
+                        </div>
+                        <span className="ms-auto align-self-start text-muted">time ago</span>
+                      </div>
+                    )
+                  })}
                 </div>
 
                 <div className="d-flex flex-column ps-1 pe-3">
                   <h5 className="title pt-4 ps-4">Contacts </h5>
-                  <div className={`d-flex align-items-center w-100 mt-2 ms-2 ps-3 pe-3 chatItems  ${activeChat ? "active": ""} `} onClick={() => setactiveChat(!activeChat)}>
-                    <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
-                    <div className="d-flex flex-column ps-3 justify-content-center">
-                        <span className="personName">Person Name</span>
-                        <span className="description">Role </span>
-                    </div>
-                  </div>
+
+                  {users.map((user,index) => {
+                    return(
+                      <div key={user._id} className={`d-flex align-items-center w-100 mt-2 ms-2 ps-3 pe-3 chatItems `}>
+                        <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
+                        <div className="d-flex flex-column ps-3 justify-content-center">
+                            <span className="personName">{user.firstName + " " + user.lastName}</span>
+                            <span className="description">{user.role}</span>
+                        </div>
+                      </div>
+                    )
+                  })}       
                 </div>
               </div>
             </div>
@@ -95,30 +173,35 @@ export default function Chat() {
 
             <div className="d-flex flex-column chatSection w-100 h-100">
               <div className="chatHistory h-100">
-                <ul>
-                  <li className="d-flex justify-content-start h-100 mt-3">
-                    <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
-                    <div className="d-flex flex-column ps-2">
-                      <div className="message">
-                        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                {!activeChat ? (
+                  <div className="d-flex justify-content-center align-items-center h-100 selfChat">
+                    Choose a chat to start messaging or store messages for yourself here.
+                  </div>
+                ) : (                
+                  <ul>
+                    <li className="d-flex justify-content-start h-100 mt-3">
+                      <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
+                      <div className="d-flex flex-column ps-2">
+                        <div className="message">
+                          <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                        </div>
+                        <div className="d-flex justify-content-start">
+                        <span className="text-muted timeMsg">10:15 AM</span>
+                        </div>
                       </div>
-                      <div className="d-flex justify-content-start">
-                      <span className="text-muted timeMsg">10:15 AM</span>
-                      </div>
-                    </div>
-                    
-                  </li>
-                  
-                </ul>
+                      
+                    </li>
+                  </ul>
+                )}
               </div>
               <div className="d-flex align-items-center messageDiv p-4">
-                <form className="d-flex w-100 align-items-center sendMessageForm p-2 ps-4">
-                    <input type="text" className="sendMessageInput" placeholder="Type your message here..." aria-label="Recipient's username" aria-describedby="button-addon2" />
+                <form className="d-flex w-100 align-items-center sendMessageForm p-2 ps-4" onSubmit={handleMessageSend}>
+                    <input type="text" className="sendMessageInput" name="message" value={message} placeholder="Type your message here..." aria-label="Recipient's username" onChange={(e) => setMessage(e.target.value)}/>
                     <div className='d-flex gap-3 pe-3'>
                       <i className="ri-mic-line"></i>
                       <i className="ri-link"></i>
                     </div>
-                    <button className="btn sendBtn" type="button" id="button-addon2">Send</button>
+                    <button className="btn sendBtn" type="submit">Send</button>
                 </form>            
               </div>
             </div>
@@ -126,6 +209,7 @@ export default function Chat() {
           </div>
         </div>
       </div>
+
     </div>
   );
 }
