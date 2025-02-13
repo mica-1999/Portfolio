@@ -9,10 +9,17 @@ import io from 'socket.io-client';
 export default function Chat() {
   const { data: session } = useSession();
   const [users, setUsers] = useState([]); 
+
+  const [showModal, setShowModal] = useState({ type: '',show: false,message: ''});
+
   const [currentUser, setCurrentUser] = useState(null);
   const [activeChat, setactiveChat] = useState(false);
-  const [showModal, setShowModal] = useState({ type: '',show: false,message: ''});
-  const [message, setMessage] = useState("");
+  // Message states
+  const [message, setMessage] = useState(""); // USER MESSAGE INPUT
+  const [messages, setMessages] = useState([]); // ALL MESSAGES
+  const [chatMessages, setChatMessages] = useState([]); // CHATROOM MESSAGES
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  
 
   const socketRef = useRef(null);
 
@@ -20,15 +27,21 @@ export default function Chat() {
   const [loading, setLoading] = useState(false); // Loading state
   const [fetchError, setFetchError] = useState(''); // Fetch error
 
-  // For testing purposes 
+  // Fetches when a new room is selected
   useEffect(() =>{
+    fetchMessages();
+  },[selectedRoom])
 
-  },[message])
+    // Fetches when a new room is selected
+    useEffect(() =>{
+      console.log(chatMessages)
+    },[chatMessages])
 
   useEffect(() => {
     if (session?.user?.id) {
       serverConnection(session.user.id, 'connect');
       setCurrentUser(session.user.id);
+      setSelectedRoom(session.user.id);
       fetchUsers();
     }
 
@@ -48,6 +61,23 @@ export default function Chat() {
     } catch (error) {
         console.error('Error fetching data:', error);
         setFetchError('Failed to load users. Please try again.');
+    } finally {
+        setLoading(false);
+    }
+  };
+
+  // Fetch from MongoDB
+  const fetchMessages = async () => {
+    setLoading(true);
+    setFetchError('');  
+    try {
+        if (selectedRoom) {
+          const response = await fetchDataFromApi(`/api/Chat/?chatroomId=${selectedRoom}`);
+          setChatMessages(response || []);
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        setFetchError('Failed to load messages. Please try again.');
     } finally {
         setLoading(false);
     }
@@ -82,13 +112,13 @@ export default function Chat() {
     }
 
     try {
-      const response = await fetch("/api/Chat", {
+      const response = await fetch(`/api/Chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: message,
           userId: currentUser,
-          chatroomId: '1',
+          chatroomId: selectedRoom,
         }),
       });
 
@@ -101,7 +131,7 @@ export default function Chat() {
       console.error("Error sending message:", error);
       setShowModal({type: 'error', show: true, message: 'Error sending message. Try Again!'});
     }
-    socketRef.current.emit("sendMessage", 1 , message, currentUser);
+    socketRef.current.emit("sendMessage", selectedRoom , message, currentUser);
   }
   
   return(
@@ -177,21 +207,24 @@ export default function Chat() {
                   <div className="d-flex justify-content-center align-items-center h-100 selfChat">
                     Choose a chat to start messaging or store messages for yourself here.
                   </div>
-                ) : (                
-                  <ul>
-                    <li className="d-flex justify-content-start h-100 mt-3">
-                      <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
-                      <div className="d-flex flex-column ps-2">
-                        <div className="message">
-                          <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                        </div>
-                        <div className="d-flex justify-content-start">
-                        <span className="text-muted timeMsg">10:15 AM</span>
-                        </div>
-                      </div>
-                      
-                    </li>
-                  </ul>
+                ) : (  
+                  chatMessages.map((message) => {
+                    return(
+                      <ul key={message._id}>
+                        <li className="d-flex justify-content-start h-100 mt-3">
+                          <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
+                          <div className="d-flex flex-column ps-2">
+                            <div className="message">
+                              <p>{message.message}</p>
+                            </div>
+                            <div className="d-flex justify-content-start">
+                            <span className="text-muted timeMsg">10:15 AM</span>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    )
+                  })
                 )}
               </div>
               <div className="d-flex align-items-center messageDiv p-4">

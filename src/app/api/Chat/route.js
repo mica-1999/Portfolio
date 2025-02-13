@@ -3,14 +3,16 @@ import Chatroom from "/src/models/Chatroom";
 import dbConnect from "/src/utils/dbConnect";
 import mongoose from 'mongoose';
 
-export async function GET() {
-    await dbConnect();
-    try {
-        const chatMsgs = await Chatroom.find();
-        return NextResponse.json(chatMsgs);
-    } catch (error) {
-        return NextResponse.json({error:'Couldnt fetch messages'},{status:500});
-    }
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const chatId = searchParams.get('chatroomId');
+  await dbConnect();
+  try {
+      const chatMsgs = await Chatroom.find({ chatroomId: chatId });
+      return NextResponse.json(chatMsgs);
+  } catch (error) {
+      return NextResponse.json({error:'Couldnt fetch messages'},{status:500});
+  }
 }
 
 export async function POST(req) {
@@ -36,8 +38,8 @@ export async function POST(req) {
         file: "",
         sender: new mongoose.Types.ObjectId(userId)
     });
-
     const savedMessage = await newMessage.save();
+
     return NextResponse.json(savedMessage);
   } catch (error) {
     console.error("Error saving messafe:", error);
