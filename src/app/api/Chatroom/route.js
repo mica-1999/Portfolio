@@ -18,21 +18,18 @@ export async function GET(req) {
     await dbConnect();
 
     try {
-        // Check if the chatroom exists
         const chatroomExists = await Chatroom.findOne({ chatroomId: chatroomId });
 
         if (!chatroomExists) {
-            // If no chatroom exists, create a new chatroom
             const newChatroom = new Chatroom({
                 chatroomId: chatroomId,
                 users: selectedUsers.includes(userId) ? [...selectedUsers] : [userId, ...selectedUsers],
-                chatroomName: "Default Name", // You can adjust this as needed
-                createdBy: new mongoose.Types.ObjectId(userId),  // The user who created the chatroom
+                chatroomName: "Default Name", 
+                createdBy: new mongoose.Types.ObjectId(userId), 
             });
 
             const savedChatroom = await newChatroom.save();
 
-            // Return the created chatroom and indicate it was created
             return NextResponse.json({ exists: false, chatroom: savedChatroom });
         }
 
