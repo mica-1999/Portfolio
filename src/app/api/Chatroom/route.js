@@ -1,21 +1,45 @@
 import { NextResponse } from "next/server";
 import Chatroom from "/src/models/Chatroom";
 import dbConnect from "/src/utils/dbConnect";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
+// Check if the chatroom exists and create it if not
 export async function GET(req) {
-  const { searchParams } = new URL(req.url);
-  const chatId = searchParams.get('chatroomId');
-  await dbConnect();
-  try {
-    const chatMsgs = await Message.find({ chatroomId: chatId });
+    const { searchParams } = new URL(req.url);
+    const chatroomId = searchParams.get('chatroomId');  // Get chatroomId from query params
+    const userId = searchParams.get('userId'); // Assuming you pass the userId in the query as well
+    const selectedUsers = searchParams.get('selectedUsers') ? JSON.parse(searchParams.get('selectedUsers')) : [];
 
-    if (chatMsgs.length === 0) {
-      return NextResponse.json([]); // Empty array if no messages exist
+    // Ensure the chatroomId is present
+    if (!chatroomId || !userId || !selectedUsers) {
+        return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }
-    
-    return NextResponse.json(chatMsgs);
-  } catch (error) {
-      return NextResponse.json({error:'Couldnt fetch messages'},{status:500});
-  }
+
+    await dbConnect();
+
+    try {
+        // Check if the chatroom exists
+        const chatroomExists = await Chatroom.findOne({ chatroomId: chatroomId });
+
+        if (!chatroomExists) {
+            // If no chatroom exists, create a new chatroom
+            const newChatroom = new Chatroom({
+                chatroomId: chatroomId,
+                users: selectedUsers.includes(userId) ? [...selectedUsers] : [userId, ...selectedUsers],
+                chatroomName: "Default Name", // You can adjust this as needed
+                createdBy: new mongoose.Types.ObjectId(userId),  // The user who created the chatroom
+            });
+
+            const savedChatroom = await newChatroom.save();
+
+            // Return the created chatroom and indicate it was created
+            return NextResponse.json({ exists: false, chatroom: savedChatroom });
+        }
+
+        // If the chatroom exists, return it
+        return NextResponse.json({ exists: true, chatroom: chatroomExists });
+    } catch (error) {
+        console.error("Error fetching or creating chatroom:", error);
+        return NextResponse.json({ error: 'Couldn\'t fetch or create chatroom' }, { status: 500 });
+    }
 }
