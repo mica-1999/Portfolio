@@ -4,43 +4,50 @@ import { useState, useEffect, useRef } from 'react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { useSession } from "next-auth/react";
 import { Modal } from '/src/app/components/utility/Modal';
+import { getTimeFormatted } from '/src/utils/mainContentUtil';
 import io from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Chat() {
   const { data: session } = useSession();
-  const [users, setUsers] = useState([]); 
-
+  const [users, setUsers] = useState([]); // Displaying in UI
   const [showModal, setShowModal] = useState({ type: '',show: false,message: ''});
 
-  const [currentUser, setCurrentUser] = useState(null);
-  const [activeChat, setactiveChat] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null); // Stores current authenticated User
+
   // Message states
   const [message, setMessage] = useState(""); // USER MESSAGE INPUT
-  const [messages, setMessages] = useState([]); // ALL MESSAGES
   const [chatMessages, setChatMessages] = useState([]); // CHATROOM MESSAGES
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  
+  const [selectedRoom, setSelectedRoom] = useState(null); // SELECTED ROOM/CHAT
+  const [selectedUsers, setSelectedUsers] = useState([]); // SELECTED USERS TO CHAT
+  const socketRef = useRef(null); // SOCKET REFERENCE
 
-  const socketRef = useRef(null);
+  // TESTING STUFF
+  useEffect(() => {
+    if (chatMessages.length > 0) {
+      console.log(chatMessages);
+    }
+  },[chatMessages])
 
-  // Loading and Fetch Error
-  const [loading, setLoading] = useState(false); // Loading state
-  const [fetchError, setFetchError] = useState(''); // Fetch error
-
-  // Fetches when a new room is selected
+  // WHEN CHANGING ROOM, JOIN ROOM AND FETCH MESSAGES ( PROBLEM HERE BTW TO FIX LATER)
   useEffect(() =>{
-    fetchMessages();
+    if (selectedRoom){
+      joinRoom(selectedRoom);
+      fetchMessages();
+    }
+    return () => {
+      if (selectedRoom) {
+        leaveRoom(selectedRoom);
+      }
+    };
   },[selectedRoom])
 
-    // Fetches when a new room is selected
-    useEffect(() =>{
-      console.log(chatMessages)
-    },[chatMessages])
-
+  // STARTS SOCKET, SAVES CURRENT USER, SETS SELECTED USERS TO ITSELF AND THE ROOM TO ITSELF, FETCHES USERS
   useEffect(() => {
     if (session?.user?.id) {
       serverConnection(session.user.id, 'connect');
       setCurrentUser(session.user.id);
+      setSelectedUsers([session.user.id]);
       setSelectedRoom(session.user.id);
       fetchUsers();
     }
@@ -51,61 +58,72 @@ export default function Chat() {
     
   },[])
 
-  // Fetch from MongoDB
+  // FETCH FOR USERS
   const fetchUsers = async () => {
-    setLoading(true);
-    setFetchError('');  
     try {
         const response = await fetchDataFromApi("/api/User");
         setUsers(response || []);
     } catch (error) {
         console.error('Error fetching data:', error);
-        setFetchError('Failed to load users. Please try again.');
-    } finally {
-        setLoading(false);
     }
   };
 
-  // Fetch from MongoDB
+  // FETCH FOR MESSAGES
   const fetchMessages = async () => {
-    setLoading(true);
-    setFetchError('');  
     try {
-        if (selectedRoom) {
-          const response = await fetchDataFromApi(`/api/Chat/?chatroomId=${selectedRoom}`);
-          setChatMessages(response || []);
-        }
+      const response = await fetchDataFromApi(`/api/Chat/?chatroomId=${selectedRoom}`);
+      setChatMessages(response || []);
     } catch (error) {
         console.error('Error fetching data:', error);
-        setFetchError('Failed to load messages. Please try again.');
-    } finally {
-        setLoading(false);
     }
   };
 
+  // SOCKET CONNECTION AND LISTENERS
   const serverConnection = (userID, action) => {
     try {
       if (action === 'connect') {
-          socketRef.current = io('http://localhost:3000', {
-            path: '/api/Socket',
-            query: { userID },
-          });
-          socketRef.current.on('connect', () => {
-            console.log('Connected to server with ID: ' + socketRef.current.id);
-          });
+        
+        socketRef.current = io('http://localhost:3000', {
+          path: '/api/Socket',
+          query: { userID },
+        });
+        socketRef.current.on('connect', () => {
+          console.log('Connected to server with ID: ' + socketRef.current.id);
+        });
+
+        socketRef.current.on("receiveMessage", (messageData) => {
+          const tempId = uuidv4(); // Generate a random ID for the user
+          console.log("New message received:", messageData);
+          
+          const formattedMessage = {
+            _id: tempId,
+            chatroomId: messageData.chatId,  
+            files: [],  
+            message: messageData.message, 
+            sender: messageData.user,  
+            timestamp: messageData.timestamp,  
+          };
+
+          setChatMessages((prevMessages) => [...prevMessages, formattedMessage]);
+        });
+
         }
        else if (action === 'disconnect') {
-        socketRef.current.disconnect();
-        console.log("Disconnected from server");
+        if (socketRef.current) {
+          socketRef.current.off('receiveMessage');
+          socketRef.current.disconnect();
+          console.log("Disconnected from server");
+        }
       }
     } catch (error) {
       console.error('Error connecting to server:', error);
     }
   };
 
+  // SEND MESSAGE
   const handleMessageSend = async (e) => {
     e.preventDefault();
-    
+    setMessage("");
     if (!currentUser || !message) {
       console.error("Message or current user is not available.");
       return;
@@ -119,6 +137,7 @@ export default function Chat() {
           message: message,
           userId: currentUser,
           chatroomId: selectedRoom,
+          selectedUsers: selectedUsers,
         }),
       });
 
@@ -134,6 +153,14 @@ export default function Chat() {
     socketRef.current.emit("sendMessage", selectedRoom , message, currentUser);
   }
   
+  const handleSwitchChat = (user) => {
+    setSelectedUsers([currentUser, user]);
+  }
+
+  // JOIN AND LEAVE ROOM
+  const joinRoom = (room) =>{ socketRef.current.emit("joinChat", room);}
+  const leaveRoom = (room) =>{ socketRef.current.emit("leaveChat", room);}
+
   return(
     <div className="d-flex col-lg-12 mt-1 p-4">
       <div className="card flex-grow-1 p-0 chatApp" >
@@ -151,7 +178,7 @@ export default function Chat() {
 
                   {users.filter(user => user._id !== currentUser).map((user) => {
                     return (
-                      <div key={user._id} className={`d-flex align-items-center w-100 mt-1 ms-2 ps-3 pe-3 chatItems`} onClick={() => setactiveChat(true)}>
+                      <div key={user._id} className={`d-flex align-items-center w-100 mt-1 ms-2 ps-3 pe-3 chatItems ${selectedUsers.includes(user._id) ? "active": ""}`} onClick={() => handleSwitchChat(user._id)}>
                         <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                         <div className="d-flex flex-column ps-3 justify-content-center">
                             <span className="personName">{user.firstName + " " + user.lastName}</span>
@@ -181,8 +208,6 @@ export default function Chat() {
               </div>
             </div>
 
-
-
           <div className="col-lg-9 p-0 d-flex flex-column rightCol">
             <div className="d-flex ps-4 pe-4 justify-content-between align-items-center border-bottom headerDiv">
               <div className="d-flex align-items-center">
@@ -202,29 +227,33 @@ export default function Chat() {
 
 
             <div className="d-flex flex-column chatSection w-100 h-100">
-              <div className="chatHistory h-100">
-                {!activeChat ? (
+              <div className="chatHistory h-100 overflow-auto">
+                {chatMessages.length === 0 ? (
                   <div className="d-flex justify-content-center align-items-center h-100 selfChat">
                     Choose a chat to start messaging or store messages for yourself here.
                   </div>
                 ) : (  
-                  chatMessages.map((message) => {
+                  <ul className='p-0 ps-3'>
+                    {chatMessages.map((message) => {
+                    const isMessageMine = message.sender === currentUser;
+                    const time = getTimeFormatted(message.timestamp);
                     return(
-                      <ul key={message._id}>
-                        <li className="d-flex justify-content-start h-100 mt-3">
-                          <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
-                          <div className="d-flex flex-column ps-2">
-                            <div className="message">
-                              <p>{message.message}</p>
-                            </div>
-                            <div className="d-flex justify-content-start">
-                            <span className="text-muted timeMsg">10:15 AM</span>
+                        <li key={message._id} className={`d-flex justify-content-${isMessageMine ? "end": "start"}  h-100 mt-3 ps-3 pe-2`} >
+                        <div className={`d-flex ${isMessageMine ? "flex-row-reverse" : ""}`}>
+                            <img src="/assets/images/profile-icon.png" className="iconProfileMsg" alt="Profile Icon" />
+                            <div className="d-flex flex-column ps-3 pe-3">
+                              <div className={`message ${isMessageMine ? "myMessage": ""}`}>
+                                <p className='m-0'>{message.message}</p>
+                              </div>
+                              <div className={`d-flex justify-content-${isMessageMine ? "end": "start"} mt-1` }>
+                                <span className="text-muted timeMsg">{time}</span>
+                              </div>
                             </div>
                           </div>
                         </li>
-                      </ul>
-                    )
-                  })
+                    );
+                    })}
+                  </ul>
                 )}
               </div>
               <div className="d-flex align-items-center messageDiv p-4">
@@ -242,7 +271,6 @@ export default function Chat() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

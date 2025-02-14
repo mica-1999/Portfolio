@@ -24,25 +24,30 @@ app.prepare().then(() => {
     },
   });
 
-  console.log("Socket.IO server initialized at /api/Socket");
-
-  // Socket.io connection handler
+  // SOCKET.IO HANDLERS 
   io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
 
-    // Example: Handle joining a chat room
     socket.on('joinChat', (chatId) => {
       socket.join(chatId);
       console.log(`User joined chat: ${chatId}`);
     });
 
-    // Example: Handle sending a message
-    socket.on('sendMessage', ( chatId, message, user ) => {
-      console.log(`New message in chat ${chatId}:`, message , "by User: ", user);
-      io.to(chatId).emit('receiveMessage', message); // Broadcast the message to the chat room
+    socket.on('leaveChat', (chatId) => {
+      socket.leave(chatId);
+      console.log(`User left chat: ${chatId}`);
     });
 
-    // Handle disconnection
+    socket.on('sendMessage', ( chatId, message, user ) => {
+      const messageData = {
+        chatId: chatId, 
+        message: message, 
+        user: user, 
+        timestamp: new Date().toISOString(),
+      };
+      io.to(chatId).emit('receiveMessage', messageData);
+    });
+
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.id}`);
     });
