@@ -41,6 +41,7 @@ export async function GET(req) {
     const chatMsgs = await Message.find({ chatroomId: chatId });
 
     if (chatMsgs.length === 0) {
+      console.log("No messages found");
       return NextResponse.json([]); // Empty array if no messages exist
     }
     

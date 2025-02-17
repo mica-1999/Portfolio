@@ -871,7 +871,6 @@ select:focus {
     background-color: var(--card-bg-color);
     border-radius: 0.625rem;
     padding: .543rem 1rem;
-    height: 38px; 
     max-width: 450px; /* Set a maximum width for the message container */
     word-wrap: break-word; /* Ensure long words break and wrap */
     overflow-wrap: break-word
