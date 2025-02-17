@@ -38,6 +38,14 @@ app.prepare().then(() => {
       console.log(`User left chat: ${chatId}`);
     });
 
+    socket.on('typing', (chatId, user) => {
+      socket.to(chatId).emit('userTyping', user);
+    });
+
+    socket.on('stopTyping', (chatId, user) => {
+      socket.to(chatId).emit('userStoppedTyping', user);
+    });
+    
     socket.on('sendMessage', ( chatId, message, user ) => {
       const messageData = {
         chatId: chatId, 

@@ -15,7 +15,7 @@ export default function Sidebar() {
       {/* Sidebar Header */}
       <div className="d-flex align-items-center justify-content-between">
         <h4><img src="/assets/images/logo.png" alt="logo" width="20" height="20" /> Portfolio</h4>
-        <i className="fa-solid fa-arrow-left fa-lg d-none"></i>
+        <i className="fa-solid fa-arrow-left fa-lg d-none" style={{ cursor:"pointer" }}></i>
       </div>
       <div className="overflow-auto">
         <ul className="main-menu nav flex-column mt-3">

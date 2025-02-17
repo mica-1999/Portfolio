@@ -7,40 +7,50 @@ import { Modal } from '/src/app/components/utility/Modal';
 import { getTimeFormatted } from '/src/utils/mainContentUtil';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
+import { set } from 'mongoose';
 
 export default function Chat() {
   const { data: session } = useSession();
   const [users, setUsers] = useState([]); // Displaying in UI
-  const [showModal, setShowModal] = useState({ type: '',show: false,message: ''});
-
+  const [showModal, setShowModal] = useState({ type: '',show: false,message: ''}); // FOR ERRORS
   const [currentUser, setCurrentUser] = useState(null); // Stores current authenticated User
-
-  // Message states
   const [message, setMessage] = useState(""); // USER MESSAGE INPUT
   const [chatMessages, setChatMessages] = useState([]); // CHATROOM MESSAGES
   const [selectedRoom, setSelectedRoom] = useState(null); // SELECTED ROOM/CHAT
   const [selectedUsers, setSelectedUsers] = useState([]); // SELECTED USERS TO CHAT
-
   const [userStatuses, setUserStatuses] = useState({});  // TO STORE CHAT WITH OR NOT
+  const [chatroomIds, setChatroomIds] = useState({}); // Stores chatroom IDs for each user
+  const [lastMessages, setLastMessages] = useState({}); // Stores last messages for each user
+  const [filteredUsers, setFilteredUsers] = useState(''); // Filtered users for search
+  const [typing, setTyping] = useState(false); // FOR TYPING INDICATOR
+  const [personTyping, setPersonTyping] = useState(''); // PERSON TYPING
   const socketRef = useRef(null); // SOCKET REFERENCE
 
+  let typingTimeout;
+
   useEffect(() => {
-    // Async function to fetch all chat statuses at once
-    const fetchStatuses = async () => {
-      const statuses = {};
-
-      // Fetch status for each user asynchronously
-      for (const user of users) {
-        if (user._id !== currentUser) {
-          statuses[user._id] = await fetchChatRoomStatus(currentUser, user._id);  // Store the status
+    if (users.length > 0 && currentUser) {
+      const fetchData = async () => {
+        const statuses = {};
+  
+        for (const user of users) {
+          if (user._id !== currentUser) {
+            // Fetch chatroom & last message
+            fetchChatroomAndLastMessage(user);
+  
+            // Fetch chat status and store it
+            statuses[user._id] = await fetchChatRoomStatus(currentUser, user._id);
+          }
         }
-      }
-
-      setUserStatuses(statuses);  // Update the state with all statuses
-    };
-
-    fetchStatuses();
-  }, [users, currentUser]); 
+  
+        // Update user statuses state after all fetches are done
+        setUserStatuses(statuses);
+      };
+  
+      fetchData();
+    }
+  }, [users, currentUser]);
+  
 
 
   // WHEN CHANGING ROOM, JOIN ROOM AND FETCH MESSAGES ( PROBLEM HERE BTW TO FIX LATER)
@@ -60,22 +70,19 @@ export default function Chat() {
   // STARTS SOCKET, SAVES CURRENT USER, SETS SELECTED USERS TO ITSELF AND THE ROOM TO ITSELF, FETCHES USERS
   useEffect(() => {
     if (session?.user?.id) {
-      serverConnection(session.user.id, 'connect');
-      setCurrentUser(session.user.id);
+      fetchUsers();
+      serverConnection(session.user.id, 'connect'); 
+      setCurrentUser(session.user.id); 
       setSelectedUsers([session.user.id]);
       setSelectedRoom(session.user.id);
-      fetchUsers();
     }
-
     return () => {
       if (socketRef.current) {
         socketRef.current.off('receiveMessage');
         socketRef.current.disconnect();
-        console.log("Disconnected from server");
       }
     };
-    
-  },[])
+  },[session])
 
   // FETCH FOR USERS
   const fetchUsers = async () => {
@@ -114,28 +121,29 @@ export default function Chat() {
           query: { userID },
         });
 
-        socketRef.current.on("receiveMessage", (messageData) => {
-          const tempId = uuidv4(); // Generate a random ID for the user
-          console.log("New message received:", messageData);
-          
-          const formattedMessage = {
-            _id: tempId,
-            chatroomId: messageData.chatId,  
-            files: [],  
-            message: messageData.message, 
-            sender: messageData.user,  
-            timestamp: messageData.timestamp,  
-          };
+        if(socketRef.current) {
+          socketRef.current.on("receiveMessage", (messageData) => {
+            const tempId = uuidv4(); // Generate a random ID for the user
+            const formattedMessage = {
+              _id: tempId,
+              chatroomId: messageData.chatId,  
+              files: [],  
+              message: messageData.message, 
+              sender: messageData.user,  
+              timestamp: messageData.timestamp,  
+            };
 
-          setChatMessages((prevMessages) => [...prevMessages, formattedMessage]);
-        });
-
+            setChatMessages((prevMessages) => [...prevMessages, formattedMessage]);
+          });
+          socketRef.current.on("userTyping", (user) => {
+            setPersonTyping(user + " is typing...");
+          });
         }
-       else if (action === 'disconnect') {
+      }
+      else if (action === 'disconnect') {
         if (socketRef.current) {
           socketRef.current.off('receiveMessage');
           socketRef.current.disconnect();
-          console.log("Disconnected from server");
         }
       }
     } catch (error) {
@@ -180,15 +188,56 @@ export default function Chat() {
   // HANDLES CHAT SWITCHING
   const handleSwitchChat = async (user) => {
     const updatedUsers = [currentUser, user];  // Only keep current user & selected user
-
     setSelectedUsers(updatedUsers);  // Update state
 
+    const chatroom = await verifyChatroom(updatedUsers);  // Verify if chatroom exists
+    setSelectedRoom(chatroom ? chatroom : []);
+  }
+
+  const verifyChatroom = async (selectedUsers) => {
     try {
-      const response = await fetchDataFromApi(`/api/Chatroom/Verify?selectedUsers=${JSON.stringify(updatedUsers)}`);
-      setSelectedRoom(response ? response : []);
+      const response = await fetchDataFromApi(`/api/Chatroom/Verify?selectedUsers=${JSON.stringify(selectedUsers)}`);
+      return response;
     } catch (error) {
         console.error('Error confirm or generating Chatroom ID:', error);
     }
+  }
+
+  const fetchLastMessage = async (chatroomId,users) => {
+    try {
+      const response = await fetch(`/api/Chat/LastMessage?chatroomId=${chatroomId}&selectedUsers=${users}`);
+      const lastMessage = await response.json();
+      
+      return lastMessage;
+    } catch (error) {
+      console.error('Error fetching last message:', error);
+    }
+  };
+
+  const fetchChatroomAndLastMessage = async (user) => {
+    try {
+      const chatroomId = await verifyChatroom([currentUser, user._id]);
+      const lastMessage = await fetchLastMessage(chatroomId, [currentUser, user._id]);
+      setChatroomIds((prev) => ({ ...prev, [user._id]: chatroomId }));
+      setLastMessages((prev) => ({ ...prev, [user._id]: lastMessage }));
+    } catch (error) {
+      console.error('Error fetching chatroom or last message:', error);
+    }
+  };
+
+  const handleMessageInput = (e) => {
+    setMessage(e.target.value)
+
+    if(!typing) {
+      setTyping(true);
+      socketRef.current.emit("typing", selectedRoom, currentUser);
+    }
+
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+      setTyping(false);
+      socketRef.current.emit("stopTyping", selectedRoom, currentUser);
+    }, 2000);
   }
 
   // JOIN AND LEAVE ROOM
@@ -203,27 +252,29 @@ export default function Chat() {
             <div className="col-lg-3 p-0 d-flex flex-column searchSection h-100 m-0 border-end">
               <div className="d-flex justify-content-between align-items-center border-bottom p-3 searchDiv">
                 <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
-                <input type="text" className="form-control ms-3 searchContChat" placeholder="Search..." />
+                <input type="text" className="form-control ms-3 searchContChat" placeholder="Search..." onChange={(e) => setFilteredUsers(e.target.value)}/>
               </div>
             
               <div className="h-100 overflow-auto">
                 <div className="d-flex flex-column ps-1 pe-3">
                   <h5 className="title pt-4 ps-4">Chats </h5>
-
-                  {users.filter(user => user._id !== currentUser).map((user) => {
+                  {users
+                  .filter(user => user._id !== currentUser )
+                  .filter(user => user.firstName.toLowerCase().includes(filteredUsers.toLowerCase()) || user.lastName.toLowerCase().includes(filteredUsers.toLowerCase()))
+                  .map((user) => {
                     const together = userStatuses[user._id];
+                    const lastMessage = lastMessages[user._id];
 
-                    // If the user is not in a chatroom together with the current user, skip this user
-                    if (!together) return null;
+                    if (!together) return null; // Skip if not together
 
                     return (
-                      <div key={user._id} className={`d-flex align-items-center w-100 mt-1 ms-2 ps-3 pe-3 chatItems ${selectedUsers.includes(user._id) ? "active": ""}`} onClick={() => handleSwitchChat(user._id)}>
+                      <div key={user._id} className={`d-flex align-items-center w-100 mt-2 ms-2 ps-3 pe-3 chatItems ${selectedUsers.includes(user._id) ? "active": ""}`} onClick={() => handleSwitchChat(user._id)}>
                         <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                         <div className="d-flex flex-column ps-3 justify-content-center">
                             <span className="personName">{user.firstName + " " + user.lastName}</span>
-                            <span className="description">Message </span>
+                            <span className="description">{lastMessage.message.length > 30 ? lastMessage.message.slice(0, 10) + "..." : lastMessage.message}</span>
                         </div>
-                        <span className="ms-auto align-self-start text-muted">time ago</span>
+                        <span className="ms-auto align-self-start text-muted">{getTimeFormatted(lastMessage.timestamp)}</span>
                       </div>
                     )
                   })}
@@ -231,8 +282,10 @@ export default function Chat() {
 
                 <div className="d-flex flex-column ps-1 pe-3">
                   <h5 className="title pt-4 ps-4">Contacts </h5>
-
-                  {users.filter(user => user._id !== currentUser).map((user,index) => {
+                  {users
+                  .filter(user => user._id !== currentUser)
+                  .filter(user => user.firstName.toLowerCase().includes(filteredUsers.toLowerCase()) || user.lastName.toLowerCase().includes(filteredUsers.toLowerCase()))
+                  .map((user) => {
                     return(
                       <div key={user._id} className={`d-flex align-items-center w-100 mt-2 ms-2 ps-3 pe-3 chatItems ${selectedUsers.includes(user._id) ? "active": ""}`} onClick={() => handleSwitchChat(user._id)}>
                         <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
@@ -250,15 +303,15 @@ export default function Chat() {
           <div className="col-lg-9 p-0 d-flex flex-column rightCol">
             <div className="d-flex ps-4 pe-4 justify-content-between align-items-center border-bottom headerDiv">
               <div className="d-flex align-items-center">
-                  <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
-                  <div className="d-flex ps-2 flex-column">
-                    <span className="personName">{selectedUsers.length === 1 
-                      ? users.find(user => user._id === selectedUsers[0])?.firstName + " (Me)"
-                      : users.find(user => user._id === selectedUsers[1])?.firstName}</span>
-                    <span className="description">{selectedUsers.length === 1 
-                      ? users.find(user => user._id === selectedUsers[0])?.role 
-                      : users.find(user => user._id === selectedUsers[1])?.role}</span>
-                  </div>
+                <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
+                <div className="d-flex ps-2 flex-column">
+                  <span className="personName">{selectedUsers.length === 1 
+                    ? users.find(user => user._id === selectedUsers[0])?.firstName + " (Me)"
+                    : users.find(user => user._id === selectedUsers[1])?.firstName}</span>
+                  <span className="description">{selectedUsers.length === 1 
+                    ? users.find(user => user._id === selectedUsers[0])?.role 
+                    : users.find(user => user._id === selectedUsers[1])?.role}</span>
+                </div>
               </div>
               <div className="d-flex align-items-center float-right gap-3 pe-3">
                 <a href={selectedUsers.length === 1 
@@ -305,9 +358,11 @@ export default function Chat() {
                   </ul>
                 )}
               </div>
+              
               <div className="d-flex align-items-center messageDiv p-4">
+                <div className='typingIndicator'>{personTyping}</div>
                 <form className="d-flex w-100 align-items-center sendMessageForm p-2 ps-4" onSubmit={handleMessageSend}>
-                    <input type="text" className="sendMessageInput" name="message" value={message} placeholder="Type your message here..." aria-label="Recipient's username" onChange={(e) => setMessage(e.target.value)}/>
+                    <input type="text" className="sendMessageInput" name="message" value={message} placeholder="Type your message here..." aria-label="Recipient's username" onChange={handleMessageInput}/>
                     <div className='d-flex gap-3 pe-3'>
                       <i className="ri-mic-line"></i>
                       <i className="ri-link"></i>

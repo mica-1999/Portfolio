@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <div className="row d-flex align-items-center">
       <div className="col-lg-12 d-flex align-items-center">
-        <i className="fa-solid fa-bars fa-lg me-2" id="expand-sidebar" style={{ display: 'none' }}></i>
+        <i className="fa-solid fa-bars fa-lg me-2" id="expand-sidebar" style={{ display: 'none', cursor:"pointer" }}></i>
         <a href="#" className="search-link d-flex align-items-center">
           <i className="fa-solid fa-magnifying-glass fa-lg"></i>
           <span className="ms-2 ps-3" style={{ color: '#7b7c95' }}>Search (Ctrl+/)</span>

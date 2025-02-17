@@ -800,10 +800,10 @@ select:focus {
    CHAT COMPONENT STYLES
 ---------------------------------------------- */
 .chatApp { height: 75vh; background-color: #343752; }
-.searchContChat { border-radius: 25px; background-color: transparent !important; border: 1px solid #595b75; }
+.searchContChat { border-radius: 25px; background-color: transparent !important; border: 1px solid #595b75; color: var(--primary-text-color)}
 .searchContChat:hover { border: 1px solid #9FA1B8; }
 .searchContChat::placeholder { color: #73758E; font-size: 14px; }
-.searchContChat:focus { border: 2px solid var(--bs-indigo) !important; }
+.searchContChat:focus { border: 2px solid var(--bs-indigo) !important; color: var(--primary-text-color)}
 .searchSection {
     background-color: var(--card-bg-color);
     flex-basis: 350px;
@@ -845,7 +845,15 @@ select:focus {
     height: 50px;
     width: 75%;
 }
-.messageDiv { margin-top: auto; }
+.messageDiv { margin-top: auto; position: relative;}
+.messageDiv .typingIndicator{
+    position: absolute; 
+    top: -5px;        
+    left: 45px;        
+    color: #ADAEC6;   
+    font-size: 14px;
+
+}
 .sendMessageInput::placeholder { color: #7b7c95; }
 .sendMessageInput:valid { color: var(--primary-text-color); }
 .sendBtn {
