@@ -13,11 +13,11 @@ export default function Sidebar() {
   return (
     <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
       {/* Sidebar Header */}
-      <div className="d-flex align-items-center justify-content-between">
-        <h4><img src="/assets/images/logo.png" alt="logo" width="20" height="20" /> Portfolio</h4>
+      <div className="d-flex align-items-center justify-content-between logo mt-3">
+        <a href="/pages/dashboard"><img  src="/assets/images/portfolio.png" alt="logo" /></a>
         <i className="fa-solid fa-arrow-left fa-lg d-none" style={{ cursor:"pointer" }}></i>
       </div>
-      <div className="overflow-auto">
+      <div className="overflow-auto mt-4">
         <ul className="main-menu nav flex-column mt-3">
           <div id="menuAccordion">
 

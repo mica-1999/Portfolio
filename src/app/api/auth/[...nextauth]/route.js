@@ -1,8 +1,36 @@
 import NextAuth from "next-auth";
+import { NextResponse } from "next/server";
+import Session from "/src/models/Session";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from 'bcrypt';
 import dbConnect from '/src/utils/dbConnect';
 import mongoose from 'mongoose';
+
+const addSession = async (userId,db) => {
+  console.log("entrei aqui")
+  // First we need to find 
+  try {
+    const findSession = await db.collection("sessions").findOne({ userId: userId });
+    const currentTimestamp = new Date();
+    if(findSession){
+      // Then we add a new timestamp to the session
+      await db.collection("sessions").updateOne({ userId: userId },{ $push: { timestamps: currentTimestamp } });
+      console.log(`Added timestamp: ${currentTimestamp} to session for user: ${userId}`);
+    }
+    else {
+      // If the session does not exist, we create it
+      const newSession = new Session({
+        userId: userId,
+        timestamps: [new Date()]
+      });
+      await newSession.save();
+    }
+  } catch (error) {
+    console.error("Error during session creation:", error);
+    return NextResponse.json({ error: "Error during session creation" }, { status: 500 });
+  }
+}
+
 
 export const authOptions = {
   providers: [
@@ -31,6 +59,9 @@ export const authOptions = {
             return null;
           }
 
+          // Verify if the user has a session
+          addSession(user._id, db);
+
           // Return user object (without sensitive data)
           return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.lastName, role: user.role  };
         } 
@@ -43,7 +74,7 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60, // 7 days
+    maxAge: 30 * 60, // 7 days
   },
   callbacks: {
     async jwt({ token, user }) {

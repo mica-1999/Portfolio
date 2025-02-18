@@ -22,6 +22,8 @@ export default function MainContent() {
   const [projects, setProjects] = useState([]);
   const [timeline, setTimeline] = useState([]);
   const [users, setUsers] = useState([]); 
+  const [sessionCount,setSessionCount] = useState(0);
+  const [rating, setRating] = useState(0);
 
   // State Initialization for loading and error handling
   const [loading, setLoading] = useState(true);
@@ -68,13 +70,16 @@ export default function MainContent() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [balanceData, projects, timeline, users] = await Promise.all([
+        const [session,rating,balanceData, projects, timeline, users] = await Promise.all([
+          fetchDataFromApi('/api/Session'),
+          fetchDataFromApi('/api/Rating'),
           fetchDataFromApi('/api/Balance', id),
           fetchDataFromApi('/api/Projects', id),
           fetchDataFromApi('/api/Timeline', id),
           fetchDataFromApi('/api/User', id),
         ]);
-        
+        setSessionCount(session || 0);
+        setRating(rating || 0);
         // Set the state with the fetched data
         setBalanceData({
           totalBalance: balanceData.totalBalance,
@@ -84,7 +89,6 @@ export default function MainContent() {
         setProjects(projects || []);
         setTimeline(timeline || []);
         setUsers(users || []);
-        console.log(users);
       } 
       catch (error) {
         console.error("Failed to fetch data:", error);
@@ -164,7 +168,7 @@ export default function MainContent() {
                 <div className="badge bg-label-primary rounded-pill lh-xs">Year of 2025</div>
               </div>
               <div className="card-body p-0 ms-3">
-                <h4>8.5k</h4>
+                <h4>{rating}</h4>
               </div>
             </div>
             <div className="col-lg-6 d-flex align-items-center justify-content-end pe-4">
@@ -184,7 +188,7 @@ export default function MainContent() {
                 <div className="badge bg-label-success rounded-pill lh-xs">Last Month</div>
               </div>
               <div className="card-body p-0 ms-3">
-                <h4>0</h4>
+                <h4>{sessionCount}</h4>
               </div>
             </div>
             <div className="col-lg-6 d-flex align-items-center justify-content-end pe-4">

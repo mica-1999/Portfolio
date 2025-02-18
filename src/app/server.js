@@ -61,7 +61,6 @@ app.prepare().then(() => {
     });
   });
 
-
   httpServer
     .once("error", (err) => {
       console.error(err);
