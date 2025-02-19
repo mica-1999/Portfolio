@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react"; 
 import { useSession } from "next-auth/react";
+import { useSidebar } from "/src/app/components/Dashboard/sidebarManage.js";
 
 
 export default function Header() {
@@ -11,6 +12,7 @@ export default function Header() {
   const role = session?.user?.role || "User";
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { sidebarOpen, setSidebarOpen } = useSidebar();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -27,7 +29,7 @@ export default function Header() {
   return (
     <div className="row d-flex align-items-center">
       <div className="col-lg-12 d-flex align-items-center">
-        <i className="fa-solid fa-bars fa-lg me-2" id="expand-sidebar" style={{ display: 'none', cursor:"pointer" }}></i>
+        <i className="fa-solid fa-bars fasideBar fa-lg ms-3 me-2 d-none" style={{ cursor:"pointer" }} onClick={() => setSidebarOpen(true)}></i>
         <a href="#" className="search-link d-flex align-items-center">
           <i className="fa-solid fa-magnifying-glass fa-lg"></i>
           <span className="ms-2 ps-3" style={{ color: '#7b7c95' }}>Search (Ctrl+/)</span>
@@ -54,7 +56,7 @@ export default function Header() {
                 </div>
               </li>
               <hr className="dropdown-divider" />
-              <li><a className="dropdown-item" href="#"><i className="fa-solid fa-user me-2"></i>My Profile</a></li>
+              <li><a className="dropdown-item" href="/pages/dashboard/personal"><i className="fa-solid fa-user me-2"></i>My Profile</a></li>
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-cog me-2"></i>Settings</a></li>
               <hr className="dropdown-divider" />
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-question-circle me-2"></i>FAQ</a></li>

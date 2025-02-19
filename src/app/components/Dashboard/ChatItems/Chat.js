@@ -7,12 +7,13 @@ import { Modal } from '/src/app/components/utility/Modal';
 import { getTimeFormatted } from '/src/utils/mainContentUtil';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
-import { set } from 'mongoose';
 
 export default function Chat() {
   const { data: session } = useSession();
   const [users, setUsers] = useState([]); // Displaying in UI
   const [showModal, setShowModal] = useState({ type: '',show: false,message: ''}); // FOR ERRORS
+  const [searchSection, setsearchSection] = useState(false); // SEARCH BAR SECTION
+
   const [currentUser, setCurrentUser] = useState(null); // Stores current authenticated User
   const [message, setMessage] = useState(""); // USER MESSAGE INPUT
   const [chatMessages, setChatMessages] = useState([]); // CHATROOM MESSAGES
@@ -27,6 +28,7 @@ export default function Chat() {
   const socketRef = useRef(null); // SOCKET REFERENCE
 
   let typingTimeout;
+  
 
   useEffect(() => {
     if (users.length > 0 && currentUser) {
@@ -183,6 +185,13 @@ export default function Chat() {
       setShowModal({type: 'error', show: true, message: 'Error sending message. Try Again!'});
     }
   }
+
+  useEffect(() => {
+
+
+  },[handleMessageSend])
+
+  
   
 
   // HANDLES CHAT SWITCHING
@@ -246,13 +255,14 @@ export default function Chat() {
 
   return(
     <div className="d-flex col-lg-12 mt-1 p-4">
-      <div className="card flex-grow-1 p-0 chatApp" >
+      <div className="card flex-grow-1 p-0 chatApp">
         <div className="row h-100 m-0" >
           {/* Chat and Contacts Section */}
-            <div className="col-lg-3 p-0 d-flex flex-column searchSection h-100 m-0 border-end">
+            <div className={`col-lg-3 p-0 d-flex flex-column searchSection h-100 m-0 border-end ${searchSection ? "show": ""}`}>
               <div className="d-flex justify-content-between align-items-center border-bottom p-3 searchDiv">
                 <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                 <input type="text" className="form-control ms-3 searchContChat" placeholder="Search..." onChange={(e) => setFilteredUsers(e.target.value)}/>
+                <i className="ms-3 fa-solid fa-times-circle fa-lg d-none" onClick={() => setsearchSection(false)}></i>
               </div>
             
               <div className="h-100 overflow-auto">
@@ -303,6 +313,7 @@ export default function Chat() {
           <div className="col-lg-9 p-0 d-flex flex-column rightCol">
             <div className="d-flex ps-4 pe-4 justify-content-between align-items-center border-bottom headerDiv">
               <div className="d-flex align-items-center">
+              <i className="fa-solid fa-bars chat-bar fa-lg me-3 d-none" onClick={() => setsearchSection(true)}></i>
                 <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                 <div className="d-flex ps-2 flex-column">
                   <span className="personName">{selectedUsers.length === 1 

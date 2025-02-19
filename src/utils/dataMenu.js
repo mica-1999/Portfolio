@@ -95,7 +95,7 @@ export const menuPages = [
     {
       name: "Calendar",
       icon: "calendar",
-      page: "/calendar",
+      page: "/pages/dashboard/calendar",
     },
     {
       name: "Music",

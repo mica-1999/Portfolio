@@ -4,18 +4,20 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { dataMenu, menuPages, configMenuItems } from "/src/utils/dataMenu";
+import { useSidebar } from "/src/app/components/Dashboard/sidebarManage.js";
 
 export default function Sidebar() {
   const currentPath = usePathname();
 
   const [mainMenu, setMenu] = useState(dataMenu);
+  const { sidebarOpen, setSidebarOpen } = useSidebar();
   
   return (
-    <div className="d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed responsive-action" id="sidebar">
+    <div className={`d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed sidebarMenu ${sidebarOpen ? 'open' : 'closed'}`}>
       {/* Sidebar Header */}
       <div className="d-flex align-items-center justify-content-between logo mt-3">
         <a href="/pages/dashboard"><img  src="/assets/images/portfolio.png" alt="logo" /></a>
-        <i className="fa-solid fa-arrow-left fa-lg d-none" style={{ cursor:"pointer" }}></i>
+        <i className="fa-solid fa-arrow-left fa-lg d-none" style={{ cursor:"pointer" }} onClick={() => setSidebarOpen(false)}></i>
       </div>
       <div className="overflow-auto mt-4">
         <ul className="main-menu nav flex-column mt-3">

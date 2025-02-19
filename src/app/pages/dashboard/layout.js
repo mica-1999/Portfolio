@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '/src/app/api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
 import DashboardClientWrapper from './wrapper.js';
+import { SidebarProvider } from "/src/app/components/Dashboard/sidebarManage.js";
 
 export const metadata = {
   title: 'Dashboard',
@@ -25,16 +26,17 @@ export default async function DashboardLayout({ children }) {
       <div className="container-fluid vh-100">
         <div className="row">
           <DashboardClientWrapper session={session}>
-            <Sidebar />
-            <div className="col-lg-10 offset-lg-2 p-4 card-section">
-              <Header /> 
-              {children} 
-              <Footer />
-            </div>
+            <SidebarProvider>
+              <Sidebar />
+              <div className="col-lg-10 offset-lg-2 p-4 card-section">
+                <Header /> 
+                {children} 
+                <Footer />
+              </div>
+            </SidebarProvider>
           </DashboardClientWrapper>
         </div>
       </div>
-      <script src="/assets/js/sidebar.js"></script>
     </>
   );
 }

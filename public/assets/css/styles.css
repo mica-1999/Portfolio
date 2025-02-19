@@ -107,6 +107,15 @@ body {
 /* ----------------------------------------------
    SIDEBAR STYLES
 ---------------------------------------------- */
+.sidebarMenu {
+  width: 270px; /* Adjust as needed */
+  background: var(--primary-bg-color) !important;;
+  color: white;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transform: translateX(0);
+  opacity: 1;
+  z-index: 5;
+}
 .logo{
     width: 100%;
     height: 40px;
@@ -318,12 +327,13 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
 
 /* Screens ≤ 1227px */
 @media (max-width: 1227px) {
-    .responsive-action {
-        display: none !important;
+    .sidebarMenu.closed {
+        transform: translateX(-100%);
+        opacity: 0;
+        pointer-events: none;
     }
-    #sidebar {
-        width: 250px;
-        background-color: var(--primary-bg-color);
+    .fa-arrow-left{
+        display: block !important;
     }
     .card-section {
         flex: 0 0 100%;
@@ -331,7 +341,7 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
         margin-left: 0 !important;
         flex-direction: column !important;
     }
-    .fa-bars {
+    .fa-bars.fasideBar {
         display: block !important;
         padding-right: 20px;
     }
@@ -346,6 +356,21 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     .ratings, .sessions {
         flex: 0 0 50%;
         max-width: 50%;
+    }
+}
+/* Screens ≤ 1000px  STUFF FOR THE CHAT*/
+@media (max-width: 1000px) {
+    .fa-bars.chat-bar,.fa-times-circle {
+        display: block !important;
+    }
+    .searchSection{
+        transform: translateX(-100%);
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+    }
+    .rightCol{
+        max-width: 100% !important;
     }
 }
 /* Screens ≤ 765px */
@@ -426,6 +451,52 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
 .logout-btn:hover {
     background-color: var(--bs-red);
     color: var(--primary-text-color);
+}
+
+/* ----------------------------------------------
+   PERSONAL PAGE STYLES
+---------------------------------------------- */
+.headerPP{
+    position: relative;
+    overflow: hidden; /* Ensures the image doesn't spill out */
+    height: 250px; /* Adjust height as needed */
+}
+.headerBackground {
+    border-radius: 0.400rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.infoSection{
+    margin-bottom: -40px;
+}
+.infoSection img {
+    position : relative;
+    top: -50px;
+    left: 5px;
+    border: 6px solid var(--card-bg-color);
+    border-radius: 0.45rem;
+}
+
+.PPsections button{
+    padding: .5435rem 1.375rem;
+    align-self: center;
+    color: #D3D4E9;
+    border: none;
+}
+.PPsections button:hover:not(.active){
+    background-color: #393C6A;
+    color: #666CFF;
+    border: none;
+}
+
+.PPsections button.active{
+    background-color: var(--bs-primary) !important;
+    color: white;
+    border: none;
 }
 
 /* ----------------------------------------------
@@ -575,7 +646,8 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
 .exportBtn:hover{
     background: transparent;
     width: 150px;
-    color: #6D788D
+    color: #6D788D;
+    border: 0.09rem solid #464963;
 }
 
 .cCheckbox {
@@ -825,6 +897,7 @@ select:focus {
     max-width: 350px;
     border-top-left-radius: 0.625rem;
     border-bottom-left-radius: 0.625rem;
+    z-index: 1050;
 }
 .searchDiv, .headerDiv { height: 75px; }
 .chatApp .title { color: var(--bs-indigo); font-size: 19px; }
@@ -913,4 +986,13 @@ select:focus {
 }
 .chatHistory .selfChat{
     color: #ADAEC6;
+}
+.searchSection.show{
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+.fa-times-circle{
+    color: var(--bs-red);
+    cursor: pointer;
 }
