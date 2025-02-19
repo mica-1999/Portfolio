@@ -38,6 +38,7 @@ export default function MainContent() {
     return [];
   });
 
+
   // Function to handle the hidden sections
   const handle_sections = (section) => {
     setHiddenSections((prevHiddenSections) => {

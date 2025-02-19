@@ -40,17 +40,17 @@ export const dataMenu = [
         {
           name: "Project 1",
           icon: "project1",
-          page: "/dashboard/projects",
+          page: "/pages/dashboard/management/project1",
         },
         {
           name: "Project 2",
           icon: "project2",
-          page: "/project2",
+          page: "/pages/dashboard/management/project2",
         },
         {
           name: "Project 3",
           icon: "project3",
-          page: "/project3",
+          page: "/pages/dashboard/management/project3",
         },
       ],
     },
@@ -62,14 +62,14 @@ export const dataMenu = [
       hasSubMenu: true,
       subMenu: [
         {
-          name: "Learning 1",
-          icon: "learning1",
-          page: "/learning1",
+          name: "Hardware",
+          icon: "hardware",
+          page: "/pages/dashboard/management/hardware",
         },
         {
-          name: "Learning 2",
-          icon: "learning2",
-          page: "/learning2",
+          name: "SoftWare",
+          icon: "software",
+          page: "/pages/dashboard/management/software",
         },
       ],
     },

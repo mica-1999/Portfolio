@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 
-const timelineSchema = new mongoose.Schema({
-    id: { type: Number, required: false, unique: true },
+const timelineEventSchema = new mongoose.Schema({
+    timestamp: { type: Date, default: Date.now },
+    project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', default: null },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    file: { type: String, required: false },
-    state: { type: Number, required: true },
-    lastEvent: { type: Date, required: true},
+    state: { type: Number, required: true }
+});
 
-    project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: false }
-})
+const timelineSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
+    events: [timelineEventSchema]
+});
 
 const Timeline = mongoose.models.Timeline || mongoose.model('Timeline', timelineSchema);
 

@@ -498,6 +498,12 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     color: white;
     border: none;
 }
+.aboutMe p{
+    color: #b2b3ca;
+}
+.aboutMe p i{
+    font-size: 1.1rem ;
+}
 
 /* ----------------------------------------------
    MAIN COMPONENT STYLES
