@@ -1,15 +1,29 @@
 import { NextResponse } from "next/server";
 import Timeline from "../../../models/Timeline";
 import dbConnect from "../../../utils/dbConnect";
+import mongoose from "mongoose";
 
-export async function GET() {
-    await dbConnect();
-    try {
-        const timeline_data = await Timeline.find();
-        return NextResponse.json(timeline_data);
-    } catch (error) {
-        return NextResponse.json({error:'Couldnt fetch timeline data'},{status:500});
-    }
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get('userId');
+
+  // Validate the userId
+  if (!userId) {
+    return NextResponse.json({ error: 'Invalid or missing userId' }, { status: 400 });
+  }
+  await dbConnect();
+  try {
+      const timeline_data = await Timeline.findOne( { userId: new mongoose.Types.ObjectId(userId) } );
+      if (!timeline_data) {
+        console.warn(`No timeline found for userId: ${userId}`);
+        return NextResponse.json([]); // ✅ This prevents the error
+      }
+      console.log("Timeline Data:", timeline_data.events);
+      return NextResponse.json( timeline_data.events || [] );
+  } catch (error) {
+    console.error('Error fetching timeline data:', error);
+      return NextResponse.json({error:'Couldnt fetch timeline data'},{status:500});
+  }
 }
 
 export async function POST(req) {

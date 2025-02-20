@@ -282,9 +282,9 @@ export default function Chat() {
                         <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                         <div className="d-flex flex-column ps-3 justify-content-center">
                             <span className="personName">{user.firstName + " " + user.lastName}</span>
-                            <span className="description">{lastMessage.message.length > 30 ? lastMessage.message.slice(0, 10) + "..." : lastMessage.message}</span>
+                            <span className="description">{/* {lastMessage.message.length > 30 ? lastMessage.message.slice(0, 10) + "..." : lastMessage.message} */}</span>
                         </div>
-                        <span className="ms-auto align-self-start text-muted">{getTimeFormatted(lastMessage.timestamp)}</span>
+                        <span className="ms-auto align-self-start text-muted">{/* {getTimeFormatted(lastMessage.timestamp)} */}</span>
                       </div>
                     )
                   })}

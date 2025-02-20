@@ -263,7 +263,7 @@ a.main::before { content: "\f015"; }
     text-transform: uppercase;
     color: var(--primary-text-color) !important;
 }
-.table-content td { color: #b2b3ca; padding-block: 1.426rem; }
+.table-content td { color: #b2b3ca !important; padding-block: 1.426rem; }
 th, td { vertical-align: middle;  padding: 0.75rem;}
 .border-top {border-top: 1px solid #464963 !important; }
 .table-sm>:not(caption)>*>* { padding: 1.426rem 1.25rem; }
@@ -687,6 +687,13 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
 
 .cCheckbox:hover {border-color: #5c61e6;}
 
+.userRow{
+    cursor:pointer;
+}
+.userRow:hover{
+    background-color: #393C6A;
+}
+
 /* ----------------------------------------------
    SIDE ADD FORM COMPONENTS STYLES
 ---------------------------------------------- */
@@ -1002,3 +1009,7 @@ select:focus {
     color: var(--bs-red);
     cursor: pointer;
 }
+
+/* ----------------------------------------------
+   LEARNING COMPONENTS STYLES
+---------------------------------------------- */

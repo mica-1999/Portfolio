@@ -77,7 +77,7 @@ export default function MainContent() {
           fetchDataFromApi('/api/Balance', id),
           fetchDataFromApi('/api/Projects', id),
           fetchDataFromApi('/api/Timeline', id),
-          fetchDataFromApi('/api/User', id),
+          fetchDataFromApi('/api/User'),
         ]);
         setSessionCount(session || 0);
         setRating(rating || 0);
@@ -88,6 +88,7 @@ export default function MainContent() {
           withdrawal: balanceData.thisMonth.totalWithdrawals,
         });
         setProjects(projects || []);
+        console.log("Fetched Timeline Data:", timeline);
         setTimeline(timeline || []);
         setUsers(users || []);
       } 
@@ -256,8 +257,8 @@ export default function MainContent() {
             <div className="card-body p-0 pt-4">
               <ul className="timeline card-timeline mb-0">
                 {timeline.map((timeline_info) => {
-                  const { badgeColor, output } = getBadgeClass(timeline_info.state);
-                  const timelineTime = getTimeFormatted(timeline_info.lastEvent);
+                  const { badgeColor } = getBadgeClass(timeline_info.state);
+                  const timelineTime = getTimeFormatted(timeline_info.timestamp);
                   return (
                     <li className="timeline-item" key={timeline_info.description}>
                       <span className={`timeline-point timeline-point-${badgeColor}`}></span>

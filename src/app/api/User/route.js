@@ -9,9 +9,15 @@ const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10);
 }
 
-export async function GET() {
+export async function GET(req) {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get('userId');
     await dbConnect();
     try {
+        if(userId){
+            const user_data = await User.findOne({ _id: new mongoose.Types.ObjectId(userId) });
+            return NextResponse.json(user_data);
+        }
         const user_data = await User.find();
         return NextResponse.json(user_data);
     } catch (error) {

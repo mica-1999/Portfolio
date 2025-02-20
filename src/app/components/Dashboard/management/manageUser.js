@@ -297,7 +297,7 @@ export default function ManageUser() {
                                     const { badgeColor, output, color} = getRoleClass(user.role);
                                     const { colorActive } = getActiveColor(user.isActive);
                                     return(
-                                        <tr key={user.username}>
+                                        <tr className="userRow" key={user.username} onClick={() => window.location.href = `/pages/dashboard/personal?userId=${user._id}`}>
                                             <td>
                                             <input className="cCheckbox" type="checkbox" checked={selectedUsers[user.username] || false} onChange={() => handleUserCheckboxChange(user.username)} />
                                             </td>
@@ -317,9 +317,6 @@ export default function ManageUser() {
                                             <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
                                             <td>
                                                 <div className="d-flex gap-2">
-                                                    <button className="btn btn-sm btn-info">
-                                                        <i className="ri-eye-line"></i>
-                                                    </button>
                                                     <button className="btn btn-sm btn-primary">
                                                         <i className="ri-edit-line"></i>
                                                     </button>

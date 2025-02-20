@@ -3,9 +3,18 @@ import Project from "/src/models/Project";
 import dbConnect from "/src/utils/dbConnect";
 import mongoose from 'mongoose';
 
-export async function GET() {
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('userId');
+
   await dbConnect();
+
   try {
+    if (id) {
+      const objectId = new mongoose.Types.ObjectId(id);
+      const projects_data = await Project.find({ users: objectId });
+      return NextResponse.json(projects_data);
+    }
     const projects_data = await Project.find();
     return NextResponse.json(projects_data);
   } catch (error) {

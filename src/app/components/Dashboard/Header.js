@@ -56,7 +56,7 @@ export default function Header() {
                 </div>
               </li>
               <hr className="dropdown-divider" />
-              <li><a className="dropdown-item" href="/pages/dashboard/personal"><i className="fa-solid fa-user me-2"></i>My Profile</a></li>
+              <li><a className="dropdown-item" href={`/pages/dashboard/personal?userId=${session.user?.id}`}><i className="fa-solid fa-user me-2"></i>My Profile</a></li>
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-cog me-2"></i>Settings</a></li>
               <hr className="dropdown-divider" />
               <li><a className="dropdown-item" href="#"><i className="fa-solid fa-question-circle me-2"></i>FAQ</a></li>

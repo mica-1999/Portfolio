@@ -64,12 +64,12 @@ export const dataMenu = [
         {
           name: "Hardware",
           icon: "hardware",
-          page: "/pages/dashboard/management/hardware",
+          page: "/pages/dashboard/learning/hardware",
         },
         {
-          name: "SoftWare",
+          name: "Software",
           icon: "software",
-          page: "/pages/dashboard/management/software",
+          page: "/pages/dashboard/learning/software",
         },
       ],
     },

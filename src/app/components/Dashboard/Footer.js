@@ -10,16 +10,16 @@ export default function Footer() {
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const response = await fetchDataFromApi(`/api/Rating/UserRating?userId=${session.user.id}`);
-            setRating(response || 0);
-        } 
-        catch (error) {
-            console.error('Error fetching data:', error);
-        } 
+      try {
+          const response = await fetchDataFromApi(`/api/Rating/UserRating?userId=${session.user.id}`);
+          setRating(response || 0);
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      } 
     }
     fetchData();    
-}, []);
+  }, []);
 
   const handleRating = async (index) => {
     setRating(index);
