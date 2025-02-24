@@ -1013,3 +1013,23 @@ select:focus {
 /* ----------------------------------------------
    LEARNING COMPONENTS STYLES
 ---------------------------------------------- */
+.subCategories{
+    max-width: 100%;
+}
+.subCategories button{
+
+    padding: .5435rem 1.375rem;
+    align-self: center;
+    color: #D3D4E9;
+    border: none;
+}
+.subCategories button:hover{
+    background-color: #393C6A;
+    color: #666CFF;
+    border: none;
+}
+.subCategories button.active{
+    background-color: var(--bs-primary) !important;
+    color: white;
+    border: none;
+}

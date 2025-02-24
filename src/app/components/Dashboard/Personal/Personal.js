@@ -20,7 +20,6 @@ export default function Personal(){
 
     useEffect(() => {
         if (!userId) return;
-        console.log(userId)
 
         const fetchData = async () => {       
             try {

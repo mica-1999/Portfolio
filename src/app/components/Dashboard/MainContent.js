@@ -88,7 +88,6 @@ export default function MainContent() {
           withdrawal: balanceData.thisMonth.totalWithdrawals,
         });
         setProjects(projects || []);
-        console.log("Fetched Timeline Data:", timeline);
         setTimeline(timeline || []);
         setUsers(users || []);
       } 

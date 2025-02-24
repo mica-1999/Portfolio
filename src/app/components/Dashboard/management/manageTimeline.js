@@ -14,8 +14,6 @@ export default function ManageProject() {
             try {
                 const response = await fetchDataFromApi("/api/ProjectTimeline");
                 setData(response || []);
-                console.log(response);
-
             } 
             catch (error) {
                 console.error('Error fetching data:', error);

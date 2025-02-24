@@ -6,7 +6,7 @@ import { Modal } from '/src/app/components/utility/Modal';
 
 // CONSTANTS FOR FILTERS 
 const mainCategories = ["Programming", "Web Development", "OS", "Cybersecurity"];
-const programmingSubcategories = ["Languages", "Paradigms", "Data Structures & Algorithms", "Databases", "Software Engineering", "Development Tools", "AI & Machine Learning", "Embedded Systems", "Game Development"];
+const programmingSubcategories = ["Languages", "Paradigms", "Data Structures", "Databases", "Software Engineering", "Machine Learning", "Game Development"];
 const statusOptions = ["Learned", "Mastered", "In Progress", "Trying", "Completed", "On Hold", "Abandoned"];
 const subCategoriesforWebDevelopment = [];
 const subCategoriesforOS = [];
@@ -24,6 +24,34 @@ const [formtagBtn, setformTagBtn] = useState(false);
 const [formData, setFormData] = useState({title: '', description: '', tags: [], state: '', version: ''}); // Form data
 const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
 
+const [filters, setFilters] = useState({ mainCategory: 'Programming', subCategory: '', tags: [], status: '' }); // Filters
+
+const handleCategoryChange = (event) => {
+  setFilters(prevFilters => ({
+    ...prevFilters, // Keep the previous filter values
+    mainCategory: event.target.value, // Update the selected category
+  }));
+};
+
+const handlesubCategoryChange = (subCategory) => {
+  setFilters(prevFilters => ({
+    ...prevFilters, // Keep the previous filter values
+    subCategory: subCategory, // Update the subcategory
+  }));
+};
+
+const handleTagChange = (tag) => {
+    const updatedTags = filters.tags.includes(tag)
+        ? filters.tags.filter((t) => t !== tag)
+        : [...filters.tags, tag];
+    setFilters({ ...filters, tags: updatedTags });
+}
+
+
+useEffect(() => {
+  console.log('Filters:', filters); 
+},[filters.status])
+
 return (
     <>
       <div className="d-flex col-lg-12 mt-4">
@@ -37,31 +65,19 @@ return (
             {/* Filter Rows */}
             <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
               {/* Main Category Filter */}
-              <div className="col-lg-3">
+              <div className="col-lg-4">
                 <div className="select-wrapper">
-                  <select className="form-select">
-                    <option key="default" value="">Select a category</option>
+                  <select className="form-select" value={filters.mainCategory.toLowerCase()} onChange={handleCategoryChange}>
+                    <option key="default" value=''>Select a category</option>
                     {mainCategories.map((cat) => (
                       <option key={cat} value={cat.toLowerCase()}>{cat}</option>
                     ))}
                   </select>
                 </div>
               </div>
-  
-              {/* Subcategory Filter */}
-              <div className="col-lg-3">
-                <div className="select-wrapper">
-                  <select className="form-select">
-                    <option key="default" value="">Select a subcategory</option>
-                    {programmingSubcategories.map((subcat) => (
-                      <option key={subcat} value={subcat.toLowerCase()}>{subcat}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-  
+
               {/* Tags Filter */}
-              <div className="col-lg-3">
+              < div className="col-lg-4">
                 <div className="select-wrapper">
                   <button className={`btn dropdown-toggle w-100 tagButton ${formtagBtn ? 'setBorder' : ''} ${formData.tags.length > 0 ? 'selected-tags' : ''}`}
                     type="button" id="dropdownForm"
@@ -71,10 +87,10 @@ return (
   
                   <ul className={`dropdown-menu w-100 ulTag ${isformDropdownOpen ? 'show' : ''}`} aria-labelledby="dropdownForm">
                     {TAGS.map((tag) => (
-                      <li key={tag} onClick={() => handleTagChangeForm(tag)} className="custom-tag-li p-2">
+                      <li key={tag} onClick={() => handleTagChange(tag)} className="custom-tag-li p-2">
                         <div className="form-check">
                           <input type="checkbox" className="form-check-input" id={tag + 'form'}
-                            checked={formData.tags.includes(tag)} onChange={() => handleTagChangeForm(tag)} />
+                            checked={formData.tags.includes(tag)} onChange={() => handleTagChange(tag)} />
                           <label className="form-check-label" htmlFor={tag + 'form'}>
                             {tag}
                           </label>
@@ -86,9 +102,9 @@ return (
               </div>
   
               {/* Status Filter */}
-              <div className="col-lg-3">
+              <div className="col-lg-4">
                 <div className="select-wrapper">
-                  <select className="form-select">
+                  <select className="form-select" value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
                     <option key="default" value="">Select a status</option>
                     {statusOptions.map((status) => (
                       <option key={status} value={status.toLowerCase()}>{status}</option>
@@ -113,29 +129,33 @@ return (
       </div>
   
       {/* Subcategories and Cards */}
-      <div className="row">
+      <div className="row mt-3">
         <div className="col-lg-12">
           <div className="subCategories">
-            {/* Dynamically add subcategory filter here based on selected category */}
+            <div className="col-lg-12 d-flex gap-5">
+              {programmingSubcategories.map((subcat) => (
+                  <button key={subcat} className={`btn ${filters.subCategory === subcat ? 'active': ''}`} name={subcat} onClick={() => handlesubCategoryChange(subcat)}>{subcat}</button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
   
       {/* Cards Section */}
       <div className="card-body d-flex flex-wrap p-0 mb-1">
-        <div className="row p-4">
-          {[...Array(6)].map((_, idx) => (
+        <div className="row p-3">
+          {[...Array(9)].map((_, idx) => (
             <div className="col-lg-4" key={idx}>
               <div className="card softwareCard">
                 <div className="card-header align-items-center justify-content-between d-flex">
                     <div className="d-flex align-items-center">
                         <img className="subcatIcon" src="#"></img>
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column ps-2">
                             <span>Title</span>
                             <span>Subtitle</span>
                         </div>
                     </div>
-                    <i class="ri-more-2-line ri-22px text-muted"></i>
+                    <i className="ri-more-2-line ri-22px text-muted"></i>
                 </div>
                 <div className="card-body">
                   <h5 className="card-title">Programming</h5>
