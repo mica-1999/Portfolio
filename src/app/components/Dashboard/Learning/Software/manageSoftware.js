@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
 import { Modal } from '/src/app/components/utility/Modal';
@@ -17,14 +18,14 @@ const TAGS = [
     'Tailwind CSS', 'Next.js', 'Bootstrap', 'API', 'Socket.IO', 'Material UI'
   ];
 
-export default function ManageSoftware() {    
-
+export default function ManageSoftware() {   
 // STATE VARIABLES
+const [userTopics, setUserTopics] = useState([]); // User's topics from DB 
 const [formtagBtn, setformTagBtn] = useState(false);
 const [formData, setFormData] = useState({title: '', description: '', tags: [], state: '', version: ''}); // Form data
 const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
-
 const [filters, setFilters] = useState({ mainCategory: 'Programming', subCategory: '', tags: [], status: '' }); // Filters
+const { data: session } = useSession();
 
 const handleCategoryChange = (event) => {
   setFilters(prevFilters => ({
@@ -47,10 +48,34 @@ const handleTagChange = (tag) => {
     setFilters({ ...filters, tags: updatedTags });
 }
 
+useEffect(() => {
+  if(session.user?.id){
+    try {
+      fetchTopics();
+    } 
+    catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  } else {
+    console.log('No user session found');
+  }
+},[session])
+
+
+// FETCH FOR TOPICS
+const fetchTopics = async () => {
+  try {
+    const response = await fetchDataFromApi(`/api/Topic`);
+    setUserTopics(response || []);
+  } catch (error) {
+      console.error('Error fetching data:', error);
+  }
+};
 
 useEffect(() => {
   console.log('Filters:', filters); 
-},[filters.status])
+  console.log('User Topics:', userTopics);
+},[filters,userTopics])
 
 return (
     <>
@@ -115,12 +140,12 @@ return (
             </div>
   
             {/* Search and Add Section */}
-            <div className="row d-flex mt-3 pb-3 ps-2 pe-2 border-bottom">
+            <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
               <div className="col-lg-12 d-flex align-items-center justify-content-between">
                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                 <div className="d-flex gap-3">
                   <input type="text" className="form-control searchInput" placeholder="Search Info" onChange={(e) => setFilters({ ...filters, name: e.target.value })} />
-                  <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add New Info</button>
+                  <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add Topic</button>
                 </div>
               </div>
             </div>
@@ -142,24 +167,37 @@ return (
       </div>
   
       {/* Cards Section */}
-      <div className="card-body d-flex flex-wrap p-0 mb-1">
+      <div className="d-flex flex-wrap p-0 mb-1">
         <div className="row p-3">
-          {[...Array(9)].map((_, idx) => (
-            <div className="col-lg-4" key={idx}>
+          {userTopics.map((topic, idx) => (
+            <div className="col-lg-4" key={topic._id}>
               <div className="card softwareCard">
                 <div className="card-header align-items-center justify-content-between d-flex">
                     <div className="d-flex align-items-center">
-                        <img className="subcatIcon" src="#"></img>
-                        <div className="d-flex flex-column ps-2">
-                            <span>Title</span>
-                            <span>Subtitle</span>
+                        <div className="subCatIconDiv d-flex justify-content-center align-items-center"><img className="subcatIcon" src={topic.icon}></img></div>
+                        <div className="d-flex flex-column ps-4">
+                            <span>{topic.category}</span>
+                            <span>{topic.subcategory}</span>
                         </div>
                     </div>
-                    <i className="ri-more-2-line ri-22px text-muted"></i>
+                    <div className="d-flex gap-2">
+                      <div className="waves"><i className="ri-eye-line ri-22px text-muted" title="Quick Preview"></i></div>
+
+                      <div className="dropdown">
+                        <i className="ri-more-2-line ri-22px text-muted " id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <ul className="dropdown-menu topics" aria-labelledby="dropdownMenuButton">
+                          <li><a className="dropdown-item" href="#">View Details</a></li>
+                          <li><a className="dropdown-item" href="#">Rename Title</a></li>
+                          <li><a className="dropdown-item" href="#">Add to Favorites</a></li>
+                          <li className="delTopic"><a className="dropdown-item text-danger" href="#">Delete Topic</a></li>
+                        </ul>
+                      </div>
+                    </div>
+
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title">Programming</h5>
-                  <p className="card-text">Languages, Paradigms, Data Structures & Algorithms, Databases, Software Engineering, Development Tools, AI & Machine Learning, Embedded Systems, Game Development</p>
+                  <h5 className="card-title">{topic.titleCard}</h5>
+                  <p className="card-text topicDescription">{topic.description}</p>
                 </div>
               </div>
             </div>

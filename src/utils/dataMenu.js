@@ -62,15 +62,16 @@ export const dataMenu = [
       hasSubMenu: true,
       subMenu: [
         {
-          name: "Hardware",
-          icon: "hardware",
-          page: "/pages/dashboard/learning/hardware",
-        },
-        {
           name: "Software",
           icon: "software",
           page: "/pages/dashboard/learning/software",
         },
+        {
+          name: "Hardware",
+          icon: "hardware",
+          page: "/pages/dashboard/learning/hardware",
+        },
+        
       ],
     },
 ];

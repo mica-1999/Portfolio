@@ -295,8 +295,8 @@ th, td { vertical-align: middle;  padding: 0.75rem;}
     height: 30px;
     border-radius: 50%;
 }
-.ri-22px{font-size: 22px;}
-
+.ri-22px{font-size: 22px; cursor: pointer}
+.waves{cursor: pointer;}
 /* ----------------------------------------------
    DESCRIPTION CELL IN TABLE STYLES
 ---------------------------------------------- */
@@ -1013,6 +1013,9 @@ select:focus {
 /* ----------------------------------------------
    LEARNING COMPONENTS STYLES
 ---------------------------------------------- */
+.softwareCard{
+    height: 326px;
+}
 .subCategories{
     max-width: 100%;
 }
@@ -1032,4 +1035,39 @@ select:focus {
     background-color: var(--bs-primary) !important;
     color: white;
     border: none;
+}
+.subCatIconDiv{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #393C6A;
+}
+.subCatIconDiv img {
+    width: 32px;
+    height: 32px;
+}
+
+.viewInfo   {
+    background-color: var(--bs-indigo);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 0.625rem;
+    width: 160px;
+}
+.viewInfo:hover {
+    background-color: #5a5ee1;
+    color: var(--primary-text-color);
+}
+.dropdown-menu.topics{
+    min-width: auto !important;
+}
+.dropdown-menu .delTopic:hover {
+    background-color: #ff4d49 !important; /* Red background on hover */
+    color: white !important; /* White text */
+}
+.topicDescription{
+    max-height: 170px; /* Adjust this based on your design */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
 }

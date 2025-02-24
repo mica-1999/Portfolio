@@ -1,14 +1,35 @@
 const mongoose = require('mongoose');
 
-const chatroomSchema = new mongoose.Schema({
-    chatroomId: {  type: mongoose.Schema.Types.ObjectId, required: true, unique: true },  // Unique identifier for the chatroom
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],  // Array of User IDs (members)
-    chatroomName: { type: String, required: false },  // Name of the chatroom (can be null or default for 1-on-1)
-    isGroupChat: { type: Boolean, default: false },  // Boolean flag for group chats
-    isPrivate: { type: Boolean, default: false },  // Flag for private (true) or public (false) chatroom
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  // The user who created the chatroom
-    createdAt: { type: Date, default: Date.now },  // Timestamp for chatroom creation
+const learningInfoSchema = new mongoose.Schema({
+    icon: { type: String, required: true }, // URL or path to icon image
+    titleCard: { type: String, required: true, minlength: 3, maxlength: 100 }, // Main title
+    subtitleCard: { type: String, required: true, minlength: 10, maxlength: 200 }, // Short description
+    category: { type: String, required: true }, // General category (e.g., Programming)
+    subcategory: { type: String, required: true }, // More specific category (e.g., JavaScript)
+    tags: { type: [String], required: true }, // Keywords for filtering/searching
+    description: { type: String, required: true  }, // Brief explanation of topic
+    state: { type: String, required: true, enum: ['Learned', 'Mastered', 'In Progress', 'Trying', 'Completed', 'On Hold', 'Abandoned'] }, // Current status
+    dateCreated: { type: Date, default: Date.now }, // Auto-fills creation date
+    lastUpdated: { type: Date, default: Date.now }, // Auto-fills update date
+    codeSnippet: {
+        language: { type: String, required: true }, // e.g., 'JavaScript'
+        code: { type: String, required: true }, // Actual code
+        explanation: { type: String } // Optional explanation of code
+    },
+    codeSnippet: {
+        type: new mongoose.Schema({
+          language: { type: String, required: true }, // e.g., 'JavaScript'
+          code: { type: String, required: true }, // Actual code
+          explanation: { type: String } // Optional explanation of code
+        }, { _id: false }) // Prevents an extra `_id` field
+      },    
+    userNotes: { type: String },
+    views: { type: Number, default: 0 },
+    isFavorite: { type: Boolean, default: false }
 });
 
-const Chatroom = mongoose.models.Chatroom || mongoose.model('Chatroom', chatroomSchema);
-module.exports = Chatroom;
+// Create the model
+const learningSoftware = mongoose.models.learningSoftware || mongoose.model('learningSoftware', learningInfoSchema, 'learningSoftware');
+
+module.exports = learningSoftware;
+
