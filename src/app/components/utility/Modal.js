@@ -1,7 +1,7 @@
 export const Modal = ({showModal, setShowModal, handleDelete, deleteAction}) => {
 return showModal.show   ? (
         <>    
-            <div className={'modal fade show'} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
+            <div className={'modal show'} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style={{ display: 'block' }}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         {showModal.type === 'warning' ? (

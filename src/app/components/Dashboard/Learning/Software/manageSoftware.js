@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
-import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
-import { Modal } from '/src/app/components/utility/Modal';
+import { CodeModal } from './modalCode';
+import { set } from "mongoose";
 
 // CONSTANTS FOR FILTERS 
 const mainCategories = ["Programming", "Web Development", "OS", "Cybersecurity"];
-const programmingSubcategories = ["Languages", "Paradigms", "Data Structures", "Databases", "Software Engineering", "Machine Learning", "Game Development"];
+const programmingSubcategories = ["Languages","Styling", "Data Structures", "Databases", "Software Engineering", "Machine Learning", "Game Development"];
 const statusOptions = ["Learned", "Mastered", "In Progress", "Trying", "Completed", "On Hold", "Abandoned"];
 const subCategoriesforWebDevelopment = [];
 const subCategoriesforOS = [];
@@ -22,9 +22,15 @@ export default function ManageSoftware() {
 // STATE VARIABLES
 const [userTopics, setUserTopics] = useState([]); // User's topics from DB 
 const [formtagBtn, setformTagBtn] = useState(false);
-const [formData, setFormData] = useState({title: '', description: '', tags: [], state: '', version: ''}); // Form data
+const [formData, setFormData] = useState({title: '', description: '', tags: [], state: ''}); // Form data
 const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
-const [filters, setFilters] = useState({ mainCategory: 'Programming', subCategory: '', tags: [], status: '' }); // Filters
+const [filters, setFilters] = useState({ mainCategory: '', subCategory: '', tags: [], status: '', searchBox: '' }); // Filters
+
+// Modal Info
+const [modalOpen, setModalOpen] = useState(false);
+const [topicClicked, setTopicClicked] = useState({});
+const [hideBody, setHideBody] = useState(false); // Dark Body toggle
+
 const { data: session } = useSession();
 
 const handleCategoryChange = (event) => {
@@ -35,17 +41,41 @@ const handleCategoryChange = (event) => {
 };
 
 const handlesubCategoryChange = (subCategory) => {
-  setFilters(prevFilters => ({
-    ...prevFilters, // Keep the previous filter values
-    subCategory: subCategory, // Update the subcategory
-  }));
+  setFilters((prevFilters) => {
+    // If the selected subcategory is already the current one, clear it
+    if (prevFilters.subCategory === subCategory) {
+      return {
+        ...prevFilters,
+        subCategory: '', // Reset subcategory
+      };
+    }
+
+    // Otherwise, set the new subcategory
+    return {
+      ...prevFilters,
+      subCategory: subCategory, // Set new subcategory
+    };
+  });
 };
+
 
 const handleTagChange = (tag) => {
     const updatedTags = filters.tags.includes(tag)
         ? filters.tags.filter((t) => t !== tag)
         : [...filters.tags, tag];
     setFilters({ ...filters, tags: updatedTags });
+}
+
+const handleModalOpen = (topicId) => {
+  // Find the topic by matching its _id
+  const topicSelected = userTopics.find(topic => topic._id === topicId);
+
+  // Update the state with the selected topic's data
+  setTopicClicked(topicSelected);
+
+  // Open the modal
+  setHideBody(true);
+  setModalOpen(true);
 }
 
 useEffect(() => {
@@ -61,6 +91,12 @@ useEffect(() => {
   }
 },[session])
 
+useEffect(() => {
+  if(modalOpen === false){
+  setHideBody(false);
+  }
+},[modalOpen === false])
+
 
 // FETCH FOR TOPICS
 const fetchTopics = async () => {
@@ -71,11 +107,6 @@ const fetchTopics = async () => {
       console.error('Error fetching data:', error);
   }
 };
-
-useEffect(() => {
-  console.log('Filters:', filters); 
-  console.log('User Topics:', userTopics);
-},[filters,userTopics])
 
 return (
     <>
@@ -102,12 +133,12 @@ return (
               </div>
 
               {/* Tags Filter */}
-              < div className="col-lg-4">
+              <div className="col-lg-4">
                 <div className="select-wrapper">
                   <button className={`btn dropdown-toggle w-100 tagButton ${formtagBtn ? 'setBorder' : ''} ${formData.tags.length > 0 ? 'selected-tags' : ''}`}
                     type="button" id="dropdownForm"
                     onClick={() => { setformTagBtn(!formtagBtn); setIsformDropdownOpen(!isformDropdownOpen); }}>
-                    {formData.tags.length === 0 ? 'Select tags' : formData.tags.join(';')}
+                    {filters.tags.length === 0 ? 'Select tags' : filters.tags.join(';')}
                   </button>
   
                   <ul className={`dropdown-menu w-100 ulTag ${isformDropdownOpen ? 'show' : ''}`} aria-labelledby="dropdownForm">
@@ -115,8 +146,8 @@ return (
                       <li key={tag} onClick={() => handleTagChange(tag)} className="custom-tag-li p-2">
                         <div className="form-check">
                           <input type="checkbox" className="form-check-input" id={tag + 'form'}
-                            checked={formData.tags.includes(tag)} onChange={() => handleTagChange(tag)} />
-                          <label className="form-check-label" htmlFor={tag + 'form'}>
+                            checked={filters.tags.includes(tag)} onChange={() => handleTagChange(tag)} />
+                          <label className="form-check-label"  onClick={(e) => e.preventDefault()} htmlFor={tag + 'form'}>
                             {tag}
                           </label>
                         </div>
@@ -144,7 +175,7 @@ return (
               <div className="col-lg-12 d-flex align-items-center justify-content-between">
                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                 <div className="d-flex gap-3">
-                  <input type="text" className="form-control searchInput" placeholder="Search Info" onChange={(e) => setFilters({ ...filters, name: e.target.value })} />
+                  <input type="text" className="form-control searchInput" placeholder="Search Info" onChange={(e) => setFilters({ ...filters, searchBox: e.target.value })} />
                   <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add Topic</button>
                 </div>
               </div>
@@ -168,8 +199,47 @@ return (
   
       {/* Cards Section */}
       <div className="d-flex flex-wrap p-0 mb-1">
-        <div className="row p-3">
-          {userTopics.map((topic, idx) => (
+        <div className="row p-3 w-100">
+          {userTopics
+          
+          
+          .filter((topic) => {
+            // If there's no filter for category, all topics are included
+            if (filters.mainCategory && topic.category.toLowerCase() !== filters.mainCategory.toLowerCase()) {
+              return false;
+            }
+          
+            // If there's no filter for subcategory, all topics are included
+            if (filters.subCategory && topic.subcategory.toLowerCase() !== filters.subCategory.toLowerCase()) {
+              return false;
+            }
+          
+            // If there are tags to filter by, make sure all tags are included in the topic's tags
+            if (filters.tags.length > 0 && !filters.tags.every((tag) => topic.tags.includes(tag))) {
+              return false;
+            }
+          
+            // If there's a status filter, make sure the topic's state matches
+            if (filters.status && topic.state.toLowerCase() !== filters.status.toLowerCase()) {
+              return false;
+            }
+
+            // Searchbox term search 
+            if (filters.searchBox && (
+              !topic.titleCard.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+              !topic.description.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+              !topic.category.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+              !topic.subcategory.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+              !topic.tags.some(tag => tag.toLowerCase().includes(filters.searchBox.toLowerCase())) &&  // Check each tag
+              !topic.state.toLowerCase().includes(filters.searchBox.toLowerCase())
+            )) {
+              return false;  // If none of the fields match the search term, exclude this topic
+            }
+            // If no filter conditions are violated, return true to keep the topic
+            return true;
+          })
+          
+          .map((topic, idx) => (
             <div className="col-lg-4" key={topic._id}>
               <div className="card softwareCard">
                 <div className="card-header align-items-center justify-content-between d-flex">
@@ -181,7 +251,9 @@ return (
                         </div>
                     </div>
                     <div className="d-flex gap-2">
-                      <div className="waves"><i className="ri-eye-line ri-22px text-muted" title="Quick Preview"></i></div>
+                      {topic.codeSnippet ? (
+                        <div className="waves"><i className="ri-eye-line ri-22px text-muted" title="Quick Preview" onClick={() => handleModalOpen(topic._id)}></i></div>
+                        ) : ''}
 
                       <div className="dropdown">
                         <i className="ri-more-2-line ri-22px text-muted " id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -204,6 +276,8 @@ return (
           ))}
         </div>
       </div>
+      <CodeModal showModal={modalOpen} topicClicked={topicClicked} setShowModal={setModalOpen} />
+      {hideBody  && <div className="modal-backdrop show m-0"></div>}
     </>
   );
 }

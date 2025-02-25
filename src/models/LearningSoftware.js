@@ -29,7 +29,6 @@ const learningInfoSchema = new mongoose.Schema({
 });
 
 // Create the model
-const learningSoftware = mongoose.models.learningSoftware || mongoose.model('learningSoftware', learningInfoSchema, 'learningSoftware');
+const learningSoftware = mongoose.models.learningSoftware || mongoose.model('learningSoftware', learningInfoSchema, 'learningsoftwares');
 
 module.exports = learningSoftware;
-

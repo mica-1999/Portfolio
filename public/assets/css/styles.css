@@ -1071,3 +1071,25 @@ select:focus {
     text-overflow: ellipsis;
     position: relative;
 }
+.codeSnippet{
+    max-height: 400px;
+    overflow-y: auto;
+}
+.topicModal{
+    max-width: 80%;
+    width: 1000px !important;
+    height: 600px;
+}
+.topicModal .modal-content{
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: 0.625rem;
+}
+.topicModal .modal-header {
+    background-color: #4C4F74;
+    color: #FFFFFF;
+    border-bottom: 1px solid #4C4F74;
+}
+.modal-backdrop{
+    overflow: hidden !important;
+}

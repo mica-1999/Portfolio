@@ -321,7 +321,7 @@ export default function ManageUser() {
                                                         <i className="ri-edit-line"></i>
                                                     </button>
                                                     {user.firstName !== "Micael" ? 
-                                                    <button className="btn btn-sm btn-danger" onClick={() => showConfirmationModal(user.username,user.firstName, user.lastName)}>
+                                                    <button className="btn btn-sm btn-danger" onClick={(e) =>{ e.preventDefault(); e.stopPropagation(); showConfirmationModal(user.username,user.firstName, user.lastName);}}>
                                                         <i className="ri-delete-bin-line"></i>
                                                     </button>
                                                     : null}

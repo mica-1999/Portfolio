@@ -257,8 +257,9 @@ export default function ManageProject() {
                                             id={tag}
                                             checked={filters.tags.includes(tag)}
                                             onChange={() => handleTagChange(tag)}
+                                            
                                           />
-                                          <label className="form-check-label" htmlFor={tag}>
+                                          <label className="form-check-label" htmlFor={tag} onClick={(e) => e.preventDefault()}>
                                             {tag}
                                           </label>
                                         </div>
