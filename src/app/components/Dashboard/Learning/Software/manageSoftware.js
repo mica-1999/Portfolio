@@ -176,7 +176,7 @@ return (
                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                 <div className="d-flex gap-3">
                   <input type="text" className="form-control searchInput" placeholder="Search Info" onChange={(e) => setFilters({ ...filters, searchBox: e.target.value })} />
-                  <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add Topic</button>
+                  <button className="btn btn-primary addBtn" onClick={() => window.location.href = '/pages/dashboard/learning/software/newsoftware'}>Add Topic</button>
                 </div>
               </div>
             </div>
