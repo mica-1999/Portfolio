@@ -88,12 +88,14 @@ When including static files such as CSS, JS, and images from the `public` direct
 
 ## Future Enhancements
 
-- Implement a chat feature using Node.js, storing messages in MongoDB.
-- Integrate login functionality from another project.
 - Add notifications in the top right corner.
 - Integrate AI into the chat feature.
 - Add APIs for news, Spotify, weather, and other features on the dashboard main page.
-- Track and display the number of visiting users using session data.
+- The learning page is already established, the missing step is doing the page details for the topic at hand
+- 
 
 # Extra
 - Do a better Login Page
+
+# PS
+- Project will be on hold due to burn out and wanting to learn other stuff, for now a good base is done
