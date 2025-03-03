@@ -16,6 +16,7 @@ export default function NewSoftware() {
         tags: "",
         description: "",
         state: "",
+        videoUrl: "",
         concepts: [],
         codeSnippets: [],
         userNotes: "",

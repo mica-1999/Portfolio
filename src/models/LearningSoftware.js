@@ -45,7 +45,8 @@ const learningInfoSchema = new mongoose.Schema({
     
     userNotes: { type: String, maxlength: 300 },
     views: { type: Number, default: 0 },
-    isFavorite: { type: Boolean, default: false }
+    isFavorite: { type: Boolean, default: false },
+    video: { type: String, required: false }
 });
 
 // Update timestamps on save

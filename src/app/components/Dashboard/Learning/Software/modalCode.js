@@ -8,61 +8,111 @@ export const CodeModal = ({showModal, topicClicked, setShowModal}) => {
           // Highlight all code blocks when the modal opens
           Prism.highlightAll();
         }
+        console.log(topicClicked);
       }, [showModal]);
 
 
-    return(
-        <div className={`modal  ${showModal ? 'show' : ''}`} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" style={{ display: showModal ? 'block' : 'none' }}>
-            <div className="modal-dialog topicModal">
+      return (
+        <div className={`modal ${showModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showModal ? 'block' : 'none' }}>
+            <div className="modal-dialog modal-lg topicModal">
                 <div className="modal-content">
+                    {/* Modal Header */}
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">{topicClicked.titleCard}</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(!showModal)}></button>
+                        <h5 className="modal-title">{topicClicked.titleCard}</h5>
+                        <button
+                            type="button"
+                            className="btn-close"
+                            onClick={() => setShowModal(false)}
+                            aria-label="Close"
+                        ></button>
                     </div>
+
+                    {/* Modal Body */}
                     <div className="modal-body overflow-auto">
-                        <div className="row">
+                        {/* Description Section */}
+                        <section className="mb-4">
+                            <h6>Description</h6>
                             <p>{topicClicked.description}</p>
-                        </div>
-                        <div className="row">
-                        {topicClicked.codeSnippet && (
-                            <>
-                                <div className="col-lg-8 codeSnippet">
-                                    <pre>
-                                    <code className={`language-${topicClicked.codeSnippet.language}`}>
-                                        {topicClicked.codeSnippet.code}
-                                    </code>
-                                    </pre>
-                                    <p>{topicClicked.codeSnippet.explanation}</p>
-                                </div>
-                            </>
+                        </section>
+
+                        {/* Code Snippets Section */}
+                        {topicClicked.codeSnippets?.length > 0 && (
+                            <section className="mb-4">
+                                <h6>Code Snippets</h6>
+                                {topicClicked.codeSnippets.map((snippet, index) => (
+                                    <div key={index} className="mb-3">
+                                        <pre className="mb-2">
+                                            <code className={`language-${snippet.language.toLowerCase()}`}>
+                                                {snippet.code}
+                                            </code>
+                                        </pre>
+                                        <p><strong>Explanation:</strong> {snippet.explanation}</p>
+                                    </div>
+                                ))}
+                            </section>
                         )}
-                            <div className="col-lg-4 resultBox">
 
+                        {/* Concepts Section */}
+                        {topicClicked.concepts?.length > 0 && (
+                            <section className="mb-4">
+                                <h6>Key Concepts</h6>
+                                <ul className="list-group">
+                                    {topicClicked.concepts.map((concept, index) => (
+                                        <li key={index} className="list-group-item">
+                                            <strong>{concept.title}:</strong> {concept.explanation}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        )}
 
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-12 youtubeVideo">
-                                <h5>Video Reference</h5>
-                                <iframe
-                                    width="50%"
-                                    height="315"
-                                    src='#'
-                                    frameBorder="0"
-                                    allowFullScreen
-                                    title="YouTube video"
-                                ></iframe>
-                            </div>
-                            <div className="col-lg-12 webReferences">
-                            
-                            </div>
-                        </div>
+                        {/* Tags Section */}
+                        {topicClicked.tags?.length > 0 && (
+                            <section className="mb-4">
+                                <h6>Tags</h6>
+                                <div className="d-flex flex-wrap gap-2">
+                                    {topicClicked.tags.map((tag, index) => (
+                                        <span key={index} className="badge bg-secondary">{tag}</span>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
+                        {/* User Notes Section */}
+                        {topicClicked.userNotes && (
+                            <section className="mb-4">
+                                <h6>Your Notes</h6>
+                                <p>{topicClicked.userNotes}</p>
+                            </section>
+                        )}
+
+                        {/* Video Reference Section */}
+                        {topicClicked.videoUrl && (
+                            <section className="mb-4">
+                                <h6>Video Reference</h6>
+                                <div className="ratio ratio-16x9">
+                                    <iframe
+                                        src={topicClicked.videoUrl}
+                                        title="Video Reference"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            </section>
+                        )}
                     </div>
+
+                    {/* Modal Footer */}
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(!showModal)}>Close</button>
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => setShowModal(false)}
+                        >
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
