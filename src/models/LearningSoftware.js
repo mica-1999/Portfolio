@@ -1,34 +1,61 @@
 const mongoose = require('mongoose');
 
+// Define nested schemas first
+const conceptSchema = new mongoose.Schema({
+    title: { type: String, required: true, minlength: 2 },
+    explanation: { type: String, required: true, minlength: 10 }
+}, { _id: false });
+
+const codeSnippetSchema = new mongoose.Schema({
+    language: { type: String, required: true, minlength: 2 },
+    code: { type: String, required: true, minlength: 5 },
+    explanation: { type: String, required: true, minlength: 10 }
+}, { _id: false });
+
+// Main schema
 const learningInfoSchema = new mongoose.Schema({
-    icon: { type: String, required: true }, // URL or path to icon image
-    titleCard: { type: String, required: true, minlength: 3, maxlength: 100 }, // Main title
-    subtitleCard: { type: String, required: true, minlength: 10, maxlength: 200 }, // Short description
-    category: { type: String, required: true }, // General category (e.g., Programming)
-    subcategory: { type: String, required: true }, // More specific category (e.g., JavaScript)
-    tags: { type: [String], required: true }, // Keywords for filtering/searching
-    description: { type: String, required: true  }, // Brief explanation of topic
-    state: { type: String, required: true, enum: ['Learned', 'Mastered', 'In Progress', 'Trying', 'Completed', 'On Hold', 'Abandoned'] }, // Current status
-    dateCreated: { type: Date, default: Date.now }, // Auto-fills creation date
-    lastUpdated: { type: Date, default: Date.now }, // Auto-fills update date
-    codeSnippet: {
-        language: { type: String, required: true }, // e.g., 'JavaScript'
-        code: { type: String, required: true }, // Actual code
-        explanation: { type: String } // Optional explanation of code
+    icon: { type: String, default: '/icons/default.svg' }, // Default icon path
+    titleCard: { type: String, required: true, minlength: 2, maxlength: 100 },
+    subtitleCard: { type: String, required: true, minlength: 2, maxlength: 200 },
+    category: { type: String, required: true },
+    subcategory: { type: String, required: true },
+    tags: { 
+        type: [String], 
+        required: true,
+        set: function(tags) {
+            // Handle comma-separated string from form
+            if (typeof tags === 'string') {
+                return tags.split(',').map(tag => tag.trim());
+            }
+            return tags;
+        }
     },
-    codeSnippet: {
-        type: new mongoose.Schema({
-          language: { type: String, required: true }, // e.g., 'JavaScript'
-          code: { type: String, required: true }, // Actual code
-          explanation: { type: String } // Optional explanation of code
-        }, { _id: false }) // Prevents an extra `_id` field
-      },    
-    userNotes: { type: String },
+    description: { type: String, required: true, minlength: 10 },
+    state: { 
+        type: String, 
+        required: true, 
+        enum: ['Learned', 'Mastered', 'In Progress', 'Trying', 'Completed', 'On Hold', 'Abandoned'] 
+    },
+    dateCreated: { type: Date, default: Date.now },
+    lastUpdated: { type: Date, default: Date.now },
+    
+    // Collections from the form
+    concepts: [conceptSchema],
+    codeSnippets: [codeSnippetSchema],
+    
+    userNotes: { type: String, maxlength: 300 },
     views: { type: Number, default: 0 },
     isFavorite: { type: Boolean, default: false }
 });
 
-// Create the model
-const learningSoftware = mongoose.models.learningSoftware || mongoose.model('learningSoftware', learningInfoSchema, 'learningsoftwares');
+// Update timestamps on save
+learningInfoSchema.pre('save', function(next) {
+    this.lastUpdated = Date.now();
+    next();
+});
 
-module.exports = learningSoftware;
+// Create the model
+const LearningSoftware = mongoose.models.learningSoftware || 
+    mongoose.model('learningSoftware', learningInfoSchema, 'learningsoftwares');
+
+module.exports = LearningSoftware;

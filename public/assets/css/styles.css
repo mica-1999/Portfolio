@@ -1095,7 +1095,6 @@ select:focus {
     max-height: 70vh; /* Adjust this based on your modal size */
     overflow-y: auto; /* Enable scrolling */
     padding: 20px;
-    background-color: #30334E;
 }
 
 /* Custom scrollbar */

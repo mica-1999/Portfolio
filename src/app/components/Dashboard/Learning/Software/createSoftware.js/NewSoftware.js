@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Modal } from '../../../../utility/Modal';
 
 const statusOptions = ["Learned", "Mastered", "In Progress", "Trying", "Completed", "On Hold", "Abandoned"];
 const mainCategories = ["Programming", "Web Development", "OS", "Cybersecurity"];
 const programmingSubcategories = ["Languages", "Styling", "Data Structures", "Databases", "Software Engineering", "Machine Learning", "Game Development"];
 
 export default function NewSoftware() {
-    // Base form data structure
+    // Base form data structure for a new learning topic
     const [formData, setFormData] = useState({
         titleCard: "",
         subtitleCard: "",
@@ -33,6 +34,14 @@ export default function NewSoftware() {
     // Form validation
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState({});
+
+    // Modal & Dark Body for success/error messages
+    const [showModal, setShowModal] = useState({
+        show: false,
+        type: '',
+        message: ''
+    });
+    const [hideBody, setHideBody] = useState(false); // Dark Body toggle
     
     // Handle basic input changes
     const handleInputChange = (field) => (e) => {
@@ -92,6 +101,27 @@ export default function NewSoftware() {
             addItem(type);
         }
     };
+
+    const resetForm = ()  => {
+        setFormData({
+            titleCard: "",
+            subtitleCard: "",
+            category: "",
+            subcategory: "",
+            tags: "",
+            description: "",
+            state: "",
+            concepts: [],
+            codeSnippets: [],
+            userNotes: "",
+        });
+        setActiveContentTypes({
+            concepts: false,
+            codeSnippets: false
+        });
+        setErrors({});
+        setSuccess({});
+    }
 
     // Input validation
     const verifyInput = (value, name, parentCollection = null, index = null) => {
@@ -174,12 +204,8 @@ export default function NewSoftware() {
         return !errorMessage; // Return validation status
     };
 
-    const handleContentTypeChange = (type) => {
-        setContentType(type);
-    };
-
     // Form submission handler
-    const handleSubmit = (e) => {
+    const handleSubmit =  async (e) => {
         e.preventDefault();
         
         // Validate all fields before submission
@@ -210,12 +236,69 @@ export default function NewSoftware() {
             });
         }
         
-        if (isValid) {
-            console.log("Form is valid, ready to submit:", formData);
-            // Here you would submit the data to your backend
-            // Or perform other actions
+        if (isValid) {      
+            try {   
+                // Process tags if they're a comma-separated string
+                let processedData = { ...formData };
+                if (typeof processedData.tags === 'string') {
+                    processedData.tags = processedData.tags.split(',').map(tag => tag.trim());
+                }
+                
+                // Only include active content types
+                if (!activeContentTypes.concepts) {
+                    processedData.concepts = [];
+                }
+                
+                if (!activeContentTypes.codeSnippets) {
+                    processedData.codeSnippets = [];
+                }
+                
+                console.log("Submitting form data:", processedData);
+                
+                // Send data to the backend API
+                const response = await fetch('/api/Topic', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(processedData)
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to create learning topic');
+                }
+                
+                console.log("Learning topic created successfully:", data);
+                
+                setShowModal({
+                    show: true,
+                    type: 'success',
+                    message: 'Learning topic created successfully!'
+                });
+                setHideBody(true);
+                
+                // Reset the form after successful submission
+                resetForm();
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                
+                // Show error modal
+                setShowModal({
+                    show: true,
+                    type: 'error',
+                    message: `Error: ${error.message}`
+                });
+                setHideBody(true);
+            }
         } else {
             console.log("Form has validation errors");
+            // Scroll to the first error
+            const firstErrorElement = document.querySelector('.errorBorderColor');
+            if (firstErrorElement) {
+                firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
     };
 
@@ -226,13 +309,21 @@ export default function NewSoftware() {
         }
     }, [formData]);
 
+    // On Modal Close - Dark Body toggle becomes false
+    useEffect(() => {
+        if(showModal.show === false){
+        setHideBody(false);
+        }
+      },[showModal.show === false])
+
     return (
         <div className="row mt-4">
             {/* Form Card */}
             <div className="col-lg-12">
                 <div className="card p-0">
-                    <div className="card-header">
-                        <h5 className="card-title ps-3 pt-2">New Topic</h5>
+                    <div className="card-header d-flex justify-content-between align-items-center">
+                        <h5 className="card-title ps-4 pt-4">New Topic</h5>
+                        <i className="ri-refresh-line fs-4 pe-4 pt-3" onClick={() => resetForm()}></i>
                     </div>
     
                     <div className="card-body">
@@ -250,9 +341,9 @@ export default function NewSoftware() {
                                                 placeholder="JavaScript Basics"
                                                 value={formData.titleCard}
                                                 className={`form-control sInput ${errors.titleCard ? 'errorBorderColor' : success.titleCard ? 'successBorderColor' : ''}`}
-                                                required
                                                 onChange={handleInputChange('titleCard')}
                                                 onBlur={(e) => verifyInput(e.target.value, e.target.name)}
+                                                required
                                             />
                                             <label htmlFor="titleCard">Title</label>
                                             <div className="errorDiv">{errors.titleCard}</div>
@@ -268,9 +359,9 @@ export default function NewSoftware() {
                                                 placeholder="Learn the fundamentals of JavaScript programming."
                                                 value={formData.subtitleCard}
                                                 className={`form-control sInput ${errors.subtitleCard ? 'errorBorderColor' : success.subtitleCard ? 'successBorderColor' : ''}`}
-                                                required
                                                 onChange={handleInputChange('subtitleCard')}
                                                 onBlur={(e) => verifyInput(e.target.value, e.target.name)}
+                                                required
                                             />
                                             <label htmlFor="subtitleCard">Subtitle</label>
                                             <div className="errorDiv">{errors.subtitleCard}</div>
@@ -596,6 +687,14 @@ export default function NewSoftware() {
                     </div>
                 </div>
             </div>
+            {/* Add Modal component */}
+            <Modal 
+                showModal={showModal} 
+                setShowModal={setShowModal} 
+                handleDelete=''
+                deleteAction="cancel" 
+            />
+            {hideBody  && <div className="modal-backdrop show m-0"></div>}
         </div>
     );
 }
