@@ -47,7 +47,7 @@ export const CodeModal = ({showModal, topicClicked, setShowModal}) => {
                                 <iframe
                                     width="50%"
                                     height="315"
-                                    src={`https://www.youtube.com/embed/${topicClicked.youtubeVideoId}`}
+                                    src='#'
                                     frameBorder="0"
                                     allowFullScreen
                                     title="YouTube video"

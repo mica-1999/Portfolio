@@ -3,112 +3,98 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { CodeModal } from './modalCode';
-import { set } from "mongoose";
+import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from './constants';
 
-// CONSTANTS FOR FILTERS 
-const mainCategories = ["Programming", "Web Development", "OS", "Cybersecurity"];
-const programmingSubcategories = ["Languages","Styling", "Data Structures", "Databases", "Software Engineering", "Machine Learning", "Game Development"];
-const statusOptions = ["Learned", "Mastered", "In Progress", "Trying", "Completed", "On Hold", "Abandoned"];
-const subCategoriesforWebDevelopment = [];
-const subCategoriesforOS = [];
-const subCategoriesforCybersecurity = [];
-const TAGS = [
-    'HTML', 'CSS', 'Javascript', 'PHP', 'Python', 'Java', 'C++', 'C#', 'Ruby',  
-    'React', 'Angular', 'Node.js', 'Express', 'MongoDB', 'Vue.js', 'Firebase',  
-    'Tailwind CSS', 'Next.js', 'Bootstrap', 'API', 'Socket.IO', 'Material UI'
-  ];
 
-export default function ManageSoftware() {   
-// STATE VARIABLES
-const [userTopics, setUserTopics] = useState([]); // User's topics from DB 
-const [formtagBtn, setformTagBtn] = useState(false);
-const [formData, setFormData] = useState({title: '', description: '', tags: [], state: ''}); // Form data
-const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
-const [filters, setFilters] = useState({ mainCategory: '', subCategory: '', tags: [], status: '', searchBox: '' }); // Filters
+export default function ManageSoftware() {  
+  const { data: session } = useSession(); 
 
-// Modal Info
-const [modalOpen, setModalOpen] = useState(false);
-const [topicClicked, setTopicClicked] = useState({});
-const [hideBody, setHideBody] = useState(false); // Dark Body toggle
+  // STATE VARIABLES
+  const [userTopics, setUserTopics] = useState([]); // User's topics from DB 
+  const [formtagBtn, setformTagBtn] = useState(false);
+  const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
+  const [filters, setFilters] = useState({ mainCategory: '', subCategory: '', tags: [], status: '', searchBox: '' });
 
-const { data: session } = useSession();
+  // MODAL INFO
+  const [modalOpen, setModalOpen] = useState(false);
+  const [topicClicked, setTopicClicked] = useState({});
+  const [hideBody, setHideBody] = useState(false); // Dark Body toggle
 
-const handleCategoryChange = (event) => {
-  setFilters(prevFilters => ({
-    ...prevFilters, // Keep the previous filter values
-    mainCategory: event.target.value, // Update the selected category
-  }));
-};
+  // Handle main category selection
+  const handleCategoryChange = (event) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      mainCategory: event.target.value,
+    }));
+  };
 
-const handlesubCategoryChange = (subCategory) => {
-  setFilters((prevFilters) => {
-    // If the selected subcategory is already the current one, clear it
-    if (prevFilters.subCategory === subCategory) {
+  // Handle subcategory selection
+  const handlesubCategoryChange = (subCategory) => {
+    setFilters((prevFilters) => {
+      if (prevFilters.subCategory === subCategory) {
+        return {
+          ...prevFilters,
+          subCategory: '',
+        };
+      }
       return {
         ...prevFilters,
-        subCategory: '', // Reset subcategory
+        subCategory: subCategory,
       };
-    }
+    });
+  };
 
-    // Otherwise, set the new subcategory
-    return {
-      ...prevFilters,
-      subCategory: subCategory, // Set new subcategory
-    };
-  });
-};
+  // Handle tag selection
+  const handleTagChange = (tag) => {
+      const updatedTags = filters.tags.includes(tag)
+          ? filters.tags.filter((t) => t !== tag)
+          : [...filters.tags, tag];
+      setFilters({ ...filters, tags: updatedTags });
+  }
 
+  const handleModalOpen = (topicId) => {
+    // Find the topic by matching its _id
+    const topicSelected = userTopics.find(topic => topic._id === topicId);
 
-const handleTagChange = (tag) => {
-    const updatedTags = filters.tags.includes(tag)
-        ? filters.tags.filter((t) => t !== tag)
-        : [...filters.tags, tag];
-    setFilters({ ...filters, tags: updatedTags });
-}
+    // Update the state with the selected topic's data
+    setTopicClicked(topicSelected);
 
-const handleModalOpen = (topicId) => {
-  // Find the topic by matching its _id
-  const topicSelected = userTopics.find(topic => topic._id === topicId);
-
-  // Update the state with the selected topic's data
-  setTopicClicked(topicSelected);
-
-  // Open the modal
-  setHideBody(true);
-  setModalOpen(true);
-}
-
-useEffect(() => {
-  if(session.user?.id){
+    // Open the modal and darken body
+    setHideBody(true);
+    setModalOpen(true);
+  }
+  // FETCH FOR TOPICS
+  const fetchTopics = async () => {
     try {
-      fetchTopics();
-    } 
-    catch (error) {
-      console.error('Error fetching data:', error);
+      const response = await fetchDataFromApi(`/api/Topic`);
+      setUserTopics(response || []);
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
-  } else {
-    console.log('No user session found');
-  }
-},[session])
+  };
 
-useEffect(() => {
-  if(modalOpen === false){
-  setHideBody(false);
-  }
-},[modalOpen === false])
+  // On initial render, fetch the user's topics
+  useEffect(() => {
+    if(session.user?.id){
+      try {
+        fetchTopics();
+      } 
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    } else {
+      console.log('No user session found');
+    }
+  },[session])
 
+  // Close modal and remove dark body
+  useEffect(() => {
+    if(modalOpen === false){
+    setHideBody(false);
+    }
+  },[modalOpen === false])
 
-// FETCH FOR TOPICS
-const fetchTopics = async () => {
-  try {
-    const response = await fetchDataFromApi(`/api/Topic`);
-    setUserTopics(response || []);
-  } catch (error) {
-      console.error('Error fetching data:', error);
-  }
-};
-
-return (
+  return (
     <>
       <div className="d-flex col-lg-12 mt-4">
         {/* Filters Section */}
@@ -125,8 +111,8 @@ return (
                 <div className="select-wrapper">
                   <select className="form-select" value={filters.mainCategory.toLowerCase()} onChange={handleCategoryChange}>
                     <option key="default" value=''>Select a category</option>
-                    {mainCategories.map((cat) => (
-                      <option key={cat} value={cat.toLowerCase()}>{cat}</option>
+                    {MAIN_CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
                 </div>
@@ -135,7 +121,7 @@ return (
               {/* Tags Filter */}
               <div className="col-lg-4">
                 <div className="select-wrapper">
-                  <button className={`btn dropdown-toggle w-100 tagButton ${formtagBtn ? 'setBorder' : ''} ${formData.tags.length > 0 ? 'selected-tags' : ''}`}
+                  <button className={`btn dropdown-toggle w-100 tagButton ${formtagBtn ? 'setBorder' : ''} ${filters.tags.length > 0 ? 'selected-tags' : ''}`}
                     type="button" id="dropdownForm"
                     onClick={() => { setformTagBtn(!formtagBtn); setIsformDropdownOpen(!isformDropdownOpen); }}>
                     {filters.tags.length === 0 ? 'Select tags' : filters.tags.join(';')}
@@ -162,7 +148,7 @@ return (
                 <div className="select-wrapper">
                   <select className="form-select" value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
                     <option key="default" value="">Select a status</option>
-                    {statusOptions.map((status) => (
+                    {STATUS_OPTIONS.map((status) => (
                       <option key={status} value={status.toLowerCase()}>{status}</option>
                     ))}
                   </select>
@@ -189,7 +175,7 @@ return (
         <div className="col-lg-12">
           <div className="subCategories">
             <div className="col-lg-12 d-flex gap-5">
-              {programmingSubcategories.map((subcat) => (
+              {SUBCATEGORIES[filters.mainCategory]?.map((subcat) => (
                   <button key={subcat} className={`btn ${filters.subCategory === subcat ? 'active': ''}`} name={subcat} onClick={() => handlesubCategoryChange(subcat)}>{subcat}</button>
               ))}
             </div>
@@ -201,8 +187,6 @@ return (
       <div className="d-flex flex-wrap p-0 mb-1">
         <div className="row p-3 w-100">
           {userTopics
-          
-          
           .filter((topic) => {
             // If there's no filter for category, all topics are included
             if (filters.mainCategory && topic.category.toLowerCase() !== filters.mainCategory.toLowerCase()) {
@@ -251,7 +235,7 @@ return (
                         </div>
                     </div>
                     <div className="d-flex gap-2">
-                      {topic.codeSnippet ? (
+                      {topic.codeSnippets.length > 0 ? (
                         <div className="waves"><i className="ri-eye-line ri-22px text-muted" title="Quick Preview" onClick={() => handleModalOpen(topic._id)}></i></div>
                         ) : ''}
 
