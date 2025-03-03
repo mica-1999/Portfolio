@@ -762,9 +762,11 @@ select:focus {
 .sInput.sInput.explanation::placeholder,
 .sInput.sInput.code::placeholder,
 .sInput.sInput.description::placeholder,
+.sInput.sInput.videoTitle::placeholder,
+.sInput.sInput.videoURL::placeholder,
 .sInput.sInput.userNotes::placeholder  {color: #73758E;}
 .sInput:hover{border-color: #9FA1B8;}
-.sInput:not(.projectDescription):not(.explanation):not(.code):not(.description):not(.userNotes)::placeholder {color: transparent;}
+.sInput:not(.projectDescription):not(.explanation):not(.code):not(.description):not(.userNotes):not(.videoTitle):not(.videoURL)::placeholder {color: transparent;}
 .sInput:focus::placeholder:not(.projectDescription) {color: #73758E;}
 .sInput.errorBorderColor + label {color: var(--bs-danger) !important;}
 .sInput.errorBorderColor,.sInput.errorBorderColor:hover {border: 2px solid var(--bs-danger) !important;}
@@ -1119,6 +1121,6 @@ select:focus {
 .border{
    background-color: #282A42;
 }
-.conceptTitle, .codeLanguage {
+.conceptTitle, .codeLanguage, .videoTitle, .videoUrl {
     background-color: #282A42 !important;
 }

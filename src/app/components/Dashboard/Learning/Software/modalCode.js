@@ -87,15 +87,23 @@ export const CodeModal = ({showModal, topicClicked, setShowModal}) => {
                         )}
 
                         {/* Video Reference Section */}
-                        {topicClicked.videoUrl && (
+                        {topicClicked.videos?.length > 0 && (
                             <section className="mb-4">
-                                <h6>Video Reference</h6>
-                                <div className="ratio ratio-16x9">
-                                    <iframe
-                                        src={topicClicked.videoUrl}
-                                        title="Video Reference"
-                                        allowFullScreen
-                                    ></iframe>
+                                <h6>Video References</h6>
+                                <div className="list-group">
+                                    {topicClicked.videos.map((video, index) => (
+                                        <div key={index} className="list-group-item">
+                                            <h6>{video.title}</h6>
+                                            <p>{video.description}</p>
+                                            <div className="ratio ratio-16x9">
+                                                <iframe
+                                                    src={video.url}
+                                                    title={video.title}
+                                                    allowFullScreen
+                                                ></iframe>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </section>
                         )}

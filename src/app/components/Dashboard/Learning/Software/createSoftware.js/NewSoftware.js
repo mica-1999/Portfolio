@@ -1,10 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Modal } from '../../../../utility/Modal';
-
-const statusOptions = ["Learned", "Mastered", "In Progress", "Trying", "Completed", "On Hold", "Abandoned"];
-const mainCategories = ["Programming", "Web Development", "OS", "Cybersecurity"];
-const programmingSubcategories = ["Languages", "Styling", "Data Structures", "Databases", "Software Engineering", "Machine Learning", "Game Development"];
+import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from '../constants';
 
 export default function NewSoftware() {
     // Base form data structure for a new learning topic
@@ -16,21 +13,25 @@ export default function NewSoftware() {
         tags: "",
         description: "",
         state: "",
-        videoUrl: "",
+        videos: [],
         concepts: [],
         codeSnippets: [],
         userNotes: "",
     });
+    const [formtagBtn, setformTagBtn] = useState(false);
+    const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
 
     // Active content types
     const [activeContentTypes, setActiveContentTypes] = useState({
         concepts: false,
-        codeSnippets: false
+        codeSnippets: false,
+        videos: false 
     });
 
     // New item templates
     const emptyCodeSnippet = { language: "", code: "", explanation: "" };
     const emptyConcept = { title: "", explanation: "" };
+    const emptyVideo = { title: "", url: "", description: "" };
 
     // Form validation
     const [errors, setErrors] = useState({});
@@ -53,6 +54,16 @@ export default function NewSoftware() {
         });
     };
 
+    const handleTagChange = (tag) => {
+    const updatedTags = formData.tags.includes(tag)
+        ? formData.tags.filter((t) => t !== tag)
+        : [...formData.tags, tag];
+    setFormData({ ...formData, tags: updatedTags });
+    
+    // Validate after changing tags
+    verifyInput(updatedTags.join(','), 'tags');
+};
+
     // Handle array item changes (concepts and code snippets)
     const handleItemChange = (collection, index, field, value) => {
         const updatedCollection = [...formData[collection]];
@@ -69,7 +80,15 @@ export default function NewSoftware() {
 
     // Add new items
     const addItem = (collection) => {
-        const newItem = collection === 'concepts' ? emptyConcept : emptyCodeSnippet;
+        let newItem;
+        if (collection === 'concepts') {
+            newItem = emptyConcept;
+        } else if (collection === 'videos') {
+            newItem = emptyVideo;
+        } else {
+            newItem = emptyCodeSnippet;
+        }
+        
         setFormData({
             ...formData,
             [collection]: [...formData[collection], newItem]
@@ -114,11 +133,13 @@ export default function NewSoftware() {
             state: "",
             concepts: [],
             codeSnippets: [],
+            videos: [],
             userNotes: "",
         });
         setActiveContentTypes({
             concepts: false,
-            codeSnippets: false
+            codeSnippets: false,
+            videos: false
         });
         setErrors({});
         setSuccess({});
@@ -126,7 +147,10 @@ export default function NewSoftware() {
 
     // Input validation
     const verifyInput = (value, name, parentCollection = null, index = null) => {
-        value = value.trim();
+        if (typeof value === 'string') {
+            value = value.trim();
+        }
+        
         let errorMessage = '';
         let fieldId = parentCollection ? `${parentCollection}.${index}.${name}` : name;
 
@@ -158,9 +182,11 @@ export default function NewSoftware() {
                 }
                 break;
             case 'tags':
-                if (!value) {
+                if (!value || (Array.isArray(value) && value.length === 0)) {
                     errorMessage = 'Tags cannot be empty.';
-                } else if (value.split(',').length < 1) {
+                } else if (Array.isArray(value) && value.length < 1) {
+                    errorMessage = 'Please provide at least one tag.';
+                } else if (typeof value === 'string' && (!value || value.split(',').length < 1)) {
                     errorMessage = 'Please provide at least one tag.';
                 }
                 break;
@@ -187,6 +213,13 @@ export default function NewSoftware() {
             case 'explanation':
                 if (value.length < 10) {
                     errorMessage = 'Explanation must be at least 10 characters.';
+                }
+                break;
+            case 'url':
+                if (!value) {
+                    errorMessage = 'URL cannot be empty.';
+                } else if (!value.includes('youtube.com') && !value.includes('youtu.be')) {
+                    errorMessage = 'Please enter a valid YouTube URL.';
                 }
                 break;
             case 'userNotes':
@@ -236,6 +269,15 @@ export default function NewSoftware() {
                 if (!verifyInput(snippet.explanation, 'explanation', 'codeSnippets', index)) isValid = false;
             });
         }
+
+        // Validate videos if active
+        if (activeContentTypes.videos) {
+            formData.videos.forEach((video, index) => {
+                if (!verifyInput(video.title, 'title', 'videos', index)) isValid = false;
+                if (!verifyInput(video.url, 'url', 'videos', index)) isValid = false;
+                if (!verifyInput(video.description, 'description', 'videos', index)) isValid = false;
+            });
+        }
         
         if (isValid) {      
             try {   
@@ -252,6 +294,10 @@ export default function NewSoftware() {
                 
                 if (!activeContentTypes.codeSnippets) {
                     processedData.codeSnippets = [];
+                }
+
+                if (!activeContentTypes.videos) {
+                    processedData.videos = [];
                 }
                 
                 console.log("Submitting form data:", processedData);
@@ -383,7 +429,7 @@ export default function NewSoftware() {
                                                 onBlur={(e) => verifyInput(e.target.value, e.target.name)}
                                             >
                                                 <option value="">Select Category</option>
-                                                {mainCategories.map((category, index) => (
+                                                {MAIN_CATEGORIES.map((category, index) => (
                                                     <option key={index} value={category}>{category}</option>
                                                 ))}
                                             </select>
@@ -404,8 +450,8 @@ export default function NewSoftware() {
                                                 onBlur={(e) => verifyInput(e.target.value, e.target.name)}
                                             >
                                                 <option value="">Select Subcategory</option>
-                                                {formData.category === "Programming" && programmingSubcategories.map((subcategory, index) => (
-                                                    <option key={index} value={subcategory}>{subcategory}</option>
+                                                {SUBCATEGORIES[formData.category]?.map((subcat,index) => (
+                                                    <option key={index} value={subcat}>{subcat}</option>
                                                 ))}
                                             </select>
                                             <label htmlFor="subcategory">Subcategory</label>
@@ -432,21 +478,28 @@ export default function NewSoftware() {
                                         </div>
                                     </div>
                                     
-                                    <div className="col-lg-6 d-flex flex-column">
-                                        <div className="form-group">
-                                            <input
-                                                type="text"
-                                                id="tags"
-                                                name="tags"
-                                                placeholder="e.g. Javascript, Basics, Web Development"
-                                                value={formData.tags}
-                                                className={`form-control sInput ${errors.tags ? 'errorBorderColor' : success.tags ? 'successBorderColor' : ''}`}
-                                                required
-                                                onChange={handleInputChange('tags')}
-                                                onBlur={(e) => verifyInput(e.target.value, e.target.name)}
-                                            />
-                                            <label htmlFor="tags">Tags (comma-separated)</label>
-                                            <div className="errorDiv">{errors.tags}</div>
+                                    
+                                    <div className="col-lg-6 d-flex flex-column justify-content-between">
+                                        <div className="select-wrapper">
+                                            <button className={`btn dropdown-toggle w-100 tagButton ${formtagBtn ? 'setBorder' : ''} ${formData.tags.length > 0 ? 'selected-tags' : ''}`}
+                                                type="button" id="dropdownForm"
+                                                onClick={() => { setformTagBtn(!formtagBtn); setIsformDropdownOpen(!isformDropdownOpen); }}>
+                                                {formData.tags.length === 0 ? 'Select tags' : formData.tags.join(';')}
+                                            </button>
+                            
+                                            <ul className={`dropdown-menu w-100 ulTag ${isformDropdownOpen ? 'show' : ''}`} aria-labelledby="dropdownForm">
+                                                {TAGS.map((tag) => (
+                                                <li key={tag} onClick={() => handleTagChange(tag)} className="custom-tag-li p-2">
+                                                    <div className="form-check">
+                                                    <input type="checkbox" className="form-check-input" id={tag + 'form'}
+                                                        checked={formData.tags.includes(tag)} onChange={() => handleTagChange(tag)} />
+                                                    <label className="form-check-label"  onClick={(e) => e.preventDefault()} htmlFor={tag + 'form'}>
+                                                        {tag}
+                                                    </label>
+                                                    </div>
+                                                </li>
+                                                ))}
+                                            </ul>
                                         </div>
 
                                         <div className="form-group">
@@ -460,7 +513,7 @@ export default function NewSoftware() {
                                                 onBlur={(e) => verifyInput(e.target.value, e.target.name)}
                                             >
                                                 <option value="">Select Status</option>
-                                                {statusOptions.map((status, index ) => (
+                                                {STATUS_OPTIONS.map((status, index ) => (
                                                     <option key={index} value={status}>{status}</option>
                                                 ))}
                                             </select>
@@ -502,6 +555,19 @@ export default function NewSoftware() {
                                                 />
                                                 <label className="form-check-label" htmlFor="codeSnippetsToggle">
                                                     Include Code Snippets
+                                                </label>
+                                            </div>
+
+                                            <div className="form-check form-switch">
+                                                <input 
+                                                    className="form-check-input" 
+                                                    type="checkbox" 
+                                                    id="videosToggle" 
+                                                    checked={activeContentTypes.videos}
+                                                    onChange={() => toggleContentType('videos')}
+                                                />
+                                                <label className="form-check-label" htmlFor="videosToggle">
+                                                    Include Videos
                                                 </label>
                                             </div>
                                         </div>
@@ -649,6 +715,82 @@ export default function NewSoftware() {
                                                                 <div className="errorDiv mt-4">{errors[`codeSnippets.${index}.explanation`]}</div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                )}
+
+                                {activeContentTypes.videos && (
+                                    <div className="videos-container mb-4">
+                                        <div className="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 className="mb-0">Videos</h6>
+                                            <button 
+                                                type="button" 
+                                                className="btn btn-sm btn-outline-primary"
+                                                onClick={() => addItem('videos')}
+                                            >
+                                                + Add Video
+                                            </button>
+                                        </div>
+                                        
+                                        {formData.videos.length === 0 ? (
+                                            <div className="alert alert-info">No videos added yet. Click "Add Video" to begin.</div>
+                                        ) : (
+                                            formData.videos.map((video, index) => (
+                                                <div key={`video-${index}`} className="video-item mb-3 p-3 border rounded">
+                                                    <div className="d-flex justify-content-between mb-2">
+                                                        <h6 className="mb-0">Video #{index + 1}</h6>
+                                                        <button 
+                                                            type="button" 
+                                                            className="btn btn-sm btn-outline-danger"
+                                                            onClick={() => removeItem('videos', index)}
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div className="form-group mb-2">
+                                                        <input
+                                                            type="text"
+                                                            id={`video-${index}-title`}
+                                                            value={video.title}
+                                                            className={`form-control sInput videoTitle ${errors[`videos.${index}.title`] ? 'errorBorderColor' : success[`videos.${index}.title`] ? 'successBorderColor' : ''}`}
+                                                            required
+                                                            onChange={(e) => handleItemChange('videos', index, 'title', e.target.value)}
+                                                            onBlur={(e) => verifyInput(e.target.value, 'title', 'videos', index)}
+                                                        />
+                                                        <label htmlFor={`video-${index}-title`} className="videoTitle">Title</label>
+                                                        <div className="errorDiv">{errors[`videos.${index}.title`]}</div>
+                                                    </div>
+                                                    
+                                                    <div className="form-group mb-2">
+                                                        <input
+                                                            type="text"
+                                                            id={`video-${index}-url`}
+                                                            value={video.url}
+                                                            className={`form-control sInput videoUrl ${errors[`videos.${index}.url`] ? 'errorBorderColor' : success[`videos.${index}.url`] ? 'successBorderColor' : ''}`}
+                                                            required
+                                                            onChange={(e) => handleItemChange('videos', index, 'url', e.target.value)}
+                                                            onBlur={(e) => verifyInput(e.target.value, 'url', 'videos', index)}
+                                                        />
+                                                        <label htmlFor={`video-${index}-url`} className="videoUrl">URL</label>
+                                                        <div className="errorDiv">{errors[`videos.${index}.url`]}</div>
+                                                    </div>
+                                                    
+                                                    <div className="form-group">
+                                                        <textarea
+                                                            id={`video-${index}-description`}
+                                                            placeholder="Video description"
+                                                            value={video.description}
+                                                            className={`form-control sInput description ${errors[`videos.${index}.description`] ? 'errorBorderColor' : success[`videos.${index}.description`] ? 'successBorderColor' : ''}`}
+                                                            required
+                                                            onChange={(e) => handleItemChange('videos', index, 'description', e.target.value)}
+                                                            onBlur={(e) => verifyInput(e.target.value, 'description', 'videos', index)}
+                                                            style={{ height: "100px" }}
+                                                        />
+                                                        <div className="errorDiv mt-4">{errors[`videos.${index}.description`]}</div>
                                                     </div>
                                                 </div>
                                             ))

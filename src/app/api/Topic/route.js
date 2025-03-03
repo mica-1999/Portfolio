@@ -30,6 +30,7 @@ export async function POST(req) {
     description, 
     state, 
     concepts, 
+    videos,
     codeSnippets, 
     userNotes 
   } = body;
@@ -50,18 +51,6 @@ export async function POST(req) {
   
   if (typeof description !== 'string' || description.trim().length < 10) {
     return NextResponse.json({ error: "Description must be a string with at least 10 characters" }, { status: 400 });
-  }
-
-  // Validate category and subcategory
-  const validCategories = ["Programming", "Web Development", "OS", "Cybersecurity"];
-  if (!validCategories.includes(category)) {
-    return NextResponse.json({ error: "Invalid category" }, { status: 400 });
-  }
-
-  const validProgrammingSubcategories = ["Languages", "Styling", "Data Structures", "Databases", 
-    "Software Engineering", "Machine Learning", "Game Development"];
-  if (category === "Programming" && !validProgrammingSubcategories.includes(subcategory)) {
-    return NextResponse.json({ error: "Invalid subcategory for Programming" }, { status: 400 });
   }
 
   // Validate tags - convert string to array if needed
@@ -130,6 +119,34 @@ export async function POST(req) {
     }
   }
 
+  // Validate videos if provided
+  if(videos && Array.isArray(videos)) {
+    for(let i = 0; i < videos.length; i++) {
+      const video = videos[i];
+      
+      if (!video.title || typeof video.title !== 'string' || video.title.trim().length < 2) {
+        return NextResponse.json(
+          { error: `Video #${i+1}: Title must be a string with at least 2 characters` }, 
+          { status: 400 }
+        );
+      }
+      
+      if (!video.url || typeof video.url !== 'string' || video.url.trim().length < 5) {
+        return NextResponse.json(
+          { error: `Video #${i+1}: URL must be a string with at least 5 characters` }, 
+          { status: 400 }
+        );
+      }
+      
+      if (!video.description || typeof video.description !== 'string' || video.description.trim().length < 10) {
+        return NextResponse.json(
+          { error: `Video #${i+1}: Description must be a string with at least 10 characters` }, 
+          { status: 400 }
+        );
+      }
+    }
+  }
+
   // Validate user notes if provided
   if (userNotes && (typeof userNotes !== 'string' || userNotes.length > 300)) {
     return NextResponse.json({ error: "User notes must be a string with maximum 300 characters" }, { status: 400 });
@@ -147,6 +164,7 @@ export async function POST(req) {
       state,
       concepts: concepts || [],
       codeSnippets: codeSnippets || [],
+      videos: videos || [],
       userNotes: userNotes || '',
       dateCreated: Date.now(),
       lastUpdated: Date.now()

@@ -12,9 +12,15 @@ const codeSnippetSchema = new mongoose.Schema({
     explanation: { type: String, required: true, minlength: 10 }
 }, { _id: false });
 
+const videoSchema = new mongoose.Schema({
+    title: { type: String, required: true, minlength: 2 },
+    url: { type: String, required: true },
+    description: { type: String, required: true, minlength: 10 }
+}, { _id: false });
+
 // Main schema
 const learningInfoSchema = new mongoose.Schema({
-    icon: { type: String, default: '/icons/default.svg' }, // Default icon path
+    icon: { type: String, default: '/assets/images/subCategoriesImages/machine.png' }, // Default icon path
     titleCard: { type: String, required: true, minlength: 2, maxlength: 100 },
     subtitleCard: { type: String, required: true, minlength: 2, maxlength: 200 },
     category: { type: String, required: true },
@@ -42,11 +48,11 @@ const learningInfoSchema = new mongoose.Schema({
     // Collections from the form
     concepts: [conceptSchema],
     codeSnippets: [codeSnippetSchema],
+    videos: [videoSchema],
     
     userNotes: { type: String, maxlength: 300 },
     views: { type: Number, default: 0 },
     isFavorite: { type: Boolean, default: false },
-    video: { type: String, required: false }
 });
 
 // Update timestamps on save
