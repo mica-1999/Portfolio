@@ -5,7 +5,6 @@ import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { CodeModal } from './modalCode';
 import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from './constants';
 
-
 export default function ManageSoftware() {  
   const { data: session } = useSession(); 
 
@@ -13,14 +12,14 @@ export default function ManageSoftware() {
   const [userTopics, setUserTopics] = useState([]); // User's topics from DB 
   const [formtagBtn, setformTagBtn] = useState(false);
   const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
-  const [filters, setFilters] = useState({ mainCategory: '', subCategory: '', tags: [], status: '', searchBox: '' });
+  const [filters, setFilters] = useState({ mainCategory: '', subCategory: [], tags: [], status: '', searchBox: '' });
 
   // MODAL INFO
   const [modalOpen, setModalOpen] = useState(false);
   const [topicClicked, setTopicClicked] = useState({});
   const [hideBody, setHideBody] = useState(false); // Dark Body toggle
 
-  // Handle main category selection
+  // HANDLE MAIN CATEGORY CHANGE
   const handleCategoryChange = (event) => {
     setFilters(prevFilters => ({
       ...prevFilters,
@@ -28,23 +27,21 @@ export default function ManageSoftware() {
     }));
   };
 
-  // Handle subcategory selection
+  // HANDLE SUBCATEGORY CHANGE
   const handlesubCategoryChange = (subCategory) => {
     setFilters((prevFilters) => {
-      if (prevFilters.subCategory === subCategory) {
-        return {
-          ...prevFilters,
-          subCategory: '',
-        };
-      }
-      return {
-        ...prevFilters,
-        subCategory: subCategory,
-      };
-    });
-  };
+        const newSubCategories = prevFilters.subCategory.includes(subCategory)
+            ? prevFilters.subCategory.filter((subcat) => subcat !== subCategory)
+            : [...prevFilters.subCategory, subCategory];
 
-  // Handle tag selection
+        return {
+            ...prevFilters,
+            subCategory: newSubCategories,
+        };
+    });
+};
+
+  // HANDLE TAG CHANGE
   const handleTagChange = (tag) => {
       const updatedTags = filters.tags.includes(tag)
           ? filters.tags.filter((t) => t !== tag)
@@ -52,17 +49,14 @@ export default function ManageSoftware() {
       setFilters({ ...filters, tags: updatedTags });
   }
 
+  // HANDLE MODAL OPEN
   const handleModalOpen = (topicId) => {
-    // Find the topic by matching its _id
     const topicSelected = userTopics.find(topic => topic._id === topicId);
-
-    // Update the state with the selected topic's data
     setTopicClicked(topicSelected);
-
-    // Open the modal and darken body
     setHideBody(true);
     setModalOpen(true);
   }
+
   // FETCH FOR TOPICS
   const fetchTopics = async () => {
     try {
@@ -73,7 +67,7 @@ export default function ManageSoftware() {
     }
   };
 
-  // On initial render, fetch the user's topics
+  // ON PAGE LOAD: FETCH TOPICS
   useEffect(() => {
     if(session.user?.id){
       try {
@@ -87,11 +81,9 @@ export default function ManageSoftware() {
     }
   },[session])
 
-  // Close modal and remove dark body
+  // ON MODAL CLOSE: SHOW BODY
   useEffect(() => {
-    if(modalOpen === false){
-    setHideBody(false);
-    }
+    if(!modalOpen){ setHideBody(false);}
   },[modalOpen === false])
 
   return (
@@ -176,7 +168,7 @@ export default function ManageSoftware() {
           <div className="subCategories">
             <div className="col-lg-12 d-flex gap-5">
               {SUBCATEGORIES[filters.mainCategory]?.map((subcat) => (
-                  <button key={subcat} className={`btn ${filters.subCategory === subcat ? 'active': ''}`} name={subcat} onClick={() => handlesubCategoryChange(subcat)}>{subcat}</button>
+                  <button key={subcat} className={`btn ${filters.subCategory.includes(subcat) ? 'active': ''}`} name={subcat} onClick={() => handlesubCategoryChange(subcat)}>{subcat}</button>
               ))}
             </div>
           </div>
@@ -194,9 +186,9 @@ export default function ManageSoftware() {
             }
           
             // If there's no filter for subcategory, all topics are included
-            if (filters.subCategory && topic.subcategory.toLowerCase() !== filters.subCategory.toLowerCase()) {
+            if (filters.subCategory.length > 0 && !filters.subCategory.some(sub => topic.subcategory.toLowerCase() === sub.toLowerCase())) {
               return false;
-            }
+          }
           
             // If there are tags to filter by, make sure all tags are included in the topic's tags
             if (filters.tags.length > 0 && !filters.tags.every((tag) => topic.tags.includes(tag))) {
@@ -235,9 +227,7 @@ export default function ManageSoftware() {
                         </div>
                     </div>
                     <div className="d-flex gap-2">
-                      {topic.codeSnippets.length > 0 ? (
                         <div className="waves"><i className="ri-eye-line ri-22px text-muted" title="Quick Preview" onClick={() => handleModalOpen(topic._id)}></i></div>
-                        ) : ''}
 
                       <div className="dropdown">
                         <i className="ri-more-2-line ri-22px text-muted " id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>

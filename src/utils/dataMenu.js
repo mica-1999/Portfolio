@@ -31,6 +31,26 @@ export const dataMenu = [
       ],
     },
     {
+      name: "Learning",
+      icon: "learning",
+      page: "",
+      collapsed: false,
+      hasSubMenu: true,
+      subMenu: [
+        {
+          name: "Software",
+          icon: "software",
+          page: "/pages/dashboard/learning/software",
+        },
+        {
+          name: "Hardware",
+          icon: "hardware",
+          page: "/pages/dashboard/learning/hardware",
+        },
+        
+      ],
+    },
+    {
       name: "Projects",
       icon: "projects",
       page: "",
@@ -52,26 +72,6 @@ export const dataMenu = [
           icon: "project3",
           page: "/pages/dashboard/management/project3",
         },
-      ],
-    },
-    {
-      name: "Learning",
-      icon: "learning",
-      page: "",
-      collapsed: false,
-      hasSubMenu: true,
-      subMenu: [
-        {
-          name: "Software",
-          icon: "software",
-          page: "/pages/dashboard/learning/software",
-        },
-        {
-          name: "Hardware",
-          icon: "hardware",
-          page: "/pages/dashboard/learning/hardware",
-        },
-        
       ],
     },
 ];
