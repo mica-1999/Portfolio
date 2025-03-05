@@ -1037,7 +1037,6 @@ select:focus {
 }
 .viewInfo:hover {background-color: #5a5ee1;color: var(--primary-text-color);}
 .dropdown-menu.topics{min-width: auto !important;}
-.dropdown-menu .delTopic:hover { background-color: #ff4d49 !important; /* Red background on hover */color: white !important; /* White text */}
 .topicDescription{
     max-height: 170px; /* Adjust this based on your design */
     overflow: hidden;
@@ -1123,4 +1122,10 @@ select:focus {
 }
 .conceptTitle, .codeLanguage, .videoTitle, .videoUrl {
     background-color: #282A42 !important;
+}
+.dropdown-menu.topics {
+    inset: 10px auto auto -90px !important;
+}
+.dropdown-menu.topics li {
+    cursor: pointer;
 }

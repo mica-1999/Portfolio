@@ -1,13 +1,70 @@
 import { NextResponse } from "next/server";
 import learningSoftware from "../../../models/LearningSoftware";
 import dbConnect from "../../../utils/dbConnect";
+import mongoose from 'mongoose';
 
+export async function PUT(req) {
+  const { searchParams } = new URL(req.url); // Extract query params
+  const id = searchParams.get('id'); // Get the ID from the query parameters
+  const body = await req.json(); // Extract body data
+
+  if (!id || !body.field || !body.value) {
+    return NextResponse.json({ error: 'Missing required fields (id, field, or value)' }, { status: 400 });
+  }
+
+  await dbConnect();
+
+  const { field, value } = body; // Extract field and value from body
+
+  console.log(id, field, value);
+  try {
+    // Update based on the field value
+    let updateResult;
+    if (field === 'title') {
+      updateResult = await learningSoftware.updateOne(
+        { _id: new mongoose.Types.ObjectId(id) },
+        { $set: { title: value } }
+      );
+    } else if (field === 'favorites') {
+      updateResult = await learningSoftware.updateOne(
+        { _id: new mongoose.Types.ObjectId(id) },
+        { $set: { isFavorite: value } }
+      );
+    }
+
+    if (!updateResult || updateResult.matchedCount === 0) {
+      return NextResponse.json({ error: 'Topic not found or no changes made' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: 'Topic updated successfully' });
+  } catch (error) {
+    console.error('Error in update operation:', error);
+    return NextResponse.json({ error: 'Could not update topic' }, { status: 500 });
+  }
+}
+
+
+export async function DELETE(req) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+  await dbConnect();
+  try {
+      const objectId = new mongoose.Types.ObjectId(id);
+      const deleteTopic = await learningSoftware.findOneAndDelete({ _id: objectId });
+      if (!deleteTopic) {
+          return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
+      }
+      return NextResponse.json({ message: 'Topic deleted successfully' });
+  } catch (error) {
+    console.error('Error in delete operation:', error);
+    return NextResponse.json({ error: 'Could not delete topic' }, { status: 500 });
+ }
+}
 
 export async function GET() {
     try {
         await dbConnect();
         const topics_data = await learningSoftware.find();
-        console.log(topics_data)
         return NextResponse.json(topics_data);
     } catch (error) {
         console.error('Error fetching topics:', error);

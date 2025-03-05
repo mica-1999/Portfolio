@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { CodeModal } from './modalCode';
 import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from './constants';
+import { Modal } from '/src/app/components/utility/Modal';
 
 export default function ManageSoftware() {  
   const { data: session } = useSession(); 
@@ -13,11 +14,13 @@ export default function ManageSoftware() {
   const [formtagBtn, setformTagBtn] = useState(false);
   const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
   const [filters, setFilters] = useState({ mainCategory: '', subCategory: [], tags: [], status: '', searchBox: '' });
+  const [deleteTopic, setdeleteTopic] = useState(null); // Stores topic ID to delete
 
   // MODAL INFO
   const [modalOpen, setModalOpen] = useState(false);
   const [topicClicked, setTopicClicked] = useState({});
   const [hideBody, setHideBody] = useState(false); // Dark Body toggle
+  const [showModal, setShowModal] = useState({ type: '', show: false, message: ''}); // Modal state
 
   // HANDLE MAIN CATEGORY CHANGE
   const handleCategoryChange = (event) => {
@@ -57,6 +60,76 @@ export default function ManageSoftware() {
     setModalOpen(true);
   }
 
+  // CONFIRM DELETE TOPIC
+  const showConfirmationModal = (id,title) => {
+    setdeleteTopic(id);
+    setShowModal({
+        type: 'warning',
+        show: true,
+        message: `Are you sure you want to delete the ${title} ?`,
+    });
+}
+
+  // HANDLE TOPIC DELETION
+  const handleTopicDeletion = async (topicId) => {
+    try {
+      const response = await fetch(`/api/Topic/?id=${topicId}`, { 
+        method: 'DELETE'           
+      });
+      setShowModal({type: 'success', show: true, message: 'Topic has been deleted successfully'});
+      fetchTopics();
+    } 
+    catch (error) {
+      console.error('Error deleting topic:', error);
+      setShowModal({type: 'error', show: true, message: 'Failed to delete topic. Please try again.'});
+    }
+  }
+
+  const handleUpdateTopic = async (topicId, field, value) => {
+    try {
+      const response = await fetch(`/api/Topic/?id=${topicId}`, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ field, value }), 
+      });
+  
+      const result = await response.json(); 
+  
+      if (response.ok) {
+        if (field === 'title') {
+          setShowModal({
+            type: 'success',
+            show: true,
+            message: 'Title has been updated successfully',
+          });
+        } else if (field === 'favorites') {
+          setShowModal({
+            type: 'success',
+            show: true,
+            message: 'Topic has been added to favorites',
+          });
+        }
+        fetchTopics(); // Refresh the topics after update
+      } else {
+        setShowModal({
+          type: 'error',
+          show: true,
+          message: result.error || 'Failed to update topic. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.error('Error updating topic:', error);
+      setShowModal({
+        type: 'error',
+        show: true,
+        message: 'Failed to update topic. Please try again.',
+      });
+    }
+  };
+  
+
   // FETCH FOR TOPICS
   const fetchTopics = async () => {
     try {
@@ -84,7 +157,8 @@ export default function ManageSoftware() {
   // ON MODAL CLOSE: SHOW BODY
   useEffect(() => {
     if(!modalOpen){ setHideBody(false);}
-  },[modalOpen === false])
+    if(showModal.show){ setHideBody(true);}
+  },[!modalOpen, showModal.show])
 
   return (
     <>
@@ -234,8 +308,10 @@ export default function ManageSoftware() {
                         <ul className="dropdown-menu topics" aria-labelledby="dropdownMenuButton">
                           <li><a className="dropdown-item" href="#">View Details</a></li>
                           <li><a className="dropdown-item" href="#">Rename Title</a></li>
-                          <li><a className="dropdown-item" href="#">Add to Favorites</a></li>
-                          <li className="delTopic"><a className="dropdown-item text-danger" href="#">Delete Topic</a></li>
+                          {!topic.isFavorite ? 
+                          <li><a className="dropdown-item" onClick={() => handleUpdateTopic(topic._id, "favorites", true)}><i className="fa fa-thumb-tack"></i> Pin</a></li>
+                          : <li><a className="dropdown-item" onClick={() => handleUpdateTopic(topic._id, "favorites", false)}><i className="fa fa-thumb-tack"></i> Unpin</a></li>}
+                          <li className="delTopic"><a className="dropdown-item text-danger" onClick={() => showConfirmationModal(topic._id, topic.titleCard)}>Delete Topic</a></li>
                         </ul>
                       </div>
                     </div>
@@ -250,6 +326,7 @@ export default function ManageSoftware() {
           ))}
         </div>
       </div>
+      <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleTopicDeletion} deleteAction={deleteTopic}/>
       <CodeModal showModal={modalOpen} topicClicked={topicClicked} setShowModal={setModalOpen} />
       {hideBody  && <div className="modal-backdrop show m-0"></div>}
     </>
