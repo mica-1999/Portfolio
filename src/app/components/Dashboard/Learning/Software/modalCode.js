@@ -243,7 +243,7 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                 <h6>Code Snippets</h6>
                                 {isEditMode ? (
                                     editedTopic.codeSnippets?.map((snippet, index) => (
-                                        <div key={index} className="mb-3 border p-3 rounded">
+                                        <div key={index} className="mb-5 border p-3 rounded">
                                             <div className="mb-2">
                                                 <label className="form-label">Language</label>
                                                 <input
