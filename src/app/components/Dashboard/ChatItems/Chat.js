@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { useSession } from "next-auth/react";
-import { Modal } from '/src/app/components/utility/Modal';
 import { getTimeFormatted } from '/src/utils/mainContentUtil';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 export default function Chat() {
   const { data: session } = useSession();
   const [users, setUsers] = useState([]); // Displaying in UI
-  const [showModal, setShowModal] = useState({ type: '',show: false,message: ''}); // FOR ERRORS
   const [searchSection, setsearchSection] = useState(false); // SEARCH BAR SECTION
 
   const [currentUser, setCurrentUser] = useState(null); // Stores current authenticated User

@@ -88,9 +88,11 @@ export function formatNumber(num) {
 
 // GETS THE TIME DIFFERENCE BETWEEN THE CURRENT TIME AND THE EVENT TIME FOR THE TIMELINE
 export function getTimeFormatted(time)  {
+  if (!time) return 'Invalid time';
+
+
   const currentTime = new Date(); // Current time
   const eventTime = new Date(time); // Timeline time
-
   const diffMs = currentTime - eventTime; // Difference in milliseconds
 
   // Convert difference to seconds, minutes, hours, and days

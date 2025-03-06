@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const MONGODB_URI = process.env.MONGODB_URI;
 
 const dbConnect = async () => {
-  if (mongoose.connection.readyState >= 1) {
+  if (mongoose.connection.readyState === 1) {
     return; // If already connected, don't connect again
   }
 

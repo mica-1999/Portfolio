@@ -4,42 +4,71 @@ import dbConnect from "../../../utils/dbConnect";
 import mongoose from 'mongoose';
 
 export async function PUT(req) {
-  const { searchParams } = new URL(req.url); // Extract query params
-  const id = searchParams.get('id'); // Get the ID from the query parameters
-  const body = await req.json(); // Extract body data
-
-  if (!id || !body.field || !body.value) {
-    return NextResponse.json({ error: 'Missing required fields (id, field, or value)' }, { status: 400 });
-  }
-
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+  
   await dbConnect();
-
-  const { field, value } = body; // Extract field and value from body
-
-  console.log(id, field, value);
+  
   try {
-    // Update based on the field value
-    let updateResult;
-    if (field === 'title') {
-      updateResult = await learningSoftware.updateOne(
-        { _id: new mongoose.Types.ObjectId(id) },
-        { $set: { title: value } }
+    const body = await req.json();
+    const { field, value } = body;
+    
+    if (field === 'fullUpdate') {
+      // Handle full topic update
+      const objectId = new mongoose.Types.ObjectId(id);
+      const result = await learningSoftware.updateOne(
+        { _id: objectId },
+        { $set: {
+            titleCard: value.titleCard,
+            description: value.description,
+            codeSnippets: value.codeSnippets,
+            concepts: value.concepts,
+            tags: value.tags,
+            userNotes: value.userNotes,
+            updatedAt: new Date()
+          }
+        }
       );
+      
+      if (result.acknowledged) {
+        return NextResponse.json({ success: true, message: 'Topic updated successfully' });
+      } else {
+        return NextResponse.json({ success: false, error: 'Failed to update topic' }, { status: 400 });
+      }
     } else if (field === 'favorites') {
-      updateResult = await learningSoftware.updateOne(
-        { _id: new mongoose.Types.ObjectId(id) },
+      // Favorites update logic
+      const objectId = new mongoose.Types.ObjectId(id);
+      const result = await learningSoftware.updateOne(
+        { _id: objectId },
         { $set: { isFavorite: value } }
       );
+      
+      if (result.acknowledged) {
+        return NextResponse.json({ success: true });
+      } else {
+        return NextResponse.json({ success: false }, { status: 400 });
+      }
+    } else if (field === 'title') {
+      // Title update logic
+      const objectId = new mongoose.Types.ObjectId(id);
+      const result = await learningSoftware.updateOne(
+        { _id: objectId },
+        { $set: { titleCard: value } }
+      );
+      
+      if (result.acknowledged) {
+        return NextResponse.json({ success: true });
+      } else {
+        return NextResponse.json({ success: false }, { status: 400 });
+      }
     }
-
-    if (!updateResult || updateResult.matchedCount === 0) {
-      return NextResponse.json({ error: 'Topic not found or no changes made' }, { status: 404 });
-    }
-
-    return NextResponse.json({ message: 'Topic updated successfully' });
+    
+    // If field type is not recognized
+    return NextResponse.json({ success: false, error: 'Invalid field type' }, { status: 400 });
+    
   } catch (error) {
-    console.error('Error in update operation:', error);
-    return NextResponse.json({ error: 'Could not update topic' }, { status: 500 });
+    console.error('Error updating topic:', error);
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 

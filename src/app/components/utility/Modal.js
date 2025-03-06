@@ -39,8 +39,6 @@ return showModal.show   ? (
                                             <p className="modalMessage">{showModal.message}</p>
                                         </div>
                                     </div>
-                                    
-                                    
                                 </div>
                                 <button type="button" className={`btn modalClose ${showModal.type === 'success' ? 'modalWin' : 'modalLose'}`} data-bs-dismiss="modal" onClick={() => setShowModal({ ...showModal, show: false })}>Continue</button>
                             </>

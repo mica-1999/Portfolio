@@ -85,51 +85,6 @@ export default function ManageSoftware() {
     }
   }
 
-  const handleUpdateTopic = async (topicId, field, value) => {
-    try {
-      const response = await fetch(`/api/Topic/?id=${topicId}`, {
-        method: 'PUT', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ field, value }), 
-      });
-  
-      const result = await response.json(); 
-  
-      if (response.ok) {
-        if (field === 'title') {
-          setShowModal({
-            type: 'success',
-            show: true,
-            message: 'Title has been updated successfully',
-          });
-        } else if (field === 'favorites') {
-          setShowModal({
-            type: 'success',
-            show: true,
-            message: 'Topic has been added to favorites',
-          });
-        }
-        fetchTopics(); // Refresh the topics after update
-      } else {
-        setShowModal({
-          type: 'error',
-          show: true,
-          message: result.error || 'Failed to update topic. Please try again.',
-        });
-      }
-    } catch (error) {
-      console.error('Error updating topic:', error);
-      setShowModal({
-        type: 'error',
-        show: true,
-        message: 'Failed to update topic. Please try again.',
-      });
-    }
-  };
-  
-
   // FETCH FOR TOPICS
   const fetchTopics = async () => {
     try {
@@ -175,7 +130,7 @@ export default function ManageSoftware() {
               {/* Main Category Filter */}
               <div className="col-lg-4">
                 <div className="select-wrapper">
-                  <select className="form-select" value={filters.mainCategory.toLowerCase()} onChange={handleCategoryChange}>
+                  <select className="form-select" value={filters.mainCategory} onChange={handleCategoryChange}>
                     <option key="default" value=''>Select a category</option>
                     {MAIN_CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -307,10 +262,7 @@ export default function ManageSoftware() {
                         <i className="ri-more-2-line ri-22px text-muted " id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
                         <ul className="dropdown-menu topics" aria-labelledby="dropdownMenuButton">
                           <li><a className="dropdown-item" href="#">View Details</a></li>
-                          <li><a className="dropdown-item" href="#">Rename Title</a></li>
-                          {!topic.isFavorite ? 
-                          <li><a className="dropdown-item" onClick={() => handleUpdateTopic(topic._id, "favorites", true)}><i className="fa fa-thumb-tack"></i> Pin</a></li>
-                          : <li><a className="dropdown-item" onClick={() => handleUpdateTopic(topic._id, "favorites", false)}><i className="fa fa-thumb-tack"></i> Unpin</a></li>}
+                          <li><a className="dropdown-item" href="#">Quick Edit</a></li>
                           <li className="delTopic"><a className="dropdown-item text-danger" onClick={() => showConfirmationModal(topic._id, topic.titleCard)}>Delete Topic</a></li>
                         </ul>
                       </div>
@@ -327,7 +279,7 @@ export default function ManageSoftware() {
         </div>
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleTopicDeletion} deleteAction={deleteTopic}/>
-      <CodeModal showModal={modalOpen} topicClicked={topicClicked} setShowModal={setModalOpen} />
+      <CodeModal showModal={modalOpen} topicClicked={topicClicked} setShowModal={setModalOpen} fetchTopics={fetchTopics}/>
       {hideBody  && <div className="modal-backdrop show m-0"></div>}
     </>
   );

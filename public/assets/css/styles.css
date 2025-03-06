@@ -1129,3 +1129,34 @@ select:focus {
 .dropdown-menu.topics li {
     cursor: pointer;
 }
+
+.subCategories {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    white-space: nowrap;
+    background-color: #282A41;
+    padding-bottom: 2rem !important;
+  }
+  
+  .subCategories .btn {
+    flex-shrink: 0;
+    background-color: #30334E;
+    color: #B6BED4;
+    border: 1px solid #3E4462;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .subCategories .btn:hover {
+    background-color: #3E4462;
+    color: #FFFFFF;
+  }
+  
+  .subCategories .btn.active {
+    background-color: #5D5FEF;
+    color: white;
+    border-color: #5D5FEF;
+  }

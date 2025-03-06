@@ -152,5 +152,3 @@ export const configMenuItems = [
       page: "/dashboard",
     },
 ];
-  
-

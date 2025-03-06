@@ -823,7 +823,7 @@ export default function NewSoftware() {
                             <section className="row mt-3 ">
                                 <div className="col-lg-12 d-flex justify-content-center">
                                     <button type="submit" className="btn addItem me-3">Submit</button>
-                                    <button type="button" className="btn cancelItem">Cancel</button>
+                                    <button type="button" className="btn cancelItem" onClick={() => window.location.href = '../software'}>Cancel</button>
                                 </div>
                             </section>
                         </form>
