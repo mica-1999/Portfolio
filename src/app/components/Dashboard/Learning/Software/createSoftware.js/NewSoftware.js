@@ -479,7 +479,7 @@ export default function NewSoftware() {
                                     </div>
                                     
                                     
-                                    <div className="col-lg-6 d-flex flex-column justify-content-between">
+                                    <div className="col-lg-6 d-flex flex-column">
                                         <div className="select-wrapper">
                                             <button className={`btn dropdown-toggle w-100 tagButton ${formtagBtn ? 'setBorder' : ''} ${formData.tags.length > 0 ? 'selected-tags' : ''}`}
                                                 type="button" id="dropdownForm"
@@ -502,7 +502,7 @@ export default function NewSoftware() {
                                             </ul>
                                         </div>
 
-                                        <div className="form-group">
+                                        <div className="form-group mt-4">
                                             <select
                                                 className={`form-select ${success.state ? 'successBorderColor' : ''}`}
                                                 value={formData.state}

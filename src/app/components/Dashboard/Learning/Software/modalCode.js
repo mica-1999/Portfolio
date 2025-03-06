@@ -14,6 +14,23 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
         }
       }, [showModal, topicClicked]);
 
+    // Helper function to extract YouTube video ID from URL
+    const getYouTubeVideoId = (url) => {
+        if (!url) return null;
+        
+        // Handle different YouTube URL formats
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        
+        return (match && match[2].length === 11) ? match[2] : null;
+    };
+
+    // Convert YouTube URL to embed URL
+    const getYouTubeEmbedUrl = (url) => {
+        const videoId = getYouTubeVideoId(url);
+        return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    };
+
     const handleInputChange = (field, value) => {
         setEditedTopic(prev => ({
             ...prev,
@@ -42,6 +59,18 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
         setEditedTopic(prev => ({
             ...prev,
             concepts: updatedConcepts
+        }));
+    };
+
+    const handleVideoChange = (index, field, value) => {
+        const updatedVideos = [...(editedTopic.videos || [])];
+        updatedVideos[index] = {
+            ...updatedVideos[index],
+            [field]: value
+        };
+        setEditedTopic(prev => ({
+            ...prev,
+            videos: updatedVideos
         }));
     };
 
@@ -120,6 +149,93 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                 <p>{topicClicked.description}</p>
                             )}
                         </section>
+
+                        {/* Videos Section */}
+                        {(isEditMode || topicClicked.videos?.length > 0) && (
+                            <section className="mb-4">
+                                {isEditMode ? (
+                                    (editedTopic.videos || []).map((video, index) => (
+                                        <div key={index} className="mb-3 border p-3 rounded">
+                                            <div className="mb-2">
+                                                <label className="form-label">Title</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={video.title || ''}
+                                                    onChange={(e) => handleVideoChange(index, 'title', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="mb-2">
+                                                <label className="form-label">URL (YouTube)</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={video.url || ''}
+                                                    onChange={(e) => handleVideoChange(index, 'url', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="mb-2">
+                                                <label className="form-label">Description</label>
+                                                <textarea
+                                                    className="form-control"
+                                                    rows="2"
+                                                    value={video.description || ''}
+                                                    onChange={(e) => handleVideoChange(index, 'description', e.target.value)}
+                                                ></textarea>
+                                            </div>
+                                            {video.url && getYouTubeEmbedUrl(video.url) && (
+                                                <div className="mt-2">
+                                                    <small className="text-muted">Preview:</small>
+                                                    <div className="ratio ratio-16x9 mt-2">
+                                                        <iframe 
+                                                            src={getYouTubeEmbedUrl(video.url)} 
+                                                            title="YouTube video player" 
+                                                            frameBorder="0" 
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                            allowFullScreen>
+                                                        </iframe>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))
+                                ) : (
+                                    topicClicked.videos?.map((video, index) => (
+                                        <div key={index} className="mb-4">
+                                            <h6>{video.title}</h6>
+                                            {video.url && getYouTubeEmbedUrl(video.url) ? (
+                                                <div className="ratio ratio-16x9 mb-2">
+                                                    <iframe 
+                                                        src={getYouTubeEmbedUrl(video.url)} 
+                                                        title={video.title}
+                                                        frameBorder="0" 
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                        allowFullScreen>
+                                                    </iframe>
+                                                </div>
+                                            ) : (
+                                                <div className="alert alert-warning">
+                                                    Invalid or missing video URL
+                                                </div>
+                                            )}
+                                            <p>{video.description}</p>
+                                        </div>
+                                    ))
+                                )}
+                                {isEditMode && (
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-outline-primary btn-sm mt-2"
+                                        onClick={() => {
+                                            const newVideos = [...(editedTopic.videos || []), { title: '', url: '', description: '' }];
+                                            setEditedTopic(prev => ({ ...prev, videos: newVideos }));
+                                        }}
+                                    >
+                                        <i className="ri-add-line"></i> Add Video
+                                    </button>
+                                )}
+                            </section>
+                        )}
 
                         {/* Code Snippets Section */}
                         {(isEditMode || topicClicked.codeSnippets?.length > 0) && (

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { CodeModal } from './modalCode';
@@ -8,6 +8,8 @@ import { Modal } from '/src/app/components/utility/Modal';
 
 export default function ManageSoftware() {  
   const { data: session } = useSession(); 
+  const observerRef = useRef(null); // Reference for intersection observer
+  const loaderRef = useRef(null); // Reference for loading element
 
   // STATE VARIABLES
   const [userTopics, setUserTopics] = useState([]); // User's topics from DB 
@@ -22,57 +24,129 @@ export default function ManageSoftware() {
   const [hideBody, setHideBody] = useState(false); // Dark Body toggle
   const [showModal, setShowModal] = useState({ type: '', show: false, message: ''}); // Modal state
 
+  // Loading and Fetch info
+  const [loading, setLoading] = useState(false);
+  const [fetchError, setFetchError] = useState('');
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage] = useState(9); // Number of items to load at once
+
+  // Memoize filtered topics
+  const filteredTopics = useMemo(() => {
+    return userTopics.filter((topic) => {
+      // If there's no filter for category, all topics are included
+      if (filters.mainCategory && topic.category.toLowerCase() !== filters.mainCategory.toLowerCase()) {
+        return false;
+      }
+    
+      // If there's no filter for subcategory, all topics are included
+      if (filters.subCategory.length > 0 && !filters.subCategory.some(sub => topic.subcategory.toLowerCase() === sub.toLowerCase())) {
+        return false;
+      }
+    
+      // If there are tags to filter by, make sure all tags are included in the topic's tags
+      if (filters.tags.length > 0 && !filters.tags.every((tag) => topic.tags.includes(tag))) {
+        return false;
+      }
+    
+      // If there's a status filter, make sure the topic's state matches
+      if (filters.status && topic.state.toLowerCase() !== filters.status.toLowerCase()) {
+        return false;
+      }
+
+      // Searchbox term search 
+      if (filters.searchBox && (
+        !topic.titleCard.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+        !topic.description.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+        !topic.category.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+        !topic.subcategory.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
+        !topic.tags.some(tag => tag.toLowerCase().includes(filters.searchBox.toLowerCase())) &&  // Check each tag
+        !topic.state.toLowerCase().includes(filters.searchBox.toLowerCase())
+      )) {
+        return false;  // If none of the fields match the search term, exclude this topic
+      }
+      // If no filter conditions are violated, return true to keep the topic
+      return true;
+    });
+  }, [userTopics, filters.mainCategory, filters.subCategory, filters.tags, filters.status, filters.searchBox]);
+
+  // Get paginated results for infinite scrolling
+  const displayedTopics = useMemo(() => {
+    return filteredTopics.slice(0, page * itemsPerPage);
+  }, [filteredTopics, page, itemsPerPage]);
+
   // HANDLE MAIN CATEGORY CHANGE
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = useCallback((event) => {
     setFilters(prevFilters => ({
       ...prevFilters,
       mainCategory: event.target.value,
     }));
-  };
+    // Reset page when filters change
+    setPage(1);
+  }, []);
 
   // HANDLE SUBCATEGORY CHANGE
-  const handlesubCategoryChange = (subCategory) => {
+  const handlesubCategoryChange = useCallback((subCategory) => {
     setFilters((prevFilters) => {
-        const newSubCategories = prevFilters.subCategory.includes(subCategory)
-            ? prevFilters.subCategory.filter((subcat) => subcat !== subCategory)
-            : [...prevFilters.subCategory, subCategory];
+      const newSubCategories = prevFilters.subCategory.includes(subCategory)
+          ? prevFilters.subCategory.filter((subcat) => subcat !== subCategory)
+          : [...prevFilters.subCategory, subCategory];
 
-        return {
-            ...prevFilters,
-            subCategory: newSubCategories,
-        };
+      return {
+          ...prevFilters,
+          subCategory: newSubCategories,
+      };
     });
-};
+    // Reset page when filters change
+    setPage(1);
+  }, []);
 
   // HANDLE TAG CHANGE
-  const handleTagChange = (tag) => {
-      const updatedTags = filters.tags.includes(tag)
-          ? filters.tags.filter((t) => t !== tag)
-          : [...filters.tags, tag];
-      setFilters({ ...filters, tags: updatedTags });
-  }
+  const handleTagChange = useCallback((tag) => {
+    const updatedTags = filters.tags.includes(tag)
+        ? filters.tags.filter((t) => t !== tag)
+        : [...filters.tags, tag];
+    setFilters({ ...filters, tags: updatedTags });
+    // Reset page when filters change
+    setPage(1);
+  }, [filters.tags]);
+
+  // HANDLE SEARCH BOX CHANGE
+  const handleSearchChange = useCallback((e) => {
+    setFilters({ ...filters, searchBox: e.target.value });
+    // Reset page when filters change
+    setPage(1);
+  }, [filters]);
+
+  // HANDLE STATUS CHANGE
+  const handleStatusChange = useCallback((e) => {
+    setFilters({ ...filters, status: e.target.value });
+    // Reset page when filters change
+    setPage(1);
+  }, [filters]);
 
   // HANDLE MODAL OPEN
-  const handleModalOpen = (topicId) => {
+  const handleModalOpen = useCallback((topicId) => {
     const topicSelected = userTopics.find(topic => topic._id === topicId);
     setTopicClicked(topicSelected);
     setHideBody(true);
     setModalOpen(true);
-  }
+  }, [userTopics]);
 
   // CONFIRM DELETE TOPIC
-  const showConfirmationModal = (id,title) => {
+  const showConfirmationModal = useCallback((id,title) => {
     setdeleteTopic(id);
     setShowModal({
         type: 'warning',
         show: true,
         message: `Are you sure you want to delete the ${title} ?`,
     });
-}
+  }, []);
 
   // HANDLE TOPIC DELETION
-  const handleTopicDeletion = async (topicId) => {
+  const handleTopicDeletion = useCallback(async (topicId) => {
     try {
+      setLoading(true);
       const response = await fetch(`/api/Topic/?id=${topicId}`, { 
         method: 'DELETE'           
       });
@@ -83,37 +157,80 @@ export default function ManageSoftware() {
       console.error('Error deleting topic:', error);
       setShowModal({type: 'error', show: true, message: 'Failed to delete topic. Please try again.'});
     }
-  }
+    finally {
+      setLoading(false);
+    }
+  }, []);
 
-  // FETCH FOR TOPICS
-  const fetchTopics = async () => {
+  // FETCH TOPICS - Use useCallback to memoize the function
+  const fetchTopics = useCallback(async () => {
     try {
+      setLoading(true);
+      setFetchError('');
       const response = await fetchDataFromApi(`/api/Topic`);
       setUserTopics(response || []);
+      setHasMore(response && response.length > 0);
     } catch (error) {
-        console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error);
+      setFetchError('Failed to load topics. Please try again.');
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
   // ON PAGE LOAD: FETCH TOPICS
   useEffect(() => {
-    if(session.user?.id){
+    if(session?.user?.id){
       try {
         fetchTopics();
       } 
       catch (error) {
         console.error('Error fetching data:', error);
+        setFetchError('Failed to load topics. Please try again.');
       }
     } else {
       console.log('No user session found');
     }
-  },[session])
+  }, [session, fetchTopics]);
+
+  // HANDLE INFINITE SCROLL
+  useEffect(() => {
+    // Check if we need to set up an observer
+    if (!loaderRef.current || !hasMore) return;
+
+    // Setup Intersection Observer
+    if (observerRef.current) observerRef.current.disconnect();
+
+    const observer = new IntersectionObserver(entries => {
+      // If the loader element is visible and we're not already loading and there are more items
+      if (entries[0].isIntersecting && !loading && hasMore) {
+        setPage(prevPage => prevPage + 1);
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(loaderRef.current);
+    observerRef.current = observer;
+
+    return () => {
+      if (observerRef.current) observerRef.current.disconnect();
+    };
+  }, [loading, hasMore, filteredTopics.length]);
+
+  // Check if there are more items to load
+  useEffect(() => {
+    setHasMore(page * itemsPerPage < filteredTopics.length);
+  }, [filteredTopics, page, itemsPerPage]);
 
   // ON MODAL CLOSE: SHOW BODY
   useEffect(() => {
     if(!modalOpen){ setHideBody(false);}
     if(showModal.show){ setHideBody(true);}
-  },[!modalOpen, showModal.show])
+  }, [modalOpen, showModal.show]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [filters]);
 
   return (
     <>
@@ -167,7 +284,7 @@ export default function ManageSoftware() {
               {/* Status Filter */}
               <div className="col-lg-4">
                 <div className="select-wrapper">
-                  <select className="form-select" value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+                  <select className="form-select" value={filters.status} onChange={handleStatusChange}>
                     <option key="default" value="">Select a status</option>
                     {STATUS_OPTIONS.map((status) => (
                       <option key={status} value={status.toLowerCase()}>{status}</option>
@@ -182,7 +299,13 @@ export default function ManageSoftware() {
               <div className="col-lg-12 d-flex align-items-center justify-content-between">
                 <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                 <div className="d-flex gap-3">
-                  <input type="text" className="form-control searchInput" placeholder="Search Info" onChange={(e) => setFilters({ ...filters, searchBox: e.target.value })} />
+                  <input 
+                    type="text" 
+                    className="form-control searchInput" 
+                    placeholder="Search Info" 
+                    value={filters.searchBox}
+                    onChange={handleSearchChange} 
+                  />
                   <button className="btn btn-primary addBtn" onClick={() => window.location.href = '/pages/dashboard/learning/software/newsoftware'}>Add Topic</button>
                 </div>
               </div>
@@ -192,6 +315,7 @@ export default function ManageSoftware() {
       </div>
   
       {/* Subcategories and Cards */}
+      {filters.mainCategory && (
       <div className="row mt-3">
         <div className="col-lg-12">
           <div className="subCategories">
@@ -203,53 +327,37 @@ export default function ManageSoftware() {
           </div>
         </div>
       </div>
+      )}
   
       {/* Cards Section */}
       <div className="d-flex flex-wrap p-0 mb-1">
-        <div className="row p-3 w-100">
-          {userTopics
-          .filter((topic) => {
-            // If there's no filter for category, all topics are included
-            if (filters.mainCategory && topic.category.toLowerCase() !== filters.mainCategory.toLowerCase()) {
-              return false;
-            }
-          
-            // If there's no filter for subcategory, all topics are included
-            if (filters.subCategory.length > 0 && !filters.subCategory.some(sub => topic.subcategory.toLowerCase() === sub.toLowerCase())) {
-              return false;
-          }
-          
-            // If there are tags to filter by, make sure all tags are included in the topic's tags
-            if (filters.tags.length > 0 && !filters.tags.every((tag) => topic.tags.includes(tag))) {
-              return false;
-            }
-          
-            // If there's a status filter, make sure the topic's state matches
-            if (filters.status && topic.state.toLowerCase() !== filters.status.toLowerCase()) {
-              return false;
-            }
+        {loading && page === 1 && (
+          <div className="d-flex justify-content-center w-100 p-4">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        )}
+        
+        {fetchError && (
+          <div className="alert alert-danger w-100 m-3" role="alert">
+            {fetchError}
+          </div>
+        )}
+        
+        {!loading && !fetchError && displayedTopics.length === 0 && (
+          <div className="alert alert-info w-100 m-3 text-center" role="alert">
+            No topics found matching your filters.
+          </div>
+        )}
 
-            // Searchbox term search 
-            if (filters.searchBox && (
-              !topic.titleCard.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
-              !topic.description.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
-              !topic.category.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
-              !topic.subcategory.toLowerCase().includes(filters.searchBox.toLowerCase()) &&
-              !topic.tags.some(tag => tag.toLowerCase().includes(filters.searchBox.toLowerCase())) &&  // Check each tag
-              !topic.state.toLowerCase().includes(filters.searchBox.toLowerCase())
-            )) {
-              return false;  // If none of the fields match the search term, exclude this topic
-            }
-            // If no filter conditions are violated, return true to keep the topic
-            return true;
-          })
-          
-          .map((topic, idx) => (
-            <div className="col-lg-4" key={topic._id}>
+        <div className="row p-3 w-100">
+          {displayedTopics.map((topic) => (
+            <div className="col-lg-4 mb-2" key={topic._id}>
               <div className="card softwareCard">
                 <div className="card-header align-items-center justify-content-between d-flex">
                     <div className="d-flex align-items-center">
-                        <div className="subCatIconDiv d-flex justify-content-center align-items-center"><img className="subcatIcon" src={topic.icon}></img></div>
+                        <div className="subCatIconDiv d-flex justify-content-center align-items-center"><img className="subcatIcon" src={topic.icon} alt={topic.subcategory}></img></div>
                         <div className="d-flex flex-column ps-4">
                             <span>{topic.category}</span>
                             <span>{topic.subcategory}</span>
@@ -267,7 +375,6 @@ export default function ManageSoftware() {
                         </ul>
                       </div>
                     </div>
-
                 </div>
                 <div className="card-body">
                   <h5 className="card-title">{topic.titleCard}</h5>
@@ -277,10 +384,28 @@ export default function ManageSoftware() {
             </div>
           ))}
         </div>
+
+        {/* Loading indicator at bottom for infinite scroll */}
+        {hasMore && (
+          <div ref={loaderRef} className="text-center w-100 p-3">
+            {loading && (
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading more...</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!hasMore && displayedTopics.length > 9 && (
+          <div className="text-center text-muted w-100 p-3">
+            <p>No More Results</p>
+          </div>
+        )}
       </div>
+      
       <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleTopicDeletion} deleteAction={deleteTopic}/>
       <CodeModal showModal={modalOpen} topicClicked={topicClicked} setShowModal={setModalOpen} fetchTopics={fetchTopics}/>
-      {hideBody  && <div className="modal-backdrop show m-0"></div>}
+      {hideBody && <div className="modal-backdrop show m-0"></div>}
     </>
   );
 }

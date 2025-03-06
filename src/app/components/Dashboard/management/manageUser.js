@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
 import { Modal } from '/src/app/components/utility/Modal';
@@ -28,12 +28,7 @@ export default function ManageUser() {
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1); // Current page
-    const [usersPerPage, setUsersPerPage] = useState(5); // Users per page (Adjust as needed)
-    const indexOfLastUser = currentPage * usersPerPage; // Index of last user
-    const indexOfFirstUser = indexOfLastUser - usersPerPage; // Index of first user
-    const totalPages = Math.ceil(users.length / usersPerPage); // Total Pages
-    const currentUsers = users.length > usersPerPage ? users.slice(indexOfFirstUser, indexOfLastUser): users; // Current users on display
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const [usersPerPage, setUsersPerPage] = useState(5); // Users per page
 
     // Loading and Fetch Error
     const [loading, setLoading] = useState(false); // Loading state
@@ -42,12 +37,54 @@ export default function ManageUser() {
     // Initial Page Render
     useEffect(() => {
         fetchUsers();
-    }, [])
+    }, []);
 
     // Hide Body on Pop-up
     useEffect(() => {
         showModal.show || addUserDiv ? setHideBody(true) : setHideBody(false);
-    }, [showModal.show,addUserDiv]);
+    }, [showModal.show, addUserDiv]);
+
+    // Properly memoize filtered users
+    const filteredUsers = useMemo(() => {
+        return users.filter((user) => {
+            if (filters.status && user.isActive.toLowerCase() !== filters.status.toLowerCase()) {
+                return false;
+            }
+            if (filters.role && user.role.toLowerCase() !== filters.role.toLowerCase()) {
+                return false;
+            }
+            if (filters.time && !filterByTimeRange(user.lastLogin, filters.time)) {
+                return false;
+            }
+            if (filters.name) {
+                const searchTerm = filters.name.toLowerCase();
+                const fullName = `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`;
+                if (!fullName.includes(searchTerm) && !user.email.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }, [users, filters.status, filters.role, filters.time, filters.name]);
+
+    // Reset pagination when filters change or data changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filters, users.length]);
+
+    // Pagination calculations based on filteredUsers
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const paginatedUsers = useMemo(() => {
+        return filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+    }, [filteredUsers, indexOfFirstUser, indexOfLastUser]);
+    
+    const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+    
+    const paginate = (pageNumber) => {
+        if (pageNumber < 1 || pageNumber > totalPages) return;
+        setCurrentPage(pageNumber);
+    };
 
     // Handle clicks outside the "Add New User" form
     useEffect(() => {
@@ -181,17 +218,20 @@ export default function ManageUser() {
         const isChecked = e.target.checked;
         setSelectAll(isChecked);
         const updatedSelectedUsers = {};
-        users.forEach((user) => (updatedSelectedUsers[user.username] = isChecked));
+        filteredUsers.forEach((user) => (updatedSelectedUsers[user.username] = isChecked));
         setSelectedUsers(updatedSelectedUsers);
     };
 
     const handleUserCheckboxChange = (username) => {
         const updatedSelectedUsers = { ...selectedUsers, [username]: !selectedUsers[username] };
         setSelectedUsers(updatedSelectedUsers);
-        setSelectAll(Object.values(updatedSelectedUsers).every((val) => val));
+        
+        // Check if all currently visible users are selected
+        const allVisible = paginatedUsers.every(user => updatedSelectedUsers[user.username]);
+        setSelectAll(allVisible);
     };
 
-    const showConfirmationModal = (username,fName, LName) => {
+    const showConfirmationModal = (username, fName, LName) => {
         setdeleteUser(username);
         setShowModal({
             type: 'warning',
@@ -258,106 +298,108 @@ export default function ManageUser() {
                     </div>
                 </div>
 
-                <div className="card-body d-flex  flex-wrap p-0 mb-1">
-                    {loading && <div>Loading...</div>}
+                <div className="card-body d-flex flex-wrap p-0 mb-1">
+                    {loading && (
+                        <div className="d-flex justify-content-center w-100 p-4">
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    )}
                     {fetchError && showModal({type: 'error', show: true, message: fetchError})}
                     
-                    <div className="table-responsive text-nowrap user-table w-100">
-                        <table className="table table-sm mb-0">
-                            <thead className="table-head">
-                                <tr style={{ backgroundColor: '#3A3E5B' }}>
-                                    <th><input className="cCheckbox" type="checkbox" checked={selectAll} onChange={handleSelectAll}/></th>
-                                    {THEAD.map((thead) => (
-                                        <th key={thead}>{thead}</th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody className="table-content">
-                                {currentUsers
-                                .filter((user) => {
-                                    if (filters.status && user.isActive.toLowerCase() !== filters.status.toLowerCase()) {
-                                        return false;
-                                    }
-                                    if (filters.role && user.role.toLowerCase() !== filters.role.toLowerCase()) {
-                                        return false;
-                                    }
-                                    if (filters.time && !filterByTimeRange(user.lastLogin, filters.time)) {
-                                        return false;
-                                    }
-                                    if (filters.name) {
-                                        const searchTerm = filters.name.toLowerCase();
-                                        const fullName = `${user.firstName.toLowerCase()} ${user.lastName.toLowerCase()}`;
-                                        if (!fullName.includes(searchTerm) && !user.email.toLowerCase().includes(searchTerm)) {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                })
-                                .map((user) => {
-                                    const { badgeColor, output, color} = getRoleClass(user.role);
-                                    const { colorActive } = getActiveColor(user.isActive);
-                                    return(
-                                        <tr className="userRow" key={user.username} onClick={() => window.location.href = `/pages/dashboard/personal?userId=${user._id}`}>
-                                            <td>
-                                            <input className="cCheckbox" type="checkbox" checked={selectedUsers[user.username] || false} onChange={() => handleUserCheckboxChange(user.username)} />
-                                            </td>
-                                            <td>
-                                                <span className="d-flex align-items-center gap-2">
-                                                <img src="/assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                                                {user.firstName} {user.lastName}
-                                                </span>
-                                            </td>
-                                            <td>{user.email}</td>
-                                            <td>
-                                                <span className="d-flex align-items-center gap-2">
-                                                <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
-                                                </span>
-                                            </td>
-                                            <td><div className={`badge bg-label-${colorActive} rounded-pill lh-xs`}>{user.isActive.charAt(0).toUpperCase() + user.isActive.slice(1)}</div></td>
-                                            <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
-                                            <td>
-                                                <div className="d-flex gap-2">
-                                                    <button className="btn btn-sm btn-primary">
-                                                        <i className="ri-edit-line"></i>
-                                                    </button>
-                                                    {user.firstName !== "Micael" ? 
-                                                    <button className="btn btn-sm btn-danger" onClick={(e) =>{ e.preventDefault(); e.stopPropagation(); showConfirmationModal(user.username,user.firstName, user.lastName);}}>
-                                                        <i className="ri-delete-bin-line"></i>
-                                                    </button>
-                                                    : null}
-                                                </div>
+                    {!loading && !fetchError && (
+                        <div className="table-responsive text-nowrap user-table w-100">
+                            <table className="table table-sm mb-0">
+                                <thead className="table-head">
+                                    <tr style={{ backgroundColor: '#3A3E5B' }}>
+                                        <th><input className="cCheckbox" type="checkbox" checked={selectAll} onChange={handleSelectAll}/></th>
+                                        {THEAD.map((thead) => (
+                                            <th key={thead}>{thead}</th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody className="table-content">
+                                    {paginatedUsers.map((user) => {
+                                        const { badgeColor, output, color} = getRoleClass(user.role);
+                                        const { colorActive } = getActiveColor(user.isActive);
+                                        return(
+                                            <tr className="userRow" key={user.username} onClick={() => window.location.href = `/pages/dashboard/personal?userId=${user._id}`}>
+                                                <td onClick={(e) => e.stopPropagation()}>
+                                                <input className="cCheckbox" type="checkbox" checked={selectedUsers[user.username] || false} onChange={() => handleUserCheckboxChange(user.username)} />
+                                                </td>
+                                                <td>
+                                                    <span className="d-flex align-items-center gap-2">
+                                                    <img src="/assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
+                                                    {user.firstName} {user.lastName}
+                                                    </span>
+                                                </td>
+                                                <td>{user.email}</td>
+                                                <td>
+                                                    <span className="d-flex align-items-center gap-2">
+                                                    <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
+                                                    </span>
+                                                </td>
+                                                <td><div className={`badge bg-label-${colorActive} rounded-pill lh-xs`}>{user.isActive.charAt(0).toUpperCase() + user.isActive.slice(1)}</div></td>
+                                                <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
+                                                <td>
+                                                    <div className="d-flex gap-2">
+                                                        <button className="btn btn-sm btn-primary">
+                                                            <i className="ri-edit-line"></i>
+                                                        </button>
+                                                        {user.firstName !== "Micael" ? 
+                                                        <button className="btn btn-sm btn-danger" onClick={(e) =>{ e.preventDefault(); e.stopPropagation(); showConfirmationModal(user.username,user.firstName, user.lastName);}}>
+                                                            <i className="ri-delete-bin-line"></i>
+                                                        </button>
+                                                        : null}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                    {paginatedUsers.length === 0 && (
+                                        <tr>
+                                            <td colSpan={THEAD.length + 1} className="text-center py-3">
+                                                No users found matching the current filters.
                                             </td>
                                         </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                     <div className="row w-100">
                         <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
-                            <p>Showing {indexOfFirstUser +1} to {Math.min(indexOfLastUser, users.length)} of {users.length} entries</p>
-                            <ul className="pagination gap-2">
-                                <li className="page-item arrow">
-                                    <a className="page-link" aria-label="Previous" onClick={currentPage === 1 ? (e) => e.preventDefault() : () => paginate(currentPage - 1)}>
-                                        <i className="ri-arrow-left-s-line"></i>
-                                    </a>
-                                </li>
-                                {Array.from({ length: totalPages }, (_, i) => (
-                                    <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
-                                        <a className="page-link" onClick={() => paginate(i + 1)}>
-                                            {i + 1}
+                            <p>
+                                {filteredUsers.length > 0 
+                                    ? `Showing ${indexOfFirstUser + 1} to ${Math.min(indexOfLastUser, filteredUsers.length)} of ${filteredUsers.length} entries` 
+                                    : "No entries to display"}
+                            </p>
+                            
+                            {totalPages > 0 && (
+                                <ul className="pagination gap-2">
+                                    <li className={`page-item arrow ${currentPage === 1 ? 'disabled' : ''}`}>
+                                        <a className="page-link" aria-label="Previous" onClick={() => paginate(currentPage - 1)}>
+                                            <i className="ri-arrow-left-s-line"></i>
                                         </a>
                                     </li>
-                                ))}
-                                
-                                <li className="page-item arrow">
-                                    <a className="page-link" onClick={currentPage === totalPages ? (e) => e.preventDefault() : () => paginate(currentPage + 1)} aria-label="Next">
-                                        <i className="ri-arrow-right-s-line"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                                    
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
+                                            <a className="page-link" onClick={() => paginate(i + 1)}>
+                                                {i + 1}
+                                            </a>
+                                        </li>
+                                    ))}
+                                    
+                                    <li className={`page-item arrow ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                        <a className="page-link" onClick={() => paginate(currentPage + 1)} aria-label="Next">
+                                            <i className="ri-arrow-right-s-line"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            )}
                         </div>
-
                     </div>
                 </div>  
             </div>
@@ -419,14 +461,14 @@ export default function ManageUser() {
 
                         {/* Additional fields for role, status, etc. */}
                         <div className="d-flex mt-2 gap-3">
-                            <button type="submit" className="btn  addItem" >Submit</button>
+                            <button type="submit" className="btn addItem" >Submit</button>
                             <button type="button" className="btn cancelItem" onClick={() => setAddUserDiv(false)}>Cancel</button>
                         </div>
                     </form>
                 </div>
             </div>
             <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteAction={deleteUser}/>
-            {hideBody  && <div className="modal-backdrop show"></div>}
+            {hideBody && <div className="modal-backdrop show"></div>}
         </div>
     );
 }
