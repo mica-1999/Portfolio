@@ -1,35 +1,37 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { formatNumber, getBadgeClass, getRoleClass, getTimeFormatted, getActiveColor } from '/src/utils/mainContentUtil';
 import { useSession } from 'next-auth/react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
+import BalanceSection from './MainContentSections/BalanceSection';
+import StatsSection from './MainContentSections/StatsSection';
+import ProjectsSection from './MainContentSections/ProjectsSection';
+import TimelineSection from './MainContentSections/TimelineSection';
+import UsersSection from './MainContentSections/UsersSection';
+import LoadingState from './MainContentSections/LoadingState';
+import ErrorState from './MainContentSections/ErrorState';
 
 export default function MainContent() {
   // Session handling 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { id } = session?.user || {};
 
-  // Array initializations
-  const theads_projects = ['ID', 'Name', 'Description', 'State', 'Last Updated'];
-  const thead_user = ['User', 'Email', 'Role', 'Status', 'Last Active'];
-
-  // State Initialization for data coming from DB 
-  const [balanceData, setBalanceData] = useState({
-    totalBalance: null,
-    balanceMonth: null,
-    withdrawal: null,
+  // State for data
+  const [dashboardData, setDashboardData] = useState({
+    balance: {
+      totalBalance: null,
+      balanceMonth: null,
+      withdrawal: null,
+    },
+    projects: [],
+    timeline: [],
+    users: [],
+    sessionCount: 0,
+    rating: 0,
   });
-  const [projects, setProjects] = useState([]);
-  const [timeline, setTimeline] = useState([]);
-  const [users, setUsers] = useState([]); 
-  const [sessionCount,setSessionCount] = useState(0);
-  const [rating, setRating] = useState(0);
-
-  // State Initialization for loading and error handling
+  
+  // State for UI and loading
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // State Initialization for hidden sections
   const [hidden_sections, setHiddenSections] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
@@ -38,40 +40,36 @@ export default function MainContent() {
     return [];
   });
 
-
   // Function to handle the hidden sections
   const handle_sections = (section) => {
     setHiddenSections((prevHiddenSections) => {
       const updatedSections = prevHiddenSections.includes(section)
         ? prevHiddenSections.filter((s) => s !== section)
-        : [...prevHiddenSections, section]
+        : [...prevHiddenSections, section];
       return updatedSections;
     });
-  }
+  };
 
-  // Store `hidden_sections` in localStorage whenever the blur button is clicked
+  // Store hidden_sections in localStorage
   useEffect(() => {
     localStorage.setItem('hidden_sections_saved', JSON.stringify(hidden_sections));
   }, [hidden_sections]);
 
-
-
-  // Runs once when the component is mounted
+  // Fetch dashboard data
   useEffect(() => {
-
-    // Ensure localStorage is accessed only when available
+    // Load saved hidden sections
     if (typeof window !== 'undefined') {
       const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
       if (savedHiddenSections) {
-        setHiddenSections(JSON.parse(savedHiddenSections));  // Set state with saved data
+        setHiddenSections(JSON.parse(savedHiddenSections));
       }
     }
 
-    // Fetch data from the API
+    // Fetch all data from API
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [session,rating,balanceData, projects, timeline, users] = await Promise.all([
+        const [session, rating, balanceData, projects, timeline, users] = await Promise.all([
           fetchDataFromApi('/api/Session'),
           fetchDataFromApi('/api/Rating'),
           fetchDataFromApi('/api/Balance', id),
@@ -79,17 +77,20 @@ export default function MainContent() {
           fetchDataFromApi('/api/Timeline', id),
           fetchDataFromApi('/api/User'),
         ]);
-        setSessionCount(session || 0);
-        setRating(rating || 0);
-        // Set the state with the fetched data
-        setBalanceData({
-          totalBalance: balanceData.totalBalance,
-          balanceMonth: balanceData.thisMonth.totalDeposits,
-          withdrawal: balanceData.thisMonth.totalWithdrawals,
+        
+        // Set all data in one update to reduce renders
+        setDashboardData({
+          balance: {
+            totalBalance: balanceData.totalBalance,
+            balanceMonth: balanceData.thisMonth.totalDeposits,
+            withdrawal: balanceData.thisMonth.totalWithdrawals,
+          },
+          projects: projects || [],
+          timeline: timeline || [],
+          users: users || [],
+          sessionCount: session || 0,
+          rating: rating || 0,
         });
-        setProjects(projects || []);
-        setTimeline(timeline || []);
-        setUsers(users || []);
       } 
       catch (error) {
         console.error("Failed to fetch data:", error);
@@ -99,226 +100,53 @@ export default function MainContent() {
         setLoading(false);
       }
     };
+    
     fetchData();
-  }, []);
+  }, [id]);
 
-  
   if (loading) {
-    return <div className="mt-3">Loading...</div>;
+    return <LoadingState />;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <ErrorState message={error} />;
   }
 
   return (
     <div className="row d-flex mt-3">
       {/* Balance Section */}
-      <div className="d-flex col-lg-6 balance">
-        <div className="card flex-grow-1" >
-          <div id="1" className={hidden_sections.includes('1') ? 'blur_element' : ''}>
-            <div className="card-header">
-              <div className="d-flex align-items-center justify-content-between">
-                <h5 className="card-title">Multibanco</h5>
-                <div>
-                  <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={() => handle_sections('1')}></i>
-                </div>
-              </div>
-              <h6 className="card-subtitle mb-2">Balance Overview</h6>
-            </div>
-            <div className="card-body d-flex justify-content-evenly flex-wrap p-0 mb-4">
-              <div className="d-flex gap-2">
-                <div className="d-flex justify-content-center align-items-center small-box">
-                  <i className="fa-solid fa-euro-sign fa-lg euro-icon"></i>
-                </div>
-                <div className="card-info">
-                  <h5 className="mb-0">{formatNumber(balanceData.totalBalance)}</h5>
-                  <p className="mb-0">Total Balance</p>
-                </div>
-              </div>
-              <div className="d-flex gap-2">
-                <div className="d-flex justify-content-center align-items-center small-box-third">
-                  <i className="fa-solid fa-arrow-up fa-lg third-icon"></i>
-                </div>
-                <div className="card-info">
-                  <h5 className="mb-0">{formatNumber(balanceData.balanceMonth)}</h5>
-                  <p className="mb-0">This Month</p>
-                </div>
-              </div>
-              <div className="d-flex gap-2 p-0">
-                <div className="d-flex justify-content-center align-items-center small-box-received">
-                  <i className="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
-                </div>
-                <div className="card-info">
-                  <h5 className="mb-0">{formatNumber(balanceData.withdrawal)}</h5>
-                  <p className="mb-0">New Transactions</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Ratings Section */}
-      <div className="d-flex col-lg-3 ratings">
-        <div className="card flex-grow-1">
-          <div className="row g-0 flex-grow-1">
-            <div className="col-lg-6">
-              <div className="card-header">
-                <h6 className="card-title">Ratings</h6>
-                <div className="badge bg-label-primary rounded-pill lh-xs">Year of 2025</div>
-              </div>
-              <div className="card-body p-0 ms-3">
-                <h4>{rating}</h4>
-              </div>
-            </div>
-            <div className="col-lg-6 d-flex align-items-center justify-content-end pe-4">
-              <img src="../assets/images/avatar.png" className="img-fluid" style={{ marginBottom: '-10px' }} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Sessions Section */}
-      <div className="d-flex col-lg-3 sessions">
-        <div className="card flex-grow-1">
-          <div className="row flex-grow-1">
-            <div className="col-lg-6">
-              <div className="card-header">
-                <h6 className="card-title">Sessions</h6>
-                <div className="badge bg-label-success rounded-pill lh-xs">Last Month</div>
-              </div>
-              <div className="card-body p-0 ms-3">
-                <h4>{sessionCount}</h4>
-              </div>
-            </div>
-            <div className="col-lg-6 d-flex align-items-center justify-content-end pe-4">
-              <img src="../assets/images/session.png" className="img-fluid" style={{ marginBottom: '-10px' }} />
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <BalanceSection 
+        balanceData={dashboardData.balance} 
+        hidden={hidden_sections.includes('1')} 
+        onToggleVisibility={() => handle_sections('1')} 
+      />
+      
+      {/* Stats Sections */}
+      <StatsSection 
+        rating={dashboardData.rating} 
+        sessionCount={dashboardData.sessionCount}
+      />
+      
       {/* Projects Section */}
-      <div className="col-lg-8 d-flex table-custom">
-        <div className="card flex-grow-1">
-          <div id="2" className={hidden_sections.includes('2') ? 'blur_element' : ''}>
-            <div className="card-header">
-              <div className="d-flex align-items-center justify-content-between">
-                <h5 className="card-title">Projects</h5>
-              </div>
-              <h6 className="card-subtitle mb-2">#Categories</h6>
-            </div>
-            <div className="card-body p-0">
-              <div className="table-responsive text-nowrap project-table">
-                <table className="table user-table border-top">
-                  <thead className="table-head">
-                    <tr>
-                      {theads_projects.map((thead) => (
-                        <th key={thead}>{thead}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="table-content">
-                    {projects.map((project) => {
-                      const { badgeColor, output } = getBadgeClass(project.state);
-                      return (
-                        <tr key={project._id}>
-                          <td>{project.id}</td>
-                          <td>{project.title}</td>
-                          <td>{project.description}</td>
-                          <td>
-                            <div className={`badge bg-label-${badgeColor} rounded-pill lh-xs`}>
-                              {output}
-                            </div>
-                          </td>
-                          <td>{new Date(project.lastUpdated).toLocaleDateString()}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <ProjectsSection 
+        projects={dashboardData.projects} 
+        hidden={hidden_sections.includes('2')} 
+        onToggleVisibility={() => handle_sections('2')} 
+      />
+      
       {/* Timeline Section */}
-      <div className="col-lg-4 d-flex timeline-custom">
-        <div className="card flex-grow-1">
-          <div id="3" className={hidden_sections.includes('3') ? 'blur_element' : ''}>
-            <div className="card-header">
-              <div className="d-flex align-items-center justify-content-between">
-                <h5 className="card-title">Activity Timeline</h5>
-              </div>
-            </div>
-            <div className="card-body p-0 pt-4">
-              <ul className="timeline card-timeline mb-0">
-                {timeline.map((timeline_info) => {
-                  const { badgeColor } = getBadgeClass(timeline_info.state);
-                  const timelineTime = getTimeFormatted(timeline_info.timestamp);
-                  return (
-                    <li className="timeline-item" key={timeline_info.description}>
-                      <span className={`timeline-point timeline-point-${badgeColor}`}></span>
-                      <div className="timeline-event ps-4">
-                        <div className="timeline-header mb-2 pe-4">
-                          <h6 className="mb-0">{timeline_info.title}</h6>
-                          <small className="text-muted">{timelineTime}</small>
-                        </div>
-                        <p>{timeline_info.description}</p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* User Table Section */}
-      <div className="col-lg-12 d-flex table-custom-2">
-        <div className="card flex-grow-1 p-0">
-          <div id="4" className={hidden_sections.includes('4') ? 'blur_element' : ''}>
-            <div className="table-responsive text-nowrap user-table rounded">
-              <table className="table table-sm mb-0">
-                <thead className="table-head">
-                  <tr style={{ backgroundColor: '#3A3E5B' }}>
-                      {thead_user.map((thead) => (
-                        <th key={thead}>{thead}</th>
-                      ))}
-                  </tr>
-                </thead>
-                <tbody className="table-content">
-                  {users.map((user) => {
-
-                    const { badgeColor, output, color} = getRoleClass(user.role);
-                    const { colorActive } = getActiveColor(user.isActive);
-                    return(
-                      <tr key={user.username}>
-                        <td>
-                          <span className="d-flex align-items-center gap-2">
-                            <img src="../assets/images/profile-icon.png" alt="Profile Icon" className="profile-icon-small" />
-                            {user.firstName} {user.lastName}
-                          </span>
-                        </td>
-                        <td>{user.email}</td>
-                        <td>
-                          <span className="d-flex align-items-center gap-2">
-                            <i className={`ri-${badgeColor}-line ri-22px text-${color}`}></i> {output}
-                          </span>
-                        </td>
-                        <td><div className={`badge bg-label-${colorActive} rounded-pill lh-xs`}>{user.isActive.charAt(0).toUpperCase() + user.isActive.slice(1)}</div></td>
-                        <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
-                      </tr>
-                    );
-                })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TimelineSection 
+        timeline={dashboardData.timeline} 
+        hidden={hidden_sections.includes('3')} 
+        onToggleVisibility={() => handle_sections('3')} 
+      />
+      
+      {/* Users Section */}
+      <UsersSection 
+        users={dashboardData.users} 
+        hidden={hidden_sections.includes('4')} 
+        onToggleVisibility={() => handle_sections('4')} 
+      />
     </div>
   );
 }

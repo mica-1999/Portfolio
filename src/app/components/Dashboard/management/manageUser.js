@@ -34,6 +34,10 @@ export default function ManageUser() {
     const [loading, setLoading] = useState(false); // Loading state
     const [fetchError, setFetchError] = useState(''); // Fetch error
 
+    // Add loading states for operations
+    const [submitting, setSubmitting] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+
     // Initial Page Render
     useEffect(() => {
         fetchUsers();
@@ -103,18 +107,27 @@ export default function ManageUser() {
         };
     }, [addUserDiv]);
 
-    // Fetch from MongoDB
+    // Enhanced fetchUsers with better error handling
     const fetchUsers = async () => {
         setLoading(true);
         setFetchError('');  
         try {
             const response = await fetchDataFromApi("/api/User");
-            setUsers(response || []);
+            if (!response) {
+                throw new Error("No data returned from API");
+            }
+            setUsers(response);
         } catch (error) {
             console.error('Error fetching data:', error);
-            setFetchError('Failed to load users. Please try again.'); // Update error state
+            setFetchError('Failed to load users. Please try again.');
+            // Show error modal if there's a fetch error
+            setShowModal({
+                type: 'error',
+                show: true,
+                message: 'Failed to load users. Please try again.'
+            });
         } finally {
-            setLoading(false);  // Set loading to false once the fetch is complete
+            setLoading(false);
         }
     };
 
@@ -127,12 +140,20 @@ export default function ManageUser() {
         }
     };
 
+    // Enhanced form reset with focus management
     const handleReset = () => {
         setFormData({ firstName: '', lastName: '', email: '', phone: '', role: '', linkedProject: [] });
         setErrors({});
         setSuccess({});
+        
+        // Focus the first input after reset for better UX
+        setTimeout(() => {
+            const firstInput = document.getElementById('firstName');
+            if (firstInput) firstInput.focus();
+        }, 0);
     };
 
+    // Enhanced submit with loading state
     const handleSubmit = async (e) => {
         e.preventDefault();
         const errorsFound = Object.values(errors).some((error) => error);
@@ -142,6 +163,7 @@ export default function ManageUser() {
             return;
         }
 
+        setSubmitting(true);
         try {
             const response = await fetch("/api/User", {
                 method: "POST",
@@ -162,22 +184,35 @@ export default function ManageUser() {
         } catch (error) {
             console.error('Error creating user:', error);
             setShowModal({type: 'error', show: true, message: 'Error creating User. Please try again.'});
+        } finally {
+            setSubmitting(false);
         }
     };
 
+    // Enhanced delete with loading state
     const handleDelete = async (username) => {
+        if (!username) return;
+        
+        setDeleting(true);
         try {
             const response = await fetch(`/api/User/?username=${username}`, {
                 method: "DELETE",
             });
+            
+            if (!response.ok) {
+                throw new Error("Failed to delete user");
+            }
+            
             const result = await response.json();
             setShowModal({type: 'success', show: true, message: 'User has been deleted successfully'});
             fetchUsers();
         } catch (error) {
             console.error('Error deleting user:', error);
             setShowModal({type: 'error', show: true, message: 'Failed to delete User. Please try again.'});
+        } finally {
+            setDeleting(false);
         }
-    }
+    };
     
     const verifyInput = (value, fieldName) => {
         value = value.trim();
@@ -240,6 +275,14 @@ export default function ManageUser() {
         });
     }
 
+    // Add keyboard accessibility for pagination
+    const handlePaginationKeyPress = (e, pageNumber) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            paginate(pageNumber);
+        }
+    };
+
     return(
         <div className="d-flex col-lg-12 mt-4">
             {/* Filters and Table Section */}
@@ -287,12 +330,23 @@ export default function ManageUser() {
                         </div>
                     </div>
 
+                    {/* Enhanced search input with accessibility */}
                     <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
                         <div className="col-lg-12 d-flex align-items-center justify-content-between">
                             <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
                             <div className="d-flex gap-3">
-                                <input type="text" className="form-control searchInput" placeholder="Search User" onChange={(e) => setFilters({ ...filters, name: e.target.value })}/>
-                                <button className="btn btn-primary addBtn" onClick={() => setAddUserDiv(true)}>Add New User</button>
+                                <input 
+                                    type="text" 
+                                    className="form-control searchInput" 
+                                    placeholder="Search User" 
+                                    onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+                                    aria-label="Search users"
+                                />
+                                <button 
+                                    className="btn btn-primary addBtn" 
+                                    onClick={() => setAddUserDiv(true)}
+                                    aria-label="Add new user"
+                                >Add New User</button>
                             </div>
                         </div>
                     </div>
@@ -376,24 +430,47 @@ export default function ManageUser() {
                                     : "No entries to display"}
                             </p>
                             
+                            {/* Enhanced pagination with keyboard accessibility */}
                             {totalPages > 0 && (
-                                <ul className="pagination gap-2">
+                                <ul className="pagination gap-2" role="navigation" aria-label="Pagination">
                                     <li className={`page-item arrow ${currentPage === 1 ? 'disabled' : ''}`}>
-                                        <a className="page-link" aria-label="Previous" onClick={() => paginate(currentPage - 1)}>
+                                        <a 
+                                            className="page-link" 
+                                            aria-label="Previous page" 
+                                            onClick={() => currentPage > 1 && paginate(currentPage - 1)}
+                                            onKeyDown={(e) => handlePaginationKeyPress(e, currentPage - 1)}
+                                            tabIndex={currentPage === 1 ? -1 : 0}
+                                            role="button"
+                                        >
                                             <i className="ri-arrow-left-s-line"></i>
                                         </a>
                                     </li>
                                     
                                     {Array.from({ length: totalPages }, (_, i) => (
                                         <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
-                                            <a className="page-link" onClick={() => paginate(i + 1)}>
+                                            <a 
+                                                className="page-link" 
+                                                onClick={() => paginate(i + 1)}
+                                                onKeyDown={(e) => handlePaginationKeyPress(e, i + 1)}
+                                                tabIndex={0}
+                                                role="button"
+                                                aria-label={`Page ${i + 1}`}
+                                                aria-current={i + 1 === currentPage ? "page" : null}
+                                            >
                                                 {i + 1}
                                             </a>
                                         </li>
                                     ))}
                                     
                                     <li className={`page-item arrow ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                        <a className="page-link" onClick={() => paginate(currentPage + 1)} aria-label="Next">
+                                        <a 
+                                            className="page-link" 
+                                            onClick={() => currentPage < totalPages && paginate(currentPage + 1)} 
+                                            aria-label="Next page"
+                                            onKeyDown={(e) => handlePaginationKeyPress(e, currentPage + 1)}
+                                            tabIndex={currentPage === totalPages ? -1 : 0}
+                                            role="button"
+                                        >
                                             <i className="ri-arrow-right-s-line"></i>
                                         </a>
                                     </li>
@@ -404,19 +481,37 @@ export default function ManageUser() {
                 </div>  
             </div>
 
-            {/* Add New User form sliding in from the right */}
-            <div className={`add-user-form ${addUserDiv ? 'show' : ''}`} ref={addUserFormRef}>
+            {/* Enhanced form with loading state and accessibility */}
+            <div 
+                className={`add-user-form ${addUserDiv ? 'show' : ''}`} 
+                ref={addUserFormRef}
+                role="dialog"
+                aria-labelledby="addUserFormTitle"
+            >
                 <div className="form-container d-flex flex-column mt-2">
                     <div className="d-flex align-items-center justify-content-between bottom-border">
-                        <h5 className="m-0">Add User</h5>
+                        <h5 className="m-0" id="addUserFormTitle">Add User</h5>
                         <div className="d-flex align-items-center gap-3 float-end">
-                        <i className="ri-refresh-line" onClick={() => handleReset()}></i>
-                        <i className="ri-close-line"  onClick={() => setAddUserDiv(false)}></i>
-                        
+                            <i 
+                                className="ri-refresh-line" 
+                                onClick={handleReset}
+                                tabIndex="0"
+                                role="button"
+                                aria-label="Reset form"
+                                onKeyDown={(e) => e.key === 'Enter' && handleReset()}
+                            ></i>
+                            <i 
+                                className="ri-close-line" 
+                                onClick={() => setAddUserDiv(false)}
+                                tabIndex="0"
+                                role="button"
+                                aria-label="Close form"
+                                onKeyDown={(e) => e.key === 'Enter' && setAddUserDiv(false)}
+                            ></i>
                         </div>
                     </div>
                     <hr></hr>
-                    <form className="d-flex flex-column mt-3" onSubmit={handleSubmit}>
+                    <form className="d-flex flex-column mt-3" onSubmit={handleSubmit} noValidate>
                         {/* Form fields */}
                         <div className="form-group">
                             <input type="text" id="firstName" name="firstName" placeholder="Michael" value={formData.firstName} className={`form-control sInput ${errors.firstName ? 'errorBorderColor' : success.firstName ? 'successBorderColor' : ''}`} required onChange={handleInputChange('firstName')} onBlur={(e) => verifyInput(e.target.value,e.target.name)}/>
@@ -461,13 +556,36 @@ export default function ManageUser() {
 
                         {/* Additional fields for role, status, etc. */}
                         <div className="d-flex mt-2 gap-3">
-                            <button type="submit" className="btn addItem" >Submit</button>
-                            <button type="button" className="btn cancelItem" onClick={() => setAddUserDiv(false)}>Cancel</button>
+                            <button 
+                                type="submit" 
+                                className="btn addItem"
+                                disabled={submitting}
+                            >
+                                {submitting ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                        Submitting...
+                                    </>
+                                ) : "Submit"}
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn cancelItem" 
+                                onClick={() => setAddUserDiv(false)}
+                            >
+                                Cancel
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
-            <Modal showModal={showModal} setShowModal={setShowModal} handleDelete={handleDelete} deleteAction={deleteUser}/>
+            <Modal 
+                showModal={showModal} 
+                setShowModal={setShowModal} 
+                handleDelete={handleDelete} 
+                deleteAction={deleteUser}
+                isDeleting={deleting}
+            />
             {hideBody && <div className="modal-backdrop show"></div>}
         </div>
     );
