@@ -3,7 +3,7 @@ const { createServer } = require('node:http');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
-const dbConnect = require('../utils/dbConnect'); 
+const dbConnect = require('../src/utils/dbConnect'); 
 
 const dev = process.env.NODE_ENV !== 'production'; // Determine if the environment is development or production
 const hostname = "localhost";

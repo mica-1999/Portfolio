@@ -6,8 +6,6 @@
     "bootstrap": "^5.3.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "express-session": "^1.18.1",
     "joi": "^17.13.3",
     "mongoose": "^8.9.5",
     "next": "^15.2.0",
@@ -17,14 +15,12 @@
     "prismjs": "^1.29.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1",
     "uuid": "^11.0.5"
   },
   "scripts": {
-    "dev": "node src/app/server.js",
+    "dev": "next dev", 
     "build": "next build",
-    "start": "NODE_ENV=production src/app/node server.js",
+    "start": "next start",  
     "lint": "next lint"
   },
   "devDependencies": {

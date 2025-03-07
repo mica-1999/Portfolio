@@ -223,8 +223,8 @@ export default function NewSoftware() {
                 }
                 break;
             case 'userNotes':
-                if (value.length > 300) {
-                    errorMessage = 'User notes should not exceed 300 characters.';
+                if (value.length > 500) {
+                    errorMessage = 'User notes should not exceed 500 characters.';
                 }
                 break;
             default:

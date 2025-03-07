@@ -1,19 +1,32 @@
 import Script from 'next/script';
-import '../utils/global.css';
+import '../styles/global.css';
 
 export const metadata = {
   title: 'My Portfolio',
   description: 'Welcome to my portfolio site!',
+  openGraph: {
+    title: 'My Portfolio',
+    description: 'Explore my projects and accomplishments!',
+    url: 'http://localhost:3000',  // Localhost URL
+    image: '/images/img-1.png',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'My Portfolio',
+    description: 'Explore my projects and accomplishments!',
+    image: '/images/img-1.png', 
+  },
 };
 
 export default function GlobalLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {children}
+        {children} {/* Rendering the page-specific content */}
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          strategy="afterInteractive"
+          strategy="afterInteractive" // Loading Bootstrap JS after content becomes interactive
         />
       </body>
     </html>

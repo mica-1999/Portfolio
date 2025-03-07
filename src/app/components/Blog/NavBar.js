@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation'; // Used to get the current path
 import { useState, useEffect } from 'react';
 
 export default function NavBar() {
@@ -15,7 +15,7 @@ export default function NavBar() {
     };
     
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll); // Arrow function to remove event listener (anonymous function/only happens once)
   }, []);
 
   // Check if current path is active

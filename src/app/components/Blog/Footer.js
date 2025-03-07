@@ -1,29 +1,7 @@
 import Link from 'next/link';
+import { socialLinks } from '../../data/socialData';
 
 export default function Footer() {
-  const socialLinks = [
-    {
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/in/micael-ribeiro-a2230433a/",
-      icon: "ri-linkedin-fill"
-    },
-    {
-      name: "GitHub",
-      url: "https://github.com/mica-1999",
-      icon: "ri-github-fill"
-    },
-    {
-      name: "Twitter",
-      url: "https://x.com/ribeiro_micael",
-      icon: "ri-twitter-x-fill"
-    },
-    {
-      name: "Instagram",
-      url: "https://www.instagram.com/goncalomicael20/",
-      icon: "ri-instagram-line"
-    },
-  ];
-
   const currentYear = new Date().getFullYear();
 
   return (
@@ -88,7 +66,7 @@ export default function Footer() {
                 <div className="col-6">
                   <ul className="quick-links">
                     <li><Link href="/pages/login">Login</Link></li>
-                    <li><a href="#">Portuguese Site</a></li>
+                    <li><a href="#">PT Site</a></li>
                     <li><a href="#">Privacy Policy</a></li>
                   </ul>
                 </div>

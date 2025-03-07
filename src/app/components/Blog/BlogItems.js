@@ -1,100 +1,9 @@
 "use client";
 import { useState, useEffect } from 'react';
-
-// Sample project data - replace with your actual data
-const projectsData = [
-  {
-    id: 1,
-    title: "Modern Dashboard UI",
-    description: "A responsive admin dashboard with dark/light mode, built with React and Tailwind CSS.",
-    image: "/assets/images/img-1.jpg",
-    tags: ["React", "Tailwind CSS", "Frontend"],
-    date: "June 15, 2023",
-    github: "https://github.com/yourusername/dashboard-ui",
-    demo: "https://dashboard-demo.example.com",
-    featured: true
-  },
-  {
-    id: 2,
-    title: "E-Commerce Platform",
-    description: "Full-stack e-commerce solution with payment integration and inventory management.",
-    image: "/assets/images/img-2.jpg",
-    tags: ["Next.js", "MongoDB", "Full Stack"],
-    date: "August 3, 2023",
-    github: "https://github.com/yourusername/ecommerce",
-    demo: "https://ecommerce-demo.example.com",
-    featured: false
-  },
-  {
-    id: 3,
-    title: "Real-time Chat App",
-    description: "Socket.io powered chat app with real-time messaging and notification features.",
-    image: "/assets/images/img-3.jpg",
-    tags: ["Socket.IO", "Express", "React"],
-    date: "September 22, 2023",
-    github: "https://github.com/yourusername/chat-app",
-    demo: "https://chat-app-demo.example.com",
-    featured: true
-  },
-  {
-    id: 4,
-    title: "Portfolio Website",
-    description: "Customizable portfolio template for developers with project showcasing capabilities.",
-    image: "/assets/images/img-4.jpg",
-    tags: ["HTML", "CSS", "JavaScript"],
-    date: "October 10, 2023",
-    github: "https://github.com/yourusername/portfolio-template",
-    demo: "https://portfolio-demo.example.com",
-    featured: false
-  },
-  {
-    id: 5,
-    title: "Weather Forecast App",
-    description: "Real-time weather application that uses geolocation and third-party weather APIs.",
-    image: "/assets/images/img-5.jpg",
-    tags: ["React", "API", "Geolocation"],
-    date: "November 7, 2023",
-    github: "https://github.com/yourusername/weather-app",
-    demo: "https://weather-app-demo.example.com",
-    featured: false
-  },
-  {
-    id: 6,
-    title: "Task Management System",
-    description: "Kanban-style task management application with drag-and-drop functionality.",
-    image: "/assets/images/img-6.jpg",
-    tags: ["React", "Redux", "Firebase"],
-    date: "December 15, 2023",
-    github: "https://github.com/yourusername/task-management",
-    demo: "https://task-app-demo.example.com",
-    featured: true
-  },
-  {
-    id: 7,
-    title: "Mobile Fitness App",
-    description: "React Native app for tracking workouts, nutrition, and fitness goals.",
-    image: "/assets/images/img-7.jpg",
-    tags: ["React Native", "Mobile", "Health"],
-    date: "January 24, 2024",
-    github: "https://github.com/yourusername/fitness-app",
-    demo: "https://fitness-app.example.com",
-    featured: false
-  },
-  {
-    id: 8,
-    title: "Content Management",
-    description: "Custom CMS built with Node.js for managing blog posts and media content.",
-    image: "/assets/images/img-8.jpg",
-    tags: ["Node.js", "Express", "MongoDB"],
-    date: "February 9, 2024",
-    github: "https://github.com/yourusername/cms",
-    demo: "https://cms-demo.example.com",
-    featured: false
-  }
-];
+import { projectsData } from '../../data/projectsData';
 
 export default function BlogItems() {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState(['all']);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -107,12 +16,12 @@ export default function BlogItems() {
     setLoading(true);
     
     setTimeout(() => {
-      let filtered = [...projectsData];
+      let filtered = [...projectsData]; // Copy of all projects
       
       // Apply tag filter
-      if (filter !== 'all') {
+      if (filter[0] !== 'all') {
         filtered = filtered.filter(project => 
-          project.tags.includes(filter)
+          filter.some(tag => project.tags.includes(tag))
         );
       }
       
@@ -130,6 +39,33 @@ export default function BlogItems() {
       setLoading(false);
     }, 400); // Small timeout to show loading state
   }, [filter, searchQuery]);
+  
+  // Handle tag filter changes
+  const handleFilterChange = (tag) => {
+    if (tag === 'all') {
+      // If "all" is clicked, we only want "all" in the filter
+      setFilter(['all']);
+      return;
+    }
+    
+    // Create a new filter array without 'all'
+    const newFilter = filter.filter(t => t !== 'all');
+    
+    if (filter.includes(tag)) {
+      // Remove the tag
+      const updatedFilter = newFilter.filter(t => t !== tag);
+      // If no tags left, set back to 'all'
+      setFilter(updatedFilter.length ? updatedFilter : ['all']);
+    } else {
+      // Add the tag
+      setFilter([...newFilter, tag]);
+
+      // If every tag is selected, set back to 'all'
+      if (newFilter.length === allTags.length - 1) {
+        setFilter(['all']);
+      }
+    }
+  }
 
   return (
     <div className="blog-container">
@@ -152,8 +88,8 @@ export default function BlogItems() {
         
         <div className="filter-tags">
           <button 
-            className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-            onClick={() => setFilter('all')}
+            className={`filter-btn ${filter.includes('all') ? 'active' : ''}`}
+            onClick={() => handleFilterChange('all')}
           >
             All
           </button>
@@ -161,8 +97,8 @@ export default function BlogItems() {
           {allTags.map(tag => (
             <button 
               key={tag} 
-              className={`filter-btn ${filter === tag ? 'active' : ''}`}
-              onClick={() => setFilter(tag)}
+              className={`filter-btn ${filter.includes(tag) ? 'active' : ''}`}
+              onClick={() => handleFilterChange(tag)}
             >
               {tag}
             </button>

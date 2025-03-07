@@ -234,8 +234,8 @@ export async function POST(req) {
   }
 
   // Validate user notes if provided
-  if (userNotes && (typeof userNotes !== 'string' || userNotes.length > 300)) {
-    return NextResponse.json({ error: "User notes must be a string with maximum 300 characters" }, { status: 400 });
+  if (userNotes && (typeof userNotes !== 'string' || userNotes.length > 500)) {
+    return NextResponse.json({ error: "User notes must be a string with maximum 500 characters" }, { status: 400 });
   }
 
   try {

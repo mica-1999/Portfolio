@@ -60,7 +60,7 @@ const learningInfoSchema = new mongoose.Schema({
     codeSnippets: [codeSnippetSchema],
     videos: [videoSchema],
     
-    userNotes: { type: String, maxlength: 300 },
+    userNotes: { type: String, maxlength: 500 },
     views: { type: Number, default: 0 },
     isFavorite: { type: Boolean, default: false },
 });
