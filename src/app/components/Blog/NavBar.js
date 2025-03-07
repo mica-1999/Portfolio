@@ -1,17 +1,64 @@
 "use client";
-
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export default function NavBar() {
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Check if current path is active
+  const isActive = (path) => {
+    return pathname === path;
+  };
+
   return (
-    <div className="row">
-      <div className="col-lg-12 d-flex justify-content-center align-items-center mt-5">
-        <div className="d-flex justify-content-evenly align-items-center rounded-pill nav-links" style={{ backgroundColor: '#939393', width: '400px', height: '45px' }}>
-          <div className="rounded-pill active"><Link href="/pages/blog">Main</Link></div>
-          <div className="rounded-pill"><Link href="/pages/dashboard">Dashboard</Link></div>
-          <div className="rounded-pill"><Link href="/pages/login">Login</Link></div>
+    <nav className={`blog-nav ${scrolled ? 'scrolled' : ''}`}>
+      <div className="nav-container">
+        <div className="nav-brand">
+          <Link href="/pages/blog">
+            <span className="brand-name">Micael</span>
+            <span className="brand-dev">Dev</span>
+          </Link>
+        </div>
+
+        <div className="mobile-menu-button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <div className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <div className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`}>
+          <div className="nav-items">
+            <Link href="/pages/blog" className={`nav-link ${isActive('/pages/blog') ? 'active' : ''}`}>
+              Projects
+            </Link>
+            <Link href="/pages/about" className={`nav-link ${isActive('/pages/about') ? 'active' : ''}`}>
+              About
+            </Link>
+            <Link href="/pages/contact" className={`nav-link ${isActive('/pages/contact') ? 'active' : ''}`}>
+              Contact
+            </Link>
+          </div>
+          
+          <Link href="/pages/login" className="login-button">
+            Login
+          </Link>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

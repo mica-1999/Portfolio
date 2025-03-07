@@ -20,7 +20,17 @@ const videoSchema = new mongoose.Schema({
 
 // Main schema
 const learningInfoSchema = new mongoose.Schema({
-    icon: { type: String, default: '/assets/images/subCategoriesImages/machine.png' }, // Default icon path
+    icon: { 
+        type: String, 
+        get: function() {
+            // Generate icon path based on subcategory
+            if (this.subtitleCard) {
+                const iconSubcategory = this.subtitleCard.toLowerCase().replace(/\s+/g, '');
+                return `/assets/images/subCategoriesImages/${iconSubcategory}.png`;
+            }
+            return '/assets/images/subCategoriesImages/default.png';
+        }
+    },
     titleCard: { type: String, required: true, minlength: 2, maxlength: 100 },
     subtitleCard: { type: String, required: true, minlength: 2, maxlength: 200 },
     category: { type: String, required: true },
@@ -54,6 +64,10 @@ const learningInfoSchema = new mongoose.Schema({
     views: { type: Number, default: 0 },
     isFavorite: { type: Boolean, default: false },
 });
+
+// Configure schema to use getters when converting to JSON/Object
+learningInfoSchema.set('toJSON', { getters: true });
+learningInfoSchema.set('toObject', { getters: true });
 
 // Update timestamps on save
 learningInfoSchema.pre('save', function(next) {
