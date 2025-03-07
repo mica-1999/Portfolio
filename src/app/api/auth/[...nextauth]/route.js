@@ -1,14 +1,12 @@
-import NextAuth from "next-auth";
-import { NextResponse } from "next/server";
-import Session from "/src/models/Session";
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from 'bcrypt';
-import dbConnect from '/src/utils/dbConnect';
-import mongoose from 'mongoose';
+import NextAuth from "next-auth"; // Core foundation for the Authentication API in Next.js
+import { NextResponse } from "next/server"; // Allows us to send responses to the client
+import Session from "/src/models/Session"; // Log of user sessions
+import CredentialsProvider from "next-auth/providers/credentials"; // Allows custom authentication (we're using MongoDB)
+import bcrypt from 'bcrypt'; // Hashes passwords for security
+import dbConnect from '/src/utils/dbConnect'; // Connects to the MongoDB database
+import mongoose from 'mongoose'; // Allows us to interact with the MongoDB database
 
 const addSession = async (userId,db) => {
-  console.log("entrei aqui")
-  // First we need to find 
   try {
     const findSession = await db.collection("sessions").findOne({ userId: userId });
     const currentTimestamp = new Date();
@@ -30,7 +28,6 @@ const addSession = async (userId,db) => {
     return NextResponse.json({ error: "Error during session creation" }, { status: 500 });
   }
 }
-
 
 export const authOptions = {
   providers: [
@@ -74,17 +71,21 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 60, // 7 days
+    maxAge: 7 * 24 * 60 * 60, // 7 days
   },
   callbacks: {
+    // This callback is called whenever a JWT token is created or updated.
     async jwt({ token, user }) {
+      // If 'user' exists, it means this function is running during login
       if (user) {
+        // Add user details to the token
         token.id = user.id;
         token.username = user.username;
         token.first_name = user.first_name; 
         token.last_name = user.last_name;  
         token.role = user.role;              
       }
+      // Return the updated token, which will be used in future requests
       return token;
     },
     async session({ session, token }) {

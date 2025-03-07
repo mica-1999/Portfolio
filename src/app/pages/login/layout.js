@@ -1,4 +1,4 @@
-import { getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth'; // Allows us to check the session on the server side
 import { authOptions } from '/src/app/api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
 
@@ -17,7 +17,7 @@ export default async function LoginLayout({ children }) {
   return (
     <>
       {/* Include the specific login CSS */}
-      <link rel="stylesheet" href="/assets/css/login.css" />
+      <link rel="stylesheet" href="/assets/css/login/login.css" />
       
       {/* Layout Content */}
       <div className="container-fluid vh-100">

@@ -7,7 +7,7 @@ export default function BlogLayout({ children }) {
   return (
     <>
       {/* Include the specific blog CSS */}
-      <link rel="stylesheet" href="/assets/css/blog.css" />
+      <link rel="stylesheet" href="/assets/css/blog/blog.css" />
       {children}
     </>
   );

@@ -1,0 +1,245 @@
+/* ----------------------------------------------
+   PERSONAL PAGE STYLES
+---------------------------------------------- */
+.headerPP {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+}
+
+.headerBackground {
+    border-radius: 0.400rem;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.infoSection {
+    margin-bottom: -40px;
+}
+
+.infoSection img {
+    position: relative;
+    top: -50px;
+    left: 5px;
+    border: 6px solid var(--card-bg-color);
+    border-radius: 0.45rem;
+}
+
+.PPsections button {
+    padding: .5435rem 1.375rem;
+    align-self: center;
+    color: #D3D4E9;
+    border: none;
+}
+
+.PPsections button:hover:not(.active) {
+    background-color: #393C6A;
+    color: #666CFF;
+    border: none;
+}
+
+.PPsections button.active {
+    background-color: var(--bs-primary) !important;
+    color: white;
+    border: none;
+}
+
+.aboutMe p {
+    color: #b2b3ca;
+}
+
+.aboutMe p i {
+    font-size: 1.1rem;
+}
+
+/* Timeline styles for personal page */
+.timeline {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+    max-height: 300px;
+    overflow-x: hidden;
+}
+
+.timeline .timeline-item {
+    position: relative;
+    left: 0.7rem;
+    border-left: 1px solid #464963;
+    padding-bottom: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.timeline .timeline-item:hover {
+    transform: translateX(3px);
+}
+
+.timeline .timeline-item .timeline-point {
+    position: absolute;
+    left: -0.36rem;
+    top: 0.24rem;
+    z-index: 2;
+    display: block;
+    height: .75rem;
+    width: .75rem;
+    border-radius: 50%;
+    box-shadow: 0 0 0 10px var(--card-bg-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-item:hover .timeline-point {
+    transform: scale(1.2);
+}
+
+.timeline .timeline-item .timeline-point-primary {
+    background-color: var(--bs-primary);
+}
+
+.timeline .timeline-item .timeline-point-success {
+    background-color: var(--bs-success);
+}
+
+.timeline .timeline-item .timeline-point-warning {
+    background-color: var(--bs-warning);
+}
+
+.timeline .timeline-item .timeline-point-danger {
+    background-color: var(--bs-danger);
+}
+
+.timeline .timeline-item .timeline-point-info {
+    background-color: var(--bs-info);
+}
+
+.timeline .timeline-item .timeline-point-secondary {
+    background-color: var(--bs-secondary);
+}
+
+.timeline .timeline-item .timeline-point-light {
+    background-color: var(--bs-light);
+}
+
+.timeline .timeline-item .timeline-point-dark {
+    background-color: var(--bs-dark);
+}
+
+.timeline .timeline-item .timeline-event {
+    position: relative;
+    width: 100%;
+    min-height: 4rem;
+    border-radius: .375rem;
+}
+
+.timeline-event p {
+    color: #b2b3ca;
+}
+
+.timeline .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+/* Description cell style */
+.description-cell {
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+/* Badge enhancements */
+.bg-label-primary {
+    background-color: #393c6a !important;
+    color: var(--bs-indigo) !important;
+}
+
+.bg-label-success {
+    background-color: var(--badge-success-bg) !important;
+    color: var(--badge-success-color) !important;
+}
+
+.bg-label-warning {
+    background-color: var(--badge-warning-bg) !important;
+    color: var(--badge-warning-color) !important;
+}
+
+.bg-label-secondary {
+    background-color: var(--badge-secondary-bg) !important;
+    color: var(--badge-secondary-color) !important;
+}
+
+.bg-label-danger {
+    background-color: var(--badge-danger-bg) !important;
+    color: var(--badge-danger-color) !important;
+}
+
+/* Enhanced styles */
+.profile-image {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-info h4.text-primary {
+    background: linear-gradient(90deg, var(--bs-indigo) 0%, #7a7cf5 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+/* Table styles */
+.user-table td {
+    background-color: transparent !important;
+    border-bottom: 1px solid #464963;
+}
+
+.user-table th {
+    background-color: #3A3E5B;
+    border-bottom: 1px solid #464963;
+}
+
+.user-table tr:hover td {
+    background-color: rgba(57, 60, 106, 0.3) !important;
+}
+
+/* Tag styles */
+.tag-selection {
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 500;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.tag-selection:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* Button styles */
+.addBtn {
+    background-color: #5C61E6;
+    width: 150px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.addBtn:hover {
+    background-color: #4f53d2;
+    transform: translateY(-2px);
+}
+
+.addBtn,
+.addBtn:hover {
+    width: 150px;
+    color: #fff;
+    border-color: var(--bs-indigo);
+}

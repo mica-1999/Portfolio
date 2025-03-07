@@ -23,3 +23,6 @@ logs/
 .DS_Store  # macOS system file  
 Thumbs.db  # Windows system file  
 *.swp      # Vim swap files  
+
+# Others
+customServer/

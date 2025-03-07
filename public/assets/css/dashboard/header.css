@@ -1,0 +1,152 @@
+/* ----------------------------------------------
+   HEADER COMPONENT STYLES
+---------------------------------------------- */
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.search-link {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+.search-link:hover {
+    cursor: pointer;
+}
+
+.profile-section a {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+.profile-section a .fa-youtube:hover {
+    color: red;
+}
+
+.profile-section a .fa-github:hover {
+    color: black;
+}
+
+.profile-section .fa-arrows-rotate:hover {
+    cursor: pointer;
+    color: green;
+}
+
+.profile-section .fa-bell:hover {
+    cursor: pointer;
+    color: yellow;
+}
+
+.dropdown-menu {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-box-shadow);
+    min-width: 200px;
+    right: 0;
+    left: auto;
+}
+
+.dropdown-item {
+    color: var(--primary-text-color);
+    padding: var(--card-padding-y) var(--card-padding-x);
+}
+
+.dropdown-item:hover:not(.logout-btn),
+.dropdown-item:focus:not(.logout-btn) {
+    background-color: #373951;
+    color: var(--primary-text-color);
+}
+
+.dropdown-header {
+    padding: var(--card-padding-y) var(--card-padding-x);
+}
+
+.dropdown-divider {
+    margin: 0;
+    border-top: 1px solid var(--card-border-color);
+}
+
+.iconMenu li {
+    padding-right: 10px;
+}
+
+.logout-btn,
+.logout-btn:hover {
+    background-color: var(--bs-red);
+    color: var(--primary-text-color);
+}
+
+/* Additional header-specific media queries */
+@media (max-width: 1227px) {
+    .fa-bars.fasideBar {
+        display: block !important;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 830px) {
+    .dropdown-menu {
+        right: auto;
+        left: 0;
+    }
+}
+
+/* Enhanced header-specific styles */
+.profile-icon {
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.profile-icon:hover {
+    transform: scale(1.05);
+}
+
+.search-link {
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+.search-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-menu {
+    animation: fadeIn 0.2s ease-out;
+    transform-origin: top right;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dropdown-item {
+    transition: all 0.15s ease;
+    border-radius: 4px;
+    margin: 2px 5px;
+    padding: 8px 12px;
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.dropdown-item:hover i {
+    opacity: 1;
+}
+
+.logout-btn {
+    margin-top: 5px;
+}

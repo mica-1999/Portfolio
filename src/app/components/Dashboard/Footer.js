@@ -1,12 +1,11 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useSession } from 'next-auth/react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 
 export default function Footer() {
   const [rating, setRating] = useState(0);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +18,7 @@ export default function Footer() {
       } 
     }
     fetchData();    
-  }, []);
+  }, [session]);
 
   const handleRating = async (index) => {
     setRating(index);

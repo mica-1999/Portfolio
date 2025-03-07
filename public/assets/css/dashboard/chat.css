@@ -1,0 +1,226 @@
+/* ----------------------------------------------
+   CHAT COMPONENT STYLES
+---------------------------------------------- */
+.chatApp { 
+    height: 75vh; 
+    background-color: #343752; 
+}
+
+.searchContChat { 
+    border-radius: 25px; 
+    background-color: transparent !important; 
+    border: 1px solid #595b75; 
+    color: var(--primary-text-color);
+}
+
+.searchContChat:hover { 
+    border: 1px solid #9FA1B8; 
+}
+
+.searchContChat::placeholder { 
+    color: #73758E; 
+    font-size: 14px; 
+}
+
+.searchContChat:focus { 
+    border: 2px solid var(--bs-indigo) !important; 
+    color: var(--primary-text-color);
+}
+
+.searchSection {
+    background-color: var(--card-bg-color);
+    flex-basis: 350px;
+    max-width: 350px;
+    border-top-left-radius: 0.625rem;
+    border-bottom-left-radius: 0.625rem;
+    z-index: 1050;
+}
+
+.searchDiv, .headerDiv { 
+    height: 75px; 
+}
+
+.chatApp .title { 
+    color: var(--bs-indigo); 
+    font-size: 19px; 
+}
+
+.chatApp .chatItems {
+    height: 60px;
+    border-radius: .5rem;
+    cursor: pointer;
+}
+
+.chatApp .chatItems.active { 
+    background-color: var(--bs-indigo); 
+}
+
+.chatApp .chatItems.active span { 
+    color: white !important; 
+}
+
+.chatApp .personName {
+    color: var(--primary-text-color);
+    font-weight: 400 !important;
+    font-size: 0.9375rem;
+}
+
+.chatApp .description { 
+    color: var(--secondary-text-color); 
+    font-size: 0.8125rem; 
+}
+
+.rightCol .headerDiv i, .sendMessageForm i {
+    font-size: 20px;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+}
+
+.rightCol { 
+    flex-grow: 1; 
+    max-width: calc(100% - 350px); 
+}
+
+.chatSection .sendMessageForm {
+    border: none;
+    background-color: var(--card-bg-color);
+    height: 55px;
+    border-radius: 0.625rem;
+}
+
+.sendMessageInput, .sendMessageInput:focus {
+    background: transparent;
+    border: none;
+    outline: none !important;
+    height: 50px;
+    width: 75%;
+}
+
+.messageDiv { 
+    margin-top: auto; 
+    position: relative;
+}
+
+.messageDiv .typingIndicator {
+    position: absolute; 
+    top: -5px;        
+    left: 45px;        
+    color: #ADAEC6;   
+    font-size: 14px;
+}
+
+.sendMessageInput::placeholder { 
+    color: #7b7c95; 
+}
+
+.sendMessageInput:valid { 
+    color: var(--primary-text-color); 
+}
+
+.sendBtn {
+    background-color: var(--bs-indigo);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 0.625rem;
+    width: 110px;
+}
+
+.sendBtn:hover {
+    background-color: #5a5ee1;
+    color: var(--primary-text-color);
+}
+
+.chatHistory {
+    max-height: 330px;
+}
+
+.chatHistory .iconProfileMsg {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.chatHistory .message {
+    background-color: var(--card-bg-color);
+    border-radius: 0.625rem;
+    padding: .543rem 1rem;
+    max-width: 450px; /* Set a maximum width for the message container */
+    word-wrap: break-word; /* Ensure long words break and wrap */
+    overflow-wrap: break-word;
+}
+
+.chatHistory .message p {
+    font-size: 0.9375rem;
+    color: #AEAFC6;
+}
+
+.chatHistory .message.myMessage {
+    background-color: var(--bs-indigo);
+}
+
+.chatHistory .message.myMessage p {
+    color: white;
+}
+
+.chatHistory .timeMsg { 
+    font-size: 0.8125rem;
+}
+
+.chatHistory .selfChat {
+    color: #ADAEC6;
+}
+
+.searchSection.show {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.fa-times-circle {
+    color: var(--bs-red);
+    cursor: pointer;
+}
+
+/* Media query for responsive chat */
+@media (max-width: 1000px) {
+    .fa-bars.chat-bar, .fa-times-circle {
+        display: block !important;
+    }
+    
+    .searchSection {
+        transform: translateX(-100%);
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+    }
+    
+    .rightCol {
+        max-width: 100% !important;
+    }
+}
+
+/* Enhanced styling for chat components */
+.chatApp .chatItems:hover:not(.active) {
+    background-color: rgba(57, 60, 106, 0.5);
+    transition: background-color 0.2s ease;
+}
+
+.chatHistory .message {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chatHistory .message:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.profile-icon:hover {
+    transform: scale(1.05);
+}

@@ -1,15 +1,15 @@
 "use client";
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { dataMenu, menuPages, configMenuItems } from "/src/utils/dataMenu";
+import { menuData, menuPages, configMenuItems } from '../../data/menuData';
 import { useSidebar } from "/src/app/components/Dashboard/sidebarManage.js";
 
 export default function Sidebar() {
   const currentPath = usePathname();
 
-  const [mainMenu, setMenu] = useState(dataMenu);
+  // Sidebar Menu State
+  const [mainMenu, setMenu] = useState(menuData);
   const { sidebarOpen, setSidebarOpen } = useSidebar();
   
   return (

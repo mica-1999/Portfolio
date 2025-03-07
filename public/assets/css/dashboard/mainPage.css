@@ -1,0 +1,267 @@
+/* ----------------------------------------------
+   MAIN CONTENT STYLES
+---------------------------------------------- */
+.fa-lg {
+    font-size: 1.5rem;
+}
+
+/* Balance section */
+.euro-icon {
+    color: var(--bs-indigo);
+}
+
+.small-box, .small-box-received, .small-box-third {
+    padding: 0.7rem;
+    border-radius: 0.4rem;
+    width: 40px;
+    height: 40px;
+}
+
+.small-box {
+    background-color: #393C6A;
+}
+
+.small-box-received {
+    background-color: var(--badge-danger-bg) !important;
+}
+
+.balance-received-icon {
+    color: var(--badge-danger-color) !important;
+}
+
+.small-box-third {
+    background-color: var(--badge-success-bg) !important;
+}
+
+.third-icon {
+    color: var(--badge-success-color) !important;
+}
+
+/* Badge styles */
+.bg-label-primary {
+    background-color: #393c6a !important;
+    color: var(--bs-indigo) !important;
+}
+
+.bg-label-success {
+    background-color: var(--badge-success-bg) !important;
+    color: var(--badge-success-color) !important;
+}
+
+.bg-label-warning {
+    background-color: var(--badge-warning-bg) !important;
+    color: var(--badge-warning-color) !important;
+}
+
+.bg-label-secondary {
+    background-color: var(--badge-secondary-bg) !important;
+    color: var(--badge-secondary-color) !important;
+}
+
+.bg-label-danger {
+    background-color: var(--badge-danger-bg) !important;
+    color: var(--badge-danger-color) !important;
+}
+
+/* Timeline styles */
+.timeline {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+    max-height: 300px;
+    overflow-x: hidden;
+}
+
+.timeline .timeline-item {
+    position: relative;
+    left: 0.7rem;
+    border-left: 1px solid #464963;
+}
+
+.timeline .timeline-item .timeline-point {
+    position: absolute;
+    left: -0.36rem;
+    top: 0.24rem;
+    z-index: 2;
+    display: block;
+    height: .75rem;
+    width: .75rem;
+    border-radius: 50%;
+    box-shadow: 0 0 0 10px var(--card-bg-color);
+}
+
+.timeline .timeline-item .timeline-point-primary {
+    background-color: var(--bs-primary);
+}
+
+.timeline .timeline-item .timeline-point-success {
+    background-color: var(--bs-success);
+}
+
+.timeline .timeline-item .timeline-point-warning {
+    background-color: var(--bs-warning);
+}
+
+.timeline .timeline-item .timeline-point-danger {
+    background-color: var(--bs-danger);
+}
+
+.timeline .timeline-item .timeline-point-info {
+    background-color: var(--bs-info);
+}
+
+.timeline .timeline-item .timeline-point-secondary {
+    background-color: var(--bs-secondary);
+}
+
+.timeline .timeline-item .timeline-point-light {
+    background-color: var(--bs-light);
+}
+
+.timeline .timeline-item .timeline-point-dark {
+    background-color: var(--bs-dark);
+}
+
+.timeline .timeline-item .timeline-event {
+    position: relative;
+    width: 100%;
+    min-height: 4rem;
+    border-radius: .375rem;
+}
+
+.timeline-event p {
+    color: #b2b3ca;
+}
+
+.timeline .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.text-muted {
+    --bs-text-opacity: 1;
+    color: #7b7c95 !important;
+}
+
+/* Blur effects */
+.blur_element:not(.ri-eye-off-line) {
+    filter: blur(5px);
+    transition: filter 0.3s ease;
+}
+
+/* Table styles */
+.project-table {
+    max-height: 350px;
+}
+
+.project-table tr,
+.project-table th,
+.project-table td {
+    background-color: transparent !important;
+    border-bottom: 1px solid #464963;
+}
+
+.user-table td {
+    background-color: transparent !important;
+    border-bottom: 1px solid #464963;
+}
+
+.user-table th {
+    background-color: #3A3E5B;
+    border-bottom: 1px solid #464963;
+}
+
+.profile-icon-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.ri-22px {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Responsive styles */
+@media (max-width: 1345px) {
+    .table-custom, .timeline-custom, .table-custom-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .cs-5, .cs-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .c-order {
+        order: 1;
+    }
+}
+
+@media (max-width: 1070px) {
+    .balance {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .ratings, .sessions {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 575px) {
+    .ratings, .sessions {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Enhanced styles for main content */
+.card-info h5 {
+    color: var(--primary-text-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.card-info p {
+    color: var(--secondary-text-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Add subtle hover effects */
+.small-box, .small-box-received, .small-box-third {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.small-box:hover, .small-box-received:hover, .small-box-third:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Timeline enhancements */
+.timeline-item {
+    padding-bottom: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.timeline-item:hover {
+    transform: translateX(3px);
+}
+
+.timeline-point {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-item:hover .timeline-point {
+    transform: scale(1.2);
+}
+
+/* Table row hover effects */
+.user-table tr:hover td, 
+.project-table tr:hover td {
+    background-color: rgba(57, 60, 106, 0.3) !important;
+}

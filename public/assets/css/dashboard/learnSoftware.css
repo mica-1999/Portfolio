@@ -1,0 +1,338 @@
+/* ----------------------------------------------
+   LEARNING COMPONENTS STYLES
+---------------------------------------------- */
+.softwareCard {
+    height: 326px;
+}
+
+.subCategories {
+    max-width: 100%;
+    display: flex;
+    overflow-x: auto;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    white-space: nowrap;
+    background-color: #282A41;
+    padding-bottom: 2rem !important;
+}
+
+.subCategories button {
+    padding: .5435rem 1.375rem;
+    align-self: center;
+    color: #D3D4E9;
+    border: none;
+    flex-shrink: 0;
+    background-color: #30334E;
+    border: 1px solid #3E4462;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.subCategories button:hover {
+    background-color: #3E4462;
+    color: #FFFFFF;
+    border: none;
+}
+
+.subCategories button.active {
+    background-color: var(--bs-primary) !important;
+    color: white;
+    border-color: #5D5FEF;
+}
+
+.subCatIconDiv {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #393C6A;
+}
+
+.subCatIconDiv img {
+    width: 32px;
+    height: 32px;
+}
+
+.viewInfo {
+    background-color: var(--bs-indigo);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 0.625rem;
+    width: 160px;
+}
+
+.viewInfo:hover {
+    background-color: #5a5ee1;
+    color: var(--primary-text-color);
+}
+
+.dropdown-menu.topics {
+    min-width: auto !important;
+    inset: 10px auto auto -90px !important;
+}
+
+.dropdown-menu.topics li {
+    cursor: pointer;
+}
+
+.topicDescription {
+    max-height: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.codeSnippet pre {
+    border: none;
+    max-height: 350px;
+    max-width: 1200px;
+}
+
+.codeSnippet pre::-webkit-scrollbar {
+    width: 12px;
+    height: 16px;
+}
+
+.codeSnippet pre::-webkit-scrollbar-track {
+    background-color: #2A2A2A;
+    border-radius: 10px;
+    padding: 2px;
+    border: solid 3px transparent;
+}
+
+.codeSnippet pre::-webkit-scrollbar-thumb {
+    background-color: #007BFF;
+    border-radius: 10px;
+    border: solid 3px transparent;
+}
+
+.codeSnippet pre::-webkit-scrollbar-thumb:hover {
+    background-color: #0056b3;
+}
+
+.topicModal {
+    max-width: 80%;
+    width: 1000px !important;
+}
+
+.topicModal .modal-content {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    border-radius: 0.625rem;
+    height: 600px;
+}
+
+.topicModal .modal-header {
+    background-color: #4C4F74;
+    color: #FFFFFF;
+    border-bottom: 1px solid #4C4F74;
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Custom scrollbar */
+.modal-body::-webkit-scrollbar {
+    width: 12px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #2A2A2A;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 10px;
+    border: 3px solid #30334E;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #388E3C;
+}
+
+.border {
+    background-color: #282A42;
+}
+
+.conceptTitle, .codeLanguage, .videoTitle, .videoUrl {
+    background-color: #282A42 !important;
+}
+
+.reference-list {
+    padding: 0;
+    list-style: none;
+}
+
+.reference-list li {
+    margin-bottom: 8px;
+}
+
+.reference-list a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.reference-list a:hover {
+    text-decoration: underline;
+    color: #388E3C;
+}
+
+/* Form selection styles */
+.tagButton {
+    white-space: normal;
+    text-align: left;
+    color: #D4D5EA !important;
+    background: transparent;
+    height: 48px;
+    border-radius: .5rem;
+    border: 0.09rem solid #464963;
+}
+
+.tagButton:hover {
+    border: 0.09rem solid #464963;
+}
+
+.tagButton::after {
+    display: none;
+}
+
+.tagButton.setBorder {
+    border: 0.1rem solid #666CFF
+}
+
+.ulTag {
+    height: 240px;
+    overflow: auto;
+}
+
+.custom-tag-li:hover {
+    background-color: #99C8FF
+}
+
+.custom-tag-li:hover label {
+    color: black
+}
+
+.custom-tag-li {
+    margin-top: -5px;
+    cursor: pointer
+}
+
+.form-check-label {
+    color: #D4D5E0;
+    cursor: pointer
+}
+
+.form-check-input {
+    cursor: pointer
+}
+
+.formBtn {
+    color: #73758E !important;
+    border: 1px solid #595b75;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selected-tags {
+    color: #D4D5EA !important
+}
+
+/* Filter section enhancements */
+.filters select {
+    height: 48px;
+    background: transparent;
+    color: #D4D5EA;
+    border-radius: .5rem;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0.09rem solid #464963;
+}
+
+.filters select option {
+    background: var(--card-bg-color);
+    color: #D4D5EA;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 30px;
+}
+
+.select-wrapper::after {
+    content: "\f078";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--primary-text-color);
+}
+
+.searchInput {
+    width: 215px;
+    height: 40px;
+    background: transparent;
+    border: 0.09rem solid #464963;
+    color: #D4D5EA;
+}
+
+.searchInput::placeholder {
+    font-size: 0.8125rem;
+    color: #7B7C95;
+}
+
+.searchInput:focus {
+    color: #D4D5EA;
+    background: transparent;
+    outline: none;
+}
+
+.addBtn {
+    background-color: #5C61E6;
+    width: 150px;
+}
+
+.exportBtn,
+.exportBtn:hover {
+    background: transparent;
+    width: 150px;
+    color: #6D788D;
+    border: 0.09rem solid #464963;
+}
+
+/* Enhanced hover effects */
+.softwareCard {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.softwareCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.subCatIconDiv {
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.subCatIconDiv:hover {
+    background-color: #4c4f8a;
+    transform: scale(1.05);
+}
+
+.ri-22px {
+    font-size: 22px;
+    cursor: pointer;
+}

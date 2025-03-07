@@ -1,0 +1,76 @@
+/* ----------------------------------------------
+   FOOTER COMPONENT STYLES
+---------------------------------------------- */
+.footer-links-section a {
+    color: var(--bs-indigo);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links-section a:hover {
+    color: #8086ff;
+    text-decoration: underline;
+}
+
+.ri-star-fill {
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.ri-star-fill:hover {
+    transform: scale(1.1);
+}
+
+.rating i:hover,
+.rating i:hover ~ i {
+    color: var(--bs-yellow);
+}
+
+.rating i.active {
+    color: var(--bs-yellow);
+}
+
+/* Responsive styling for footer */
+@media (max-width: 830px) {
+    .footer-links-section {
+        justify-content: center !important;
+    }
+    
+    .footer-link, .rating {
+        display: none !important;
+    }
+}
+
+/* Enhanced footer styling */
+.footer {
+    padding: 1rem 0;
+    border-top: 1px solid rgba(70, 73, 99, 0.2);
+    margin-top: 2rem;
+}
+
+.footer-copyright {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+}
+
+.footer-icon {
+    margin-right: 0.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.footer-links-section a:hover .footer-icon {
+    opacity: 1;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.rating-label {
+    margin-right: 0.5rem;
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+}

@@ -1,4 +1,4 @@
-import Chat from  '/src/app/components/Dashboard/ChatItems/Chat'; 
+import Chat from '/src/app/components/Dashboard/ChatItems/Chat'; 
 
 export default function ChatPage() {
   return (
@@ -8,5 +8,4 @@ export default function ChatPage() {
     </div>
     </>
   );
-  
 }

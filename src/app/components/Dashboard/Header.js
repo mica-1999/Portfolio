@@ -1,12 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signOut } from "next-auth/react"; 
 import { useSession } from "next-auth/react";
 import { useSidebar } from "/src/app/components/Dashboard/sidebarManage.js";
 
 
 export default function Header() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const first_name = session?.user?.first_name || "Guest";
   const last_name = session?.user?.last_name || "";
   const role = session?.user?.role || "User";
@@ -47,7 +47,7 @@ export default function Header() {
               onClick={toggleDropdown}
               aria-expanded={dropdownOpen}
             />
-            <ul className={`dropdown-menu mt-2 ${dropdownOpen ? "show" : ""}`} style={{ right: 0, left: "auto" }}>
+            <ul className={`dropdown-menu iconMenu mt-2 ${dropdownOpen ? "show" : ""}`} style={{ right: 0, left: "auto" }}>
               <li className="dropdown-header d-flex align-items-center">
                 <img src="/assets/images/profile-icon.png" className="profile-icon" alt="Profile Icon" />
                 <div className="ms-2">

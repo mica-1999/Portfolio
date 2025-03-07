@@ -1,4 +1,4 @@
-export const dataMenu = [
+export const menuData = [
     {
       name: "Home",
       icon: "main",

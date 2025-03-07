@@ -8,6 +8,7 @@ const SidebarContext = createContext();
 export function SidebarProvider({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Return Provider 
   return (
     <SidebarContext.Provider value={{ sidebarOpen, setSidebarOpen }}>
       {children}
@@ -15,7 +16,7 @@ export function SidebarProvider({ children }) {
   );
 }
 
-// Custom Hook to Use Sidebar Context
+// Custom Hook to Use Sidebar Context in Child Components
 export function useSidebar() {
   return useContext(SidebarContext);
 }
