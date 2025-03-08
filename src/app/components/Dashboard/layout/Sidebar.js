@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { menuData, menuPages, configMenuItems } from '../../data/menuData';
-import { useSidebar } from "/src/app/components/Dashboard/sidebarManage.js";
+import { menuData, menuPages, configMenuItems } from '../../../data/menuData';
+import { useSidebar } from "./sidebarManage.js";
 
 export default function Sidebar() {
   const currentPath = usePathname();

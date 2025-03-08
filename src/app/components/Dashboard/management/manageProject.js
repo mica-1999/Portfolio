@@ -41,6 +41,8 @@ export default function ManageProject() {
     // Loading and Fetch Error
     const [loading, setLoading] = useState(false);
     const [fetchError, setFetchError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     // Memoized pagination calculations
     const { indexOfLastProject,indexOfFirstProject,totalPages,currentProjects} = useMemo(() => {
@@ -125,10 +127,19 @@ export default function ManageProject() {
         setFetchError('');  
         try {
             const response = await fetchDataFromApi("/api/Projects");
-            setProjects(response || []);
+            if (!response) {
+                throw new Error("No data returned from API");
+            }
+            setProjects(response);
         } catch (error) {
             console.error('Error fetching data:', error);
-            setFetchError('Failed to load projects. Please try again.');
+            const errorMessage = error.message || 'Failed to load projects. Please try again.';
+            setFetchError(errorMessage);
+            setShowModal({
+                type: 'error',
+                show: true,
+                message: errorMessage
+            });
         } finally {
             setLoading(false);
         }
@@ -153,6 +164,12 @@ export default function ManageProject() {
         setFormData({ title: '', description: '', tags: [], state: '', version: '' });
         setErrors({});
         setSuccess({});
+        
+        // Focus first input after reset for better UX
+        setTimeout(() => {
+            const firstInput = document.getElementById('title');
+            if (firstInput) firstInput.focus();
+        }, 0);
     }, []);
 
     const handleSubmit = useCallback(async (e) => {
@@ -168,6 +185,7 @@ export default function ManageProject() {
             return;
         }
 
+        setSubmitting(true);
         try {
             const response = await fetch("/api/Projects", {
                 method: "POST",
@@ -175,12 +193,16 @@ export default function ManageProject() {
                 body: JSON.stringify(formData),
             });
 
+            if (!response.ok) {
+                throw new Error("Server responded with an error");
+            }
+
             const result = await response.json();
             if (result.error) {
                 setShowModal({
                     type: 'error', 
                     show: true, 
-                    message: 'Error creating project. Please try again.'
+                    message: result.error || 'Error creating project. Please try again.'
                 });
                 return;
             }
@@ -198,16 +220,26 @@ export default function ManageProject() {
             setShowModal({
                 type: 'error', 
                 show: true, 
-                message: 'Error creating Project. Please try again.'
+                message: error.message || 'Error creating Project. Please try again.'
             });
+        } finally {
+            setSubmitting(false);
         }
     }, [formData, errors, handleReset, fetchProjects]);
 
     const handleDelete = useCallback(async (id) => {
+        if (!id) return;
+        
+        setDeleting(true);
         try {
-            await fetch(`/api/Projects/?id=${id}`, {
+            const response = await fetch(`/api/Projects/?id=${id}`, {
                 method: "DELETE",
             });
+            
+            if (!response.ok) {
+                throw new Error("Failed to delete project");
+            }
+            
             setShowModal({
                 type: 'success', 
                 show: true, 
@@ -219,8 +251,10 @@ export default function ManageProject() {
             setShowModal({
                 type: 'error', 
                 show: true, 
-                message: 'Failed to delete Project. Please try again.'
+                message: error.message || 'Failed to delete Project. Please try again.'
             });
+        } finally {
+            setDeleting(false);
         }
     }, [fetchProjects]);
 
@@ -307,15 +341,26 @@ export default function ManageProject() {
         });
     }, []);
 
+    // Add keyboard navigation for pagination
+    const handlePaginationKeyPress = useCallback((e, pageNumber) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            paginate(pageNumber);
+        }
+    }, [paginate]);
+
     // Memoize pagination display
     const paginationComponent = useMemo(() => {
         return (
-            <ul className="pagination gap-2">
+            <ul className="pagination gap-2" role="navigation" aria-label="Pagination">
                 <li className={`page-item arrow ${currentPage === 1 ? 'disabled' : ''}`}>
                     <a 
                         className="page-link" 
-                        aria-label="Previous" 
+                        aria-label="Previous page" 
                         onClick={currentPage === 1 ? null : () => paginate(currentPage - 1)}
+                        onKeyDown={(e) => handlePaginationKeyPress(e, currentPage - 1)}
+                        tabIndex={currentPage === 1 ? -1 : 0}
+                        role="button"
                         style={{ cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
                     >
                         <i className="ri-arrow-left-s-line"></i>
@@ -326,6 +371,11 @@ export default function ManageProject() {
                         <a 
                             className="page-link" 
                             onClick={() => paginate(i + 1)}
+                            onKeyDown={(e) => handlePaginationKeyPress(e, i + 1)}
+                            tabIndex={0}
+                            role="button"
+                            aria-label={`Page ${i + 1}`}
+                            aria-current={i + 1 === currentPage ? "page" : null}
                             style={{ cursor: 'pointer' }}
                         >
                             {i + 1}
@@ -335,8 +385,11 @@ export default function ManageProject() {
                 <li className={`page-item arrow ${currentPage === totalPages ? 'disabled' : ''}`}>
                     <a 
                         className="page-link" 
-                        aria-label="Next" 
+                        aria-label="Next page" 
                         onClick={currentPage === totalPages ? null : () => paginate(currentPage + 1)}
+                        onKeyDown={(e) => handlePaginationKeyPress(e, currentPage + 1)}
+                        tabIndex={currentPage === totalPages ? -1 : 0}
+                        role="button"
                         style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
                     >
                         <i className="ri-arrow-right-s-line"></i>
@@ -344,7 +397,7 @@ export default function ManageProject() {
                 </li>
             </ul>
         );
-    }, [currentPage, totalPages, paginate]);
+    }, [currentPage, totalPages, paginate, handlePaginationKeyPress]);
 
     // Render the filtered projects table rows
     const projectRows = useMemo(() => {
@@ -505,8 +558,13 @@ export default function ManageProject() {
                                     className="form-control searchInput" 
                                     placeholder="Search Project" 
                                     onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                    aria-label="Search projects"
                                 />
-                                <button className="btn btn-primary addBtn" onClick={() => setAddProjectDiv(true)}>
+                                <button 
+                                    className="btn btn-primary addBtn" 
+                                    onClick={() => setAddProjectDiv(true)}
+                                    aria-label="Add new project"
+                                >
                                     Add Project
                                 </button>
                             </div>
@@ -574,17 +632,36 @@ export default function ManageProject() {
             </div>
             
             {/* Add New Project form sliding in from the right */}
-            <div className={`add-user-form ${addProjectDiv ? 'show' : ''}`} ref={addProjectFormRef}>
+            <div 
+                className={`add-user-form ${addProjectDiv ? 'show' : ''}`} 
+                ref={addProjectFormRef}
+                role="dialog"
+                aria-labelledby="addProjectFormTitle"
+            >
                 <div className="form-container d-flex flex-column mt-2">
                     <div className="d-flex align-items-center justify-content-between bottom-border">
-                        <h5 className="m-0">Add Project</h5>
+                        <h5 className="m-0" id="addProjectFormTitle">Add Project</h5>
                         <div className="d-flex align-items-center gap-3 float-end">
-                            <i className="ri-refresh-line" onClick={handleReset}></i>
-                            <i className="ri-close-line" onClick={() => setAddProjectDiv(false)}></i>
+                            <i 
+                                className="ri-refresh-line" 
+                                onClick={handleReset}
+                                tabIndex="0"
+                                role="button"
+                                aria-label="Reset form"
+                                onKeyDown={(e) => e.key === 'Enter' && handleReset()}
+                            ></i>
+                            <i 
+                                className="ri-close-line" 
+                                onClick={() => setAddProjectDiv(false)}
+                                tabIndex="0"
+                                role="button"
+                                aria-label="Close form"
+                                onKeyDown={(e) => e.key === 'Enter' && setAddProjectDiv(false)}
+                            ></i>
                         </div>
                     </div>
                     <hr />
-                    <form className="d-flex flex-column mt-3" onSubmit={handleSubmit}>
+                    <form className="d-flex flex-column mt-3" onSubmit={handleSubmit} noValidate>
                         <div className="form-group">
                             <input 
                                 type="text" 
@@ -702,8 +779,23 @@ export default function ManageProject() {
                         </div>
 
                         <div className="d-flex mt-1 gap-3">
-                            <button type="submit" className="btn addItem">Submit</button>
-                            <button type="button" className="btn cancelItem" onClick={() => setAddProjectDiv(false)}>
+                            <button 
+                                type="submit" 
+                                className="btn addItem"
+                                disabled={submitting}
+                            >
+                                {submitting ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                        Submitting...
+                                    </>
+                                ) : "Submit"}
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn cancelItem" 
+                                onClick={() => setAddProjectDiv(false)}
+                            >
                                 Cancel
                             </button>
                         </div>
@@ -716,6 +808,7 @@ export default function ManageProject() {
                 setShowModal={setShowModal} 
                 handleDelete={handleDelete} 
                 deleteAction={deleteProject}
+                isDeleting={deleting}
             />
             
             {hideBody && <div className="modal-backdrop show"></div>}

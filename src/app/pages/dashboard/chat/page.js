@@ -1,4 +1,4 @@
-import Chat from '/src/app/components/Dashboard/ChatItems/Chat'; 
+import Chat from '/src/app/components/Dashboard/chat/Chat'; 
 
 export default function ChatPage() {
   return (

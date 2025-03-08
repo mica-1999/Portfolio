@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react"; 
 import { useSession } from "next-auth/react";
-import { useSidebar } from "/src/app/components/Dashboard/sidebarManage.js";
+import { useSidebar } from "./sidebarManage.js";
 
 
 export default function Header() {

@@ -2,13 +2,13 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
-import BalanceSection from './MainContentSections/BalanceSection';
-import StatsSection from './MainContentSections/StatsSection';
-import ProjectsSection from './MainContentSections/ProjectsSection';
-import TimelineSection from './MainContentSections/TimelineSection';
-import UsersSection from './MainContentSections/UsersSection';
-import LoadingState from './MainContentSections/LoadingState';
-import ErrorState from './MainContentSections/ErrorState';
+import BalanceSection from './sections/BalanceSection';
+import StatsSection from './sections/StatsSection';
+import ProjectsSection from './sections/ProjectsSection';
+import TimelineSection from './sections/TimelineSection';
+import UsersSection from './sections/UsersSection';
+import LoadingState from './sections/LoadingState';
+import ErrorState from './sections/ErrorState';
 
 export default function MainContent() {
   // Session handling 

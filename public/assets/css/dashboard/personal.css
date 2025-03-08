@@ -29,31 +29,84 @@
     border-radius: 0.45rem;
 }
 
+.profile-image-container {
+    position: relative;
+}
+
+/* Enhanced profile image with loading state */
+.profile-image {
+    position: relative;
+    top: -50px;
+    left: 5px;
+    border: 6px solid var(--card-bg-color);
+    border-radius: 0.45rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.PPsections {
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
 .PPsections button {
     padding: .5435rem 1.375rem;
     align-self: center;
     color: #D3D4E9;
     border: none;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
 }
 
 .PPsections button:hover:not(.active) {
     background-color: #393C6A;
     color: #666CFF;
     border: none;
+    transform: translateY(-2px);
 }
 
 .PPsections button.active {
     background-color: var(--bs-primary) !important;
     color: white;
     border: none;
+    position: relative;
+}
+
+.PPsections button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
 }
 
 .aboutMe p {
     color: #b2b3ca;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(70, 73, 99, 0.3);
+    margin-bottom: 5px;
+    transition: transform 0.2s ease;
+}
+
+.aboutMe p:hover {
+    transform: translateX(5px);
+    color: #d3d4e9;
 }
 
 .aboutMe p i {
     font-size: 1.1rem;
+    width: 24px;
+    display: inline-block;
+    color: var(--bs-primary);
 }
 
 /* Timeline styles for personal page */
@@ -242,4 +295,42 @@
     width: 150px;
     color: #fff;
     border-color: var(--bs-indigo);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .infoSection {
+        flex-direction: column;
+    }
+    
+    .infoSection img {
+        top: -40px;
+        left: 0;
+    }
+    
+    .PPsections {
+        justify-content: center;
+    }
+    
+    .timeline .timeline-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .timeline .timeline-item {
+        padding-bottom: 2rem;
+    }
+    
+    .aboutMe p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Enhanced badge styling */
+.badge {
+    transition: all 0.2s ease;
+}
+
+.badge:hover {
+    transform: scale(1.05);
 }

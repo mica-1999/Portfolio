@@ -1,11 +1,11 @@
-import Sidebar from '/src/app/components/Dashboard/Sidebar';
-import Header from '/src/app/components/Dashboard/Header'; 
-import Footer from '/src/app/components/Dashboard/Footer';
+import Sidebar from '/src/app/components/Dashboard/layout/Sidebar';
+import Header from '/src/app/components/Dashboard/layout/Header'; 
+import Footer from '/src/app/components/Dashboard/layout/Footer';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '/src/app/api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
 import DashboardClientWrapper from './wrapper.js';
-import { SidebarProvider } from "/src/app/components/Dashboard/sidebarManage.js";
+import { SidebarProvider } from "/src/app/components/Dashboard/layout/sidebarManage.js";
 
 export const metadata = {
   title: 'Dashboard',

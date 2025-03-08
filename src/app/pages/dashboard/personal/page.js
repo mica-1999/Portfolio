@@ -1,4 +1,4 @@
-import Personal from  '/src/app/components/Dashboard/Personal/Personal'; 
+import Personal from  '/src/app/components/Dashboard/profile/Personal'; 
 
 export default function PersonalPage() {
   return (
