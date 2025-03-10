@@ -1,4 +1,4 @@
-import NewSoftware from '../../../../../components/Dashboard/Learning/Software/createSoftware/NewSoftware';
+import NewSoftware from '../../../../../components/Dashboard/learning/software/createSoftware/NewSoftware';
 
 export default function NewCardSoftware() {
   return (

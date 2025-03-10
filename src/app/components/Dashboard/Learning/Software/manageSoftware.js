@@ -3,9 +3,8 @@ import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { CodeModal } from './modalCode';
-import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from './constants';
+import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from './Constants';
 import { Modal } from '/src/app/components/utility/Modal';
-import { set } from "mongoose";
 
 export default function ManageSoftware() {  
   const { data: session } = useSession(); 

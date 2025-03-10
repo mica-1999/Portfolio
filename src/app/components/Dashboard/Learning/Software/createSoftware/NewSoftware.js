@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Modal } from '../../../../utility/Modal';
-import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from '../constants';
+import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from '../Constants';
 
 export default function NewSoftware() {
     // Base form data structure for a new learning topic
