@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { getRoleClass, getActiveColor, filterByTimeRange } from '/src/utils/mainContentUtil';
 import { Modal } from '/src/app/components/utility/Modal';
+import { set } from "mongoose";
 
 // Constants
 const ROLES = ["Admin", "Viewer", "Editor", "Author"];
@@ -283,6 +284,15 @@ export default function ManageUser() {
         }
     };
 
+    const exportData = () => {
+        // Implementation for exporting data
+        alert('Export functionality will be implemented here');
+    };
+
+    const handleClearFilters = () => {
+        setFilters({ name: '', role: '', time: '', status: '' });
+    }
+
     return(
         <div className="d-flex col-lg-12 mt-4">
             {/* Filters and Table Section */}
@@ -295,7 +305,7 @@ export default function ManageUser() {
                         
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, role: e.target.value })}>
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, role: e.target.value })} value = {filters.role}>
                                     <option key="default" value="">Select a role</option>
                                     {ROLES.map((role) => (
                                         <option key={role} value={role.toLowerCase()}>{role}</option>
@@ -307,7 +317,7 @@ export default function ManageUser() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })} value = {filters.status}>
                                 <option key="default" value="">Select a status</option>
                                     {STATUS.map((status) => (
                                         <option key={status} value={status.toLowerCase()}>{status}</option>
@@ -319,7 +329,7 @@ export default function ManageUser() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, time: e.target.value })}>
+                                <select className="form-select" onChange={(e) => setFilters({ ...filters, time: e.target.value })} value = {filters.time}>
                                 <option key="default" value="">Select a time range</option>
                                     {TIME_RANGES.map((range) => (
                                         <option key={range} value={range}>{range}</option>
@@ -333,7 +343,18 @@ export default function ManageUser() {
                     {/* Enhanced search input with accessibility */}
                     <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
                         <div className="col-lg-12 d-flex align-items-center justify-content-between">
-                            <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
+                            <div className="d-flex gap-2">
+                                <button className="btn btn-secondary exportBtn" onClick={exportData}>
+                                    <i className="ri-download-2-line me-2"></i> Export 
+                                </button>
+                                <button 
+                                    className="btn btn-outline-secondary" 
+                                    onClick={handleClearFilters}
+                                    title="Clear all filters"
+                                >
+                                    <i className="ri-refresh-line"></i>
+                                </button>
+                            </div>
                             <div className="d-flex gap-3">
                                 <input 
                                     type="text" 
@@ -341,6 +362,7 @@ export default function ManageUser() {
                                     placeholder="Search User" 
                                     onChange={(e) => setFilters({ ...filters, name: e.target.value })}
                                     aria-label="Search users"
+                                    value = {filters.name}
                                 />
                                 <button 
                                     className="btn btn-primary addBtn" 
@@ -374,7 +396,7 @@ export default function ManageUser() {
                                     </tr>
                                 </thead>
                                 <tbody className="table-content">
-                                    {paginatedUsers.map((user) => {
+                                    {paginatedUsers.length > 0 ? paginatedUsers.map((user) => {
                                         const { badgeColor, output, color} = getRoleClass(user.role);
                                         const { colorActive } = getActiveColor(user.isActive);
                                         return(
@@ -410,11 +432,17 @@ export default function ManageUser() {
                                                 </td>
                                             </tr>
                                         );
-                                    })}
-                                    {paginatedUsers.length === 0 && (
+                                    }) : (
                                         <tr>
-                                            <td colSpan={THEAD.length + 1} className="text-center py-3">
-                                                No users found matching the current filters.
+                                            <td colSpan={THEAD.length + 1}>
+                                                <div className="text-center my-5 py-5">
+                                                    <i className="ri-user-search-line" style={{ fontSize: '3rem', color: '#595b75' }}></i>
+                                                    <h5 className="mt-3 text-muted">No users found</h5>
+                                                    <p className="text-muted">Try adjusting your filters or search terms</p>
+                                                    <button className="btn btn-outline-primary mt-2" onClick={handleClearFilters}>
+                                                        Clear Filters
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     )}

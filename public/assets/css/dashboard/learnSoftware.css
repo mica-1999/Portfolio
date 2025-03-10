@@ -281,12 +281,15 @@
     color: var(--primary-text-color);
 }
 
+/* Input and search styles */
 .searchInput {
     width: 215px;
     height: 40px;
     background: transparent;
     border: 0.09rem solid #464963;
     color: #D4D5EA;
+    padding-left: 30px;
+    transition: all 0.3s ease;
 }
 
 .searchInput::placeholder {
@@ -298,6 +301,9 @@
     color: #D4D5EA;
     background: transparent;
     outline: none;
+    box-shadow: 0 0 0 2px rgba(102, 108, 255, 0.25);
+    border-color: var(--bs-primary) !important;
+    width: 260px;
 }
 
 .addBtn {

@@ -136,11 +136,14 @@
 .tagButton {
     white-space: normal;
     text-align: left;
-    color: #D4D5EA !important;
+    color: #73758E !important;
     background: transparent;
     height: 48px;
     border-radius: .5rem;
     border: 0.09rem solid #464963;
+}
+.tagButton.projectFilter{
+    color: #D4D5EA !important;
 }
 
 .tagButton:hover {
@@ -297,17 +300,6 @@ select:focus {
 
 .sInput.successBorderColor + label {
     color: var(--tagColor-green-text) !important;
-}
-
-/* Special input types */
-.sInput.projectDescription,
-.sInput.explanation,
-.sInput.code,
-.sInput.description,
-.sInput.videoTitle,
-.sInput.videoURL,
-.sInput.userNotes {
-    color: #73758E;
 }
 
 .sInput.projectDescription {

@@ -5,6 +5,7 @@ import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { CodeModal } from './modalCode';
 import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from './constants';
 import { Modal } from '/src/app/components/utility/Modal';
+import { set } from "mongoose";
 
 export default function ManageSoftware() {  
   const { data: session } = useSession(); 
@@ -178,6 +179,15 @@ export default function ManageSoftware() {
     }
   }, []);
 
+  const exportData = () => {
+    // Implementation for exporting data
+    alert('Export functionality will be implemented here');
+  };
+
+  const handleClearFilters = () => {
+    setFilters({ mainCategory: '', subCategory: [], tags: [], status: '', searchBox: '' });
+  };
+
   // ON PAGE LOAD: FETCH TOPICS
   useEffect(() => {
     if(session?.user?.id){
@@ -297,7 +307,18 @@ export default function ManageSoftware() {
             {/* Search and Add Section */}
             <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
               <div className="col-lg-12 d-flex align-items-center justify-content-between">
-                <button className="btn btn-secondary dropdown-toggle exportBtn">Export </button>
+                <div className="d-flex gap-2">
+                  <button className="btn btn-secondary exportBtn" onClick={exportData}>
+                      <i className="ri-download-2-line me-2"></i> Export 
+                  </button>
+                  <button 
+                      className="btn btn-outline-secondary" 
+                      onClick={handleClearFilters}
+                      title="Clear all filters"
+                  >
+                      <i className="ri-refresh-line"></i>
+                  </button>
+                </div>
                 <div className="d-flex gap-3">
                   <input 
                     type="text" 
@@ -346,8 +367,15 @@ export default function ManageSoftware() {
         )}
         
         {!loading && !fetchError && displayedTopics.length === 0 && (
-          <div className="alert alert-info w-100 m-3 text-center" role="alert">
-            No topics found matching your filters.
+          <div className="w-100 m-3">
+            <div className="text-center my-5 py-5">
+              <i className="ri-code-box-line" style={{ fontSize: '3rem', color: '#595b75' }}></i>
+              <h5 className="mt-3 text-muted">No topics found</h5>
+              <p className="text-muted">Try adjusting your filters or search terms</p>
+              <button className="btn btn-outline-primary mt-2" onClick={handleClearFilters}>
+                Clear Filters
+              </button>
+            </div>
           </div>
         )}
 

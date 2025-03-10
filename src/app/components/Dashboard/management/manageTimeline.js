@@ -233,7 +233,7 @@ export default function ManageTimeline() {
                                 <i className="ri-search-line search-icon"></i>
                                 <input 
                                     type="text" 
-                                    className="form-control searchInput ps-4" 
+                                    className="form-control searchInput ps-5" 
                                     placeholder="Search timeline..." 
                                     value={searchTerm}
                                     onChange={handleSearchChange}

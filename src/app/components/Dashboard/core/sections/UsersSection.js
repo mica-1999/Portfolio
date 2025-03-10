@@ -7,12 +7,6 @@ export default function UsersSection({ users, hidden, onToggleVisibility }) {
     <div className="col-lg-12 d-flex table-custom-2">
       <div className="card flex-grow-1 p-0">
         <div id="4" className={hidden ? 'blur_element' : ''}>
-          <div className="card-header d-flex align-items-center justify-content-between">
-            <h5 className="card-title">Users</h5>
-            <div>
-              <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={onToggleVisibility}></i>
-            </div>
-          </div>
           <div className="table-responsive text-nowrap user-table rounded">
             <table className="table table-sm mb-0">
               <thead className="table-head">

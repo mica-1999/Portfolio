@@ -45,10 +45,9 @@ export default function ManageProject() {
     const [deleting, setDeleting] = useState(false);
 
     // Memoized pagination calculations
-    const { indexOfLastProject,indexOfFirstProject,totalPages,currentProjects} = useMemo(() => {
+    const { indexOfLastProject, indexOfFirstProject, totalPages, currentProjects, filteredProjectsCount } = useMemo(() => {
         const indexOfLast = currentPage * projectsPerPage;
         const indexOfFirst = indexOfLast - projectsPerPage;
-        const total = Math.ceil(projects.length / projectsPerPage);
         
         // Apply filters to projects
         const filteredProjects = projects.filter((project) => {
@@ -85,7 +84,8 @@ export default function ManageProject() {
             indexOfLastProject: indexOfLast,
             indexOfFirstProject: indexOfFirst,
             totalPages: Math.ceil(filteredProjects.length / projectsPerPage),
-            currentProjects: filteredProjects.slice(indexOfFirst, indexOfLast)
+            currentProjects: filteredProjects.slice(indexOfFirst, indexOfLast),
+            filteredProjectsCount: filteredProjects.length // Add this to track filtered count
         };
     }, [projects, filters, currentPage, projectsPerPage]);
 
@@ -171,6 +171,10 @@ export default function ManageProject() {
             if (firstInput) firstInput.focus();
         }, 0);
     }, []);
+
+    const handleClearFilters = () => {
+        setFilters({ title: '', description: '', tags: [], state: null, version: '', lastUpdated: '' });
+    };
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
@@ -349,6 +353,11 @@ export default function ManageProject() {
         }
     }, [paginate]);
 
+    const exportData = () => {
+        // Implementation for exporting data
+        alert('Export functionality will be implemented here');
+    };
+
     // Memoize pagination display
     const paginationComponent = useMemo(() => {
         return (
@@ -463,12 +472,15 @@ export default function ManageProject() {
         });
     }, [currentProjects, selectedProjects, handleProjectCheckboxChange, showConfirmationModal]);
 
-    // Calculate entries display text
+    // Calculate entries display text - Fix this calculation
     const entriesDisplayText = useMemo(() => {
-        const firstEntry = projects.length > 0 ? indexOfFirstProject + 1 : 0;
-        const lastEntry = Math.min(indexOfLastProject, projects.length);
-        return `Showing ${firstEntry} to ${lastEntry} of ${projects.length} entries`;
-    }, [indexOfFirstProject, indexOfLastProject, projects.length]);
+        if (filteredProjectsCount === 0) {
+            return "No entries to display";
+        }
+        const firstEntry = filteredProjectsCount > 0 ? indexOfFirstProject + 1 : 0;
+        const lastEntry = Math.min(indexOfLastProject, filteredProjectsCount);
+        return `Showing ${firstEntry} to ${lastEntry} of ${filteredProjectsCount} entries`;
+    }, [indexOfFirstProject, indexOfLastProject, filteredProjectsCount]);
 
     return(
         <div className="d-flex col-lg-12 mt-4">
@@ -486,6 +498,7 @@ export default function ManageProject() {
                                         ...filters, 
                                         state: e.target.value === "" ? null : Number(e.target.value) 
                                     })}
+                                    value={filters.state || ""}
                                 >
                                     <option key="default" value="">Select a status</option>
                                     {STATUS.map((status, i) => {
@@ -500,7 +513,7 @@ export default function ManageProject() {
                             <div className="dropdown">
                                 <div className="select-wrapper">
                                     <button 
-                                        className={`btn dropdown-toggle w-100 tagButton ${tagBtn ? 'setBorder': ''}`} 
+                                        className={`btn dropdown-toggle w-100 tagButton projectFilter ${tagBtn ? 'setBorder': ''}`} 
                                         type="button" 
                                         id="dropdownMenuButton" 
                                         onClick={() => { 
@@ -537,7 +550,7 @@ export default function ManageProject() {
 
                         <div className="col-lg-4">
                             <div className="select-wrapper">
-                                <select className="form-select"onChange={(e) => setFilters({ ...filters, lastUpdated: e.target.value })}>
+                                <select className="form-select" value={filters.lastUpdated || ""} onChange={(e) => setFilters({ ...filters, lastUpdated: e.target.value })}>
                                     <option key="default" value="">Select a time range</option>
                                     {TIME_RANGES.map((range) => (
                                         <option key={range} value={range}>{range}</option>
@@ -549,8 +562,17 @@ export default function ManageProject() {
 
                     <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
                         <div className="col-lg-12 d-flex align-items-center justify-content-between">
-                            <div className="d-flex">
-                                <button className="btn btn-secondary dropdown-toggle exportBtn">Export</button>
+                            <div className="d-flex gap-2">
+                                <button className="btn btn-secondary exportBtn" onClick={exportData}>
+                                    <i className="ri-download-2-line me-2"></i> Export 
+                                </button>
+                                <button 
+                                    className="btn btn-outline-secondary" 
+                                    onClick={handleClearFilters}
+                                    title="Clear all filters"
+                                >
+                                    <i className="ri-refresh-line"></i>
+                                </button>
                             </div>
                             <div className="d-flex gap-3">
                                 <input 
@@ -558,6 +580,7 @@ export default function ManageProject() {
                                     className="form-control searchInput" 
                                     placeholder="Search Project" 
                                     onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                    value={filters.title}
                                     aria-label="Search projects"
                                 />
                                 <button 
@@ -572,7 +595,7 @@ export default function ManageProject() {
                     </div>
                 </div>
 
-                <div className="card-body d-flex flex-wrap p-0 mb-4">
+                <div className="card-body d-flex flex-wrap p-0 mb-2">
                     {loading && (
                         <div className="d-flex justify-content-center w-100 p-4">
                             <div className="spinner-border text-primary" role="status">
@@ -606,25 +629,32 @@ export default function ManageProject() {
                                     </tr>
                                 </thead>
                                 <tbody className="table-content">
-                                    {currentProjects.length === 0 ? (
+                                    {currentProjects.length > 0 ? (
+                                        projectRows
+                                    ) : (
                                         <tr>
-                                            <td colSpan={THEAD.length + 1} className="text-center p-4">
-                                                No projects found matching your filters
+                                            <td colSpan={THEAD.length + 1}>
+                                                <div className="text-center my-5 py-5">
+                                                    <i className="ri-folder-line" style={{ fontSize: '3rem', color: '#595b75' }}></i>
+                                                    <h5 className="mt-3 text-muted">No projects found</h5>
+                                                    <p className="text-muted">Try adjusting your filters or search terms</p>
+                                                    <button className="btn btn-outline-primary mt-2" onClick={handleClearFilters}>
+                                                        Clear Filters
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
-                                    ) : (
-                                        projectRows
                                     )}
                                 </tbody>
                             </table>
                         </div>
                     )}
                     
-                    {!loading && !fetchError && projects.length > 0 && (
+                    {!loading && !fetchError && (
                         <div className="row w-100">
                             <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
                                 <p>{entriesDisplayText}</p>
-                                {paginationComponent}
+                                {filteredProjectsCount > 0 && paginationComponent}
                             </div>
                         </div>
                     )}

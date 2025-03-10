@@ -88,6 +88,6 @@ export const TAGS = [
     'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 
     'Tailwind CSS', 'Bootstrap', 'Material UI', 'WebAssembly', 'Blockchain', 'Solidity', 
     'Ethereum', 'Quantum Computing', 'Linux', 'Windows', 'MacOS', 'Shell Scripting', 
-    'Cybersecurity', 'Ethical Hacking', 'Penetration Testing', 'Cryptography', 'DevOps', 'Next.js'
+    'Cybersecurity', 'Ethical Hacking', 'Penetration Testing', 'Cryptography', 'DevOps', 'Next.js', 'Vercel'
 ];
 
