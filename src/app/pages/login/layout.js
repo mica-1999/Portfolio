@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth'; // Allows us to check the session on the server side
 import { authOptions } from '/src/app/api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
+import StylesProvider from '/src/app/components/StylesProvider';
 
 export const metadata = {
   title: 'Login',
@@ -16,8 +17,7 @@ export default async function LoginLayout({ children }) {
 
   return (
     <>
-      {/* Include the specific login CSS */}
-      <link rel="stylesheet" href="/assets/css/login/login.css" />
+      <StylesProvider stylesheets={['/assets/css/login/login.css']} />
       
       {/* Layout Content */}
       <div className="container-fluid vh-100">

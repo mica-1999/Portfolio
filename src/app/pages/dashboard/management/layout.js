@@ -1,3 +1,5 @@
+import StylesProvider from '/src/app/components/StylesProvider';
+
 export const metadata = {
   title: 'Management Dashboard',
   description: 'Manage users, projects, and other resources in the system.',
@@ -6,8 +8,8 @@ export const metadata = {
 export default async function ManagementLayout({ children }) {
   return (
     <>
-    <link rel="stylesheet" href="/assets/css/dashboard/management.css" />
-    {children}
+      <StylesProvider stylesheets={['/assets/css/dashboard/management.css']} />
+      {children}
     </>
   );
 }

@@ -6,6 +6,7 @@ import { authOptions } from '/src/app/api/auth/[...nextauth]/route.js';
 import { redirect } from 'next/navigation';
 import DashboardClientWrapper from './wrapper.js';
 import { SidebarProvider } from "/src/app/components/Dashboard/layout/sidebarManage.js";
+import StylesProvider from '/src/app/components/StylesProvider';
 
 export const metadata = {
   title: 'Dashboard',
@@ -21,12 +22,14 @@ export default async function DashboardLayout({ children }) {
 
   return (
     <>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/dashboard/sidebar.css" />
-    <link rel="stylesheet" href="/assets/css/dashboard/header.css" />
-    <link rel="stylesheet" href="/assets/css/dashboard/footer.css" />
-    <link rel="stylesheet" href="/assets/css/dashboard/mainPage.css" />
-    
+      <StylesProvider stylesheets={[
+        '/assets/css/styles.css',
+        '/assets/css/dashboard/sidebar.css',
+        '/assets/css/dashboard/header.css',
+        '/assets/css/dashboard/footer.css',
+        '/assets/css/dashboard/mainPage.css'
+      ]} />
+      
       <div className="container-fluid vh-100">
         <div className="row">
           <DashboardClientWrapper session={session}>

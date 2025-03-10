@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { fetchDataFromApi } from '/src/utils/apiUtils';
 import { useSession } from "next-auth/react";
 import { getTimeFormatted } from '/src/utils/mainContentUtil';
-import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function Chat() {
