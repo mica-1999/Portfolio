@@ -4,7 +4,6 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useSidebar } from "./sidebarManage.js";
 
-
 export default function Header() {
   const { data: session } = useSession();
   const first_name = session?.user?.first_name || "Guest";

@@ -1,3 +1,5 @@
+"use client"; 
+
 export const Modal = ({showModal, setShowModal, handleDelete, deleteAction, isDeleting = false}) => {
 return showModal.show ? (
         <>    

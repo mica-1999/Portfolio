@@ -8,6 +8,8 @@ export default function Footer() {
   const { data: session } = useSession();
 
   useEffect(() => {
+    if (!session?.user?.id) return;
+    
     const fetchData = async () => {
       try {
           const response = await fetchDataFromApi(`/api/Rating/UserRating?userId=${session.user.id}`);

@@ -32,13 +32,18 @@ export default function MainContent() {
   // State for UI and loading
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [hidden_sections, setHiddenSections] = useState(() => {
+  const [hidden_sections, setHiddenSections] = useState([]);
+
+  // Fix localStorage hydration issues by using useEffect for initial state
+  useEffect(() => {
+    // Only access localStorage after component mounts on the client
     if (typeof window !== 'undefined') {
       const savedHiddenSections = localStorage.getItem('hidden_sections_saved');
-      return savedHiddenSections ? JSON.parse(savedHiddenSections) : [];
+      if (savedHiddenSections) {
+        setHiddenSections(JSON.parse(savedHiddenSections));
+      }
     }
-    return [];
-  });
+    }, []);
 
   // Function to handle the hidden sections
   const handle_sections = (section) => {

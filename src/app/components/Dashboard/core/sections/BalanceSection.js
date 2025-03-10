@@ -1,6 +1,12 @@
+"use client";
 import { formatNumber } from '/src/utils/mainContentUtil';
 
 export default function BalanceSection({ balanceData, hidden, onToggleVisibility }) {
+  // Process null/undefined values safely to prevent hydration issues
+  const safeFormatNumber = (value) => {
+    return formatNumber(value ?? 0);
+  };
+
   return (
     <div className="d-flex col-lg-6 balance">
       <div className="card flex-grow-1">
@@ -20,7 +26,7 @@ export default function BalanceSection({ balanceData, hidden, onToggleVisibility
                 <i className="fa-solid fa-euro-sign fa-lg euro-icon"></i>
               </div>
               <div className="card-info">
-                <h5 className="mb-0">{formatNumber(balanceData.totalBalance)}</h5>
+                <h5 className="mb-0">{safeFormatNumber(balanceData.totalBalance)}</h5>
                 <p className="mb-0">Total Balance</p>
               </div>
             </div>
@@ -29,7 +35,7 @@ export default function BalanceSection({ balanceData, hidden, onToggleVisibility
                 <i className="fa-solid fa-arrow-up fa-lg third-icon"></i>
               </div>
               <div className="card-info">
-                <h5 className="mb-0">{formatNumber(balanceData.balanceMonth)}</h5>
+                <h5 className="mb-0">{safeFormatNumber(balanceData.balanceMonth)}</h5>
                 <p className="mb-0">This Month</p>
               </div>
             </div>
@@ -38,7 +44,7 @@ export default function BalanceSection({ balanceData, hidden, onToggleVisibility
                 <i className="fa-solid fa-arrow-down fa-lg balance-received-icon"></i>
               </div>
               <div className="card-info">
-                <h5 className="mb-0">{formatNumber(balanceData.withdrawal)}</h5>
+                <h5 className="mb-0">{safeFormatNumber(balanceData.withdrawal)}</h5>
                 <p className="mb-0">New Transactions</p>
               </div>
             </div>

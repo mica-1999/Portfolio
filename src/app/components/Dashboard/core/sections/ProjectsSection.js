@@ -1,8 +1,15 @@
+"use client";
 import { getBadgeClass } from '/src/utils/mainContentUtil';
 
 const theads_projects = ['ID', 'Name', 'Description', 'State', 'Last Updated'];
 
 export default function ProjectsSection({ projects, hidden, onToggleVisibility }) {
+  // Safely format dates
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
+
   return (
     <div className="col-lg-8 d-flex table-custom">
       <div className="card flex-grow-1">
@@ -39,7 +46,7 @@ export default function ProjectsSection({ projects, hidden, onToggleVisibility }
                             {output}
                           </div>
                         </td>
-                        <td>{new Date(project.lastUpdated).toLocaleDateString()}</td>
+                        <td>{formatDate(project.lastUpdated)}</td>
                       </tr>
                     );
                   })}
