@@ -1,4 +1,4 @@
-import NewSoftware from  '/src/app/components/Dashboard/Learning/Software/createSoftware.js/NewSoftware'; 
+import NewSoftware from  '/src/app/components/Dashboard/Learning/Software/createSoftware/NewSoftware'; 
 
 export default function NewCardSoftware() {
   return (

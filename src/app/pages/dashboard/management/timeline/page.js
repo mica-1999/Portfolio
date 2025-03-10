@@ -1,6 +1,6 @@
-import ManageTimeline from  '/src/app/components/Dashboard/management/manageTimeline'; 
+import ManageTimeline from '/src/app/components/Dashboard/management/manageTimeline'; 
 
-export default function insert_Forms() {
+export default function TimelineManagementPage() {
   return (
     <>
     <div className="row d-flex">
@@ -8,5 +8,4 @@ export default function insert_Forms() {
     </div>
     </>
   );
-  
 }

@@ -1,6 +1,6 @@
-import ManageProject from  '/src/app/components/Dashboard/management/manageProject'; 
+import ManageProject from '/src/app/components/Dashboard/management/manageProject'; 
 
-export default function insert_Forms() {
+export default function ProjectManagementPage() {
   return (
     <>
     <div className="row d-flex">
@@ -8,5 +8,4 @@ export default function insert_Forms() {
     </div>
     </>
   );
-  
 }

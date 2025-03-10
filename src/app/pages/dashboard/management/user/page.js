@@ -1,6 +1,6 @@
-import UserManage from  '/src/app/components/Dashboard/management/manageUser'; 
+import UserManage from '/src/app/components/Dashboard/management/manageUser'; 
 
-export default function insert_Forms() {
+export default function UserManagementPage() {
   return (
     <>
     <div className="row d-flex">
@@ -8,5 +8,4 @@ export default function insert_Forms() {
     </div>
     </>
   );
-  
 }
