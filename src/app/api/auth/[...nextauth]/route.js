@@ -42,17 +42,25 @@ export const authOptions = {
           await dbConnect();
           const db = mongoose.connection.db;
           const usersCollection = db.collection("users");
-
+          
+          // Add debug log to check collection exists
+          const collections = await db.listCollections().toArray();
+          console.log("Available collections:", collections.map(c => c.name));
+          
+          // Log username being searched to verify input
+          console.log("Searching for username:", credentials.name);
+          
+          // Perform the user lookup
           const user = await usersCollection.findOne({ username: credentials.name });
           if(!user){
-            console.log("User not found");
+            console.log("User not found for username:", credentials.name);
             return null;
           }
 
           // Validate Password
           const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
           if(!isPasswordValid){
-            console.log("Invalid password");
+            console.log("Invalid password for user:", credentials.name);
             return null;
           }
 
@@ -63,7 +71,8 @@ export const authOptions = {
           return { id: user._id, username: user.username, first_name: user.firstName, last_name: user.lastName, role: user.role  };
         } 
         catch (error) {
-          console.error("Error during authorization:", error);
+          console.error("Error during authorization:", error.message);
+          console.error("Stack trace:", error.stack);
           return null;
         }
       },
