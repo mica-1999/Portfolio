@@ -26,3 +26,4 @@ Thumbs.db  # Windows system file
 
 # Others
 customServer/
+.vercel
