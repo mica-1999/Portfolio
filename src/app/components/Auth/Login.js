@@ -1,15 +1,21 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loginMethods } from "../../data/loginmethodsData";
 
 export default function Login() {
   const [loginData, setLoginData] = useState({ name: "", password: "" });
   const [error, setError] = useState(null);
-
-  // Router IN NEXT.JS
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  // Check if user is already authenticated
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      router.push("/pages/dashboard");
+    }
+  }, [session, status, router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +46,17 @@ export default function Login() {
       setError("An unexpected error occurred. Please try again.");
     }
   };
+
+  // If checking authentication status, show loading
+  if (status === "loading") {
+    return (
+      <div className="d-flex card login-card p-4 justify-content-center align-items-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   // LOGIN PAGE UI
   return (
