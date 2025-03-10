@@ -18,9 +18,9 @@
     "uuid": "^11.0.5"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev", 
     "build": "next build",
-    "start": "next start",
+    "start": "next start",  
     "lint": "next lint"
   },
   "devDependencies": {
