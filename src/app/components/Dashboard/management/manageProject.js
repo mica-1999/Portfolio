@@ -33,13 +33,14 @@ export default function ManageProject() {
     const [isformDropdownOpen, setIsformDropdownOpen] = useState(false);
     const [tagBtn, setTagBtn] = useState(false);
     const [formtagBtn, setFormTagBtn] = useState(false);
+    const [formVisible, setFormVisible] = useState(false);
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [projectsPerPage, setProjectsPerPage] = useState(5);
     
     // Loading and Fetch Error
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); // Start with loading=true
     const [fetchError, setFetchError] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -103,7 +104,7 @@ export default function ManageProject() {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (addProjectDiv && addProjectFormRef.current && !addProjectFormRef.current.contains(event.target)) {
-                setAddProjectDiv(false);
+                handleCloseProjectForm();
             }
         };
 
@@ -121,8 +122,11 @@ export default function ManageProject() {
         setCurrentPage(1);
     }, [filters]);
 
-    // Fetch from MongoDB - memoized with useCallback
+    // Fetch from MongoDB - memoized with useCallback and minimum loading time
     const fetchProjects = useCallback(async () => {
+        // Initial small delay to ensure loading UI is rendered
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const startTime = Date.now();
         setLoading(true);
         setFetchError('');  
         try {
@@ -141,6 +145,11 @@ export default function ManageProject() {
                 message: errorMessage
             });
         } finally {
+            // Ensure loading state shows for at least 1000ms
+            const remainingTime = 1000 - (Date.now() - startTime);
+            if (remainingTime > 0) {
+                await new Promise(resolve => setTimeout(resolve, remainingTime));
+            }
             setLoading(false);
         }
     }, []);
@@ -482,135 +491,154 @@ export default function ManageProject() {
         return `Showing ${firstEntry} to ${lastEntry} of ${filteredProjectsCount} entries`;
     }, [indexOfFirstProject, indexOfLastProject, filteredProjectsCount]);
 
+    const handleShowProjectForm = () => {
+        // First set div to be shown (but initially invisible)
+        setAddProjectDiv(true);
+        // Then after a short delay, make it visible with transition
+        setTimeout(() => {
+            setFormVisible(true);
+        }, 10);
+    };
+
+    const handleCloseProjectForm = () => {
+        // First hide with transition
+        setFormVisible(false);
+        // Then after transition completes, remove from DOM
+        setTimeout(() => {
+            setAddProjectDiv(false);
+        }, 300); // Match your CSS transition duration
+    };
+
     return(
         <div className="d-flex col-lg-12 mt-4">
-            <div className="card flex-grow-1 p-0">
-                <div className="card-header filters">
-                    <div className="row d-flex align-items-center p-2">
-                        <h5 className="card-title">Filters</h5>    
-                    </div>
-                    <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
-                        <div className="col-lg-4">
-                            <div className="select-wrapper">
-                                <select 
-                                    className="form-select"  
-                                    onChange={(e) => setFilters({ 
-                                        ...filters, 
-                                        state: e.target.value === "" ? null : Number(e.target.value) 
-                                    })}
-                                    value={filters.state || ""}
-                                >
-                                    <option key="default" value="">Select a status</option>
-                                    {STATUS.map((status, i) => {
-                                        const { output } = getBadgeClass(status);
-                                        return <option key={status} value={i}>{output}</option>;
-                                    })}
-                                </select>
-                            </div>
+            {loading ? (
+                <div className="d-flex col-lg-12 justify-content-center align-items-center" style={{ height: '500px' }}>
+                    <div className="text-center">
+                        <div className="spinner-border text-primary mb-3" role="status" style={{ width: '3rem', height: '3rem' }}>
+                            <span className="visually-hidden">Loading...</span>
                         </div>
-
-                        <div className="col-lg-4">
-                            <div className="dropdown">
+                        <p className="text-muted">Loading projects data...</p>
+                    </div>
+                </div>
+            ) : (
+                <div className="card flex-grow-1 p-0">
+                    <div className="card-header filters">
+                        <div className="row d-flex align-items-center p-2">
+                            <h5 className="card-title">Filters</h5>    
+                        </div>
+                        <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
+                            <div className="col-lg-4">
                                 <div className="select-wrapper">
-                                    <button 
-                                        className={`btn dropdown-toggle w-100 tagButton projectFilter ${tagBtn ? 'setBorder': ''}`} 
-                                        type="button" 
-                                        id="dropdownMenuButton" 
-                                        onClick={() => { 
-                                            setTagBtn(!tagBtn); 
-                                            setIsDropdownOpen(!isDropdownOpen); 
-                                        }}
+                                    <select 
+                                        className="form-select"  
+                                        onChange={(e) => setFilters({ 
+                                            ...filters, 
+                                            state: e.target.value === "" ? null : Number(e.target.value) 
+                                        })}
+                                        value={filters.state || ""}
                                     >
-                                        {filters.tags.length === 0 ? 'Select tags' : filters.tags.join(', ')}
-                                    </button>
-                                    <ul 
-                                        className={`dropdown-menu w-100 ulTag ${isDropdownOpen ? 'show' : ''}`} 
-                                        aria-labelledby="dropdownMenuButton"
-                                    >
-                                        {TAGS.map((tag) => (
-                                            <li key={tag} onClick={() => handleTagChange(tag)} className="custom-tag-li p-2">
-                                                <div className="form-check">
-                                                    <input
-                                                        type="checkbox"
-                                                        className="form-check-input"
-                                                        id={tag}
-                                                        checked={filters.tags.includes(tag)}
-                                                        onChange={() => handleTagChange(tag)}
-                                                    />
-                                                    <label className="form-check-label" htmlFor={tag} onClick={(e) => e.preventDefault()}>
-                                                        {tag}
-                                                    </label>
-                                                </div>
-                                            </li>
+                                        <option key="default" value="">Select a status</option>
+                                        {STATUS.map((status, i) => {
+                                            const { output } = getBadgeClass(status);
+                                            return <option key={status} value={i}>{output}</option>;
+                                        })}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="dropdown">
+                                    <div className="select-wrapper">
+                                        <button 
+                                            className={`btn dropdown-toggle w-100 tagButton projectFilter ${tagBtn ? 'setBorder': ''}`} 
+                                            type="button" 
+                                            id="dropdownMenuButton" 
+                                            onClick={() => { 
+                                                setTagBtn(!tagBtn); 
+                                                setIsDropdownOpen(!isDropdownOpen); 
+                                            }}
+                                        >
+                                            {filters.tags.length === 0 ? 'Select tags' : filters.tags.join(', ')}
+                                        </button>
+                                        <ul 
+                                            className={`dropdown-menu w-100 ulTag ${isDropdownOpen ? 'show' : ''}`} 
+                                            aria-labelledby="dropdownMenuButton"
+                                        >
+                                            {TAGS.map((tag) => (
+                                                <li key={tag} onClick={() => handleTagChange(tag)} className="custom-tag-li p-2">
+                                                    <div className="form-check">
+                                                        <input
+                                                            type="checkbox"
+                                                            className="form-check-input"
+                                                            id={tag}
+                                                            checked={filters.tags.includes(tag)}
+                                                            onChange={() => handleTagChange(tag)}
+                                                        />
+                                                        <label className="form-check-label" htmlFor={tag} onClick={(e) => e.preventDefault()}>
+                                                            {tag}
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="select-wrapper">
+                                    <select className="form-select" value={filters.lastUpdated || ""} onChange={(e) => setFilters({ ...filters, lastUpdated: e.target.value })}>
+                                        <option key="default" value="">Select a time range</option>
+                                        {TIME_RANGES.map((range) => (
+                                            <option key={range} value={range}>{range}</option>
                                         ))}
-                                    </ul>
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="col-lg-4">
-                            <div className="select-wrapper">
-                                <select className="form-select" value={filters.lastUpdated || ""} onChange={(e) => setFilters({ ...filters, lastUpdated: e.target.value })}>
-                                    <option key="default" value="">Select a time range</option>
-                                    {TIME_RANGES.map((range) => (
-                                        <option key={range} value={range}>{range}</option>
-                                    ))}
-                                </select>
+                        <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
+                            <div className="col-lg-12 d-flex align-items-center justify-content-between">
+                                <div className="d-flex gap-2">
+                                    <button className="btn btn-secondary exportBtn" onClick={exportData}>
+                                        <i className="ri-download-2-line me-2"></i> Export 
+                                    </button>
+                                    <button 
+                                        className="btn btn-outline-secondary" 
+                                        onClick={handleClearFilters}
+                                        title="Clear all filters"
+                                    >
+                                        <i className="ri-refresh-line"></i>
+                                    </button>
+                                </div>
+                                <div className="d-flex gap-3">
+                                    <input 
+                                        type="text" 
+                                        className="form-control searchInput" 
+                                        placeholder="Search Project" 
+                                        onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                        value={filters.title}
+                                        aria-label="Search projects"
+                                    />
+                                    <button 
+                                        className="btn btn-primary addBtn" 
+                                        onClick={handleShowProjectForm}
+                                        aria-label="Add new project"
+                                    >
+                                        Add Project
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
-                        <div className="col-lg-12 d-flex align-items-center justify-content-between">
-                            <div className="d-flex gap-2">
-                                <button className="btn btn-secondary exportBtn" onClick={exportData}>
-                                    <i className="ri-download-2-line me-2"></i> Export 
-                                </button>
-                                <button 
-                                    className="btn btn-outline-secondary" 
-                                    onClick={handleClearFilters}
-                                    title="Clear all filters"
-                                >
-                                    <i className="ri-refresh-line"></i>
-                                </button>
+                    <div className="card-body d-flex flex-wrap p-0 mb-2">
+                        {fetchError && (
+                            <div className="alert alert-danger w-100 m-3" role="alert">
+                                {fetchError}
                             </div>
-                            <div className="d-flex gap-3">
-                                <input 
-                                    type="text" 
-                                    className="form-control searchInput" 
-                                    placeholder="Search Project" 
-                                    onChange={(e) => setFilters({ ...filters, title: e.target.value })}
-                                    value={filters.title}
-                                    aria-label="Search projects"
-                                />
-                                <button 
-                                    className="btn btn-primary addBtn" 
-                                    onClick={() => setAddProjectDiv(true)}
-                                    aria-label="Add new project"
-                                >
-                                    Add Project
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        )}
 
-                <div className="card-body d-flex flex-wrap p-0 mb-2">
-                    {loading && (
-                        <div className="d-flex justify-content-center w-100 p-4">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    )}
-                    
-                    {fetchError && (
-                        <div className="alert alert-danger w-100 m-3" role="alert">
-                            {fetchError}
-                        </div>
-                    )}
-
-                    {!loading && !fetchError && (
                         <div className="table-responsive text-nowrap user-table manageTable w-100">
                             <table className="table table-sm mb-0">
                                 <thead className="table-head">
@@ -648,25 +676,28 @@ export default function ManageProject() {
                                 </tbody>
                             </table>
                         </div>
-                    )}
-                    
-                    {!loading && !fetchError && (
+                        
                         <div className="row w-100">
                             <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
                                 <p>{entriesDisplayText}</p>
                                 {filteredProjectsCount > 0 && paginationComponent}
                             </div>
                         </div>
-                    )}
-                </div>  
-            </div>
+                    </div>
+                </div>
+            )}
             
             {/* Add New Project form sliding in from the right */}
             <div 
-                className={`add-user-form ${addProjectDiv ? 'show' : ''}`} 
+                className={`add-user-form ${addProjectDiv ? 'show' : ''} ${formVisible ? 'visible' : ''}`} 
                 ref={addProjectFormRef}
                 role="dialog"
                 aria-labelledby="addProjectFormTitle"
+                style={{ 
+                    transition: "transform 300ms ease, opacity 300ms ease",
+                    opacity: formVisible ? 1 : 0,
+                    transform: formVisible ? 'translateX(0)' : 'translateX(100%)'
+                }}
             >
                 <div className="form-container d-flex flex-column mt-2">
                     <div className="d-flex align-items-center justify-content-between bottom-border">
@@ -682,11 +713,11 @@ export default function ManageProject() {
                             ></i>
                             <i 
                                 className="ri-close-line" 
-                                onClick={() => setAddProjectDiv(false)}
+                                onClick={handleCloseProjectForm}
                                 tabIndex="0"
                                 role="button"
                                 aria-label="Close form"
-                                onKeyDown={(e) => e.key === 'Enter' && setAddProjectDiv(false)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleCloseProjectForm()}
                             ></i>
                         </div>
                     </div>
@@ -824,7 +855,7 @@ export default function ManageProject() {
                             <button 
                                 type="button" 
                                 className="btn cancelItem" 
-                                onClick={() => setAddProjectDiv(false)}
+                                onClick={handleCloseProjectForm}
                             >
                                 Cancel
                             </button>

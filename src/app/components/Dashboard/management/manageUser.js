@@ -32,12 +32,15 @@ export default function ManageUser() {
     const [usersPerPage, setUsersPerPage] = useState(5); // Users per page
 
     // Loading and Fetch Error
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(true); // Start with loading=true
     const [fetchError, setFetchError] = useState(''); // Fetch error
 
     // Add loading states for operations
     const [submitting, setSubmitting] = useState(false);
     const [deleting, setDeleting] = useState(false);
+
+    // Add state to control form visibility properly
+    const [formVisible, setFormVisible] = useState(false);
 
     // Initial Page Render
     useEffect(() => {
@@ -95,7 +98,7 @@ export default function ManageUser() {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (addUserDiv && addUserFormRef.current && !addUserFormRef.current.contains(event.target)) {
-                setAddUserDiv(false);
+                handleCloseUserForm();
             }
         };
 
@@ -108,8 +111,11 @@ export default function ManageUser() {
         };
     }, [addUserDiv]);
 
-    // Enhanced fetchUsers with better error handling
+    // Enhanced fetchUsers with better error handling and minimum loading time
     const fetchUsers = async () => {
+        // Initial small delay to ensure loading UI is rendered
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const startTime = Date.now();
         setLoading(true);
         setFetchError('');  
         try {
@@ -128,6 +134,11 @@ export default function ManageUser() {
                 message: 'Failed to load users. Please try again.'
             });
         } finally {
+            // Ensure loading state shows for at least 1000ms
+            const remainingTime = 1000 - (Date.now() - startTime);
+            if (remainingTime > 0) {
+                await new Promise(resolve => setTimeout(resolve, remainingTime));
+            }
             setLoading(false);
         }
     };
@@ -293,98 +304,120 @@ export default function ManageUser() {
         setFilters({ name: '', role: '', time: '', status: '' });
     }
 
+    // Handle showing the form with proper timing
+    const handleShowUserForm = () => {
+        // First set div to be shown (but initially invisible)
+        setAddUserDiv(true);
+        // Then after a short delay, make it visible with transition
+        setTimeout(() => {
+            setFormVisible(true);
+        }, 10);
+    };
+
+    // Handle closing the form with proper timing
+    const handleCloseUserForm = () => {
+        // First hide with transition
+        setFormVisible(false);
+        // Then after transition completes, remove from DOM
+        setTimeout(() => {
+            setAddUserDiv(false);
+        }, 300); // Match your CSS transition duration
+    };
+
     return(
         <div className="d-flex col-lg-12 mt-4">
-            {/* Filters and Table Section */}
-            <div className="card flex-grow-1 p-0" >
-                <div className="card-header filters">
-                    <div className="row d-flex align-items-center p-2">
-                        <h5 className="card-title">Filters</h5>    
-                    </div>
-                    <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
-                        
-                        <div className="col-lg-4">
-                            <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, role: e.target.value })} value = {filters.role}>
-                                    <option key="default" value="">Select a role</option>
-                                    {ROLES.map((role) => (
-                                        <option key={role} value={role.toLowerCase()}>{role}</option>
-                                        )
-                                    )}
-                                </select>
-                            </div>
+            {/* Display loading state similar to manageTimeline.js */}
+            {loading ? (
+                <div className="d-flex col-lg-12 justify-content-center align-items-center" style={{ height: '500px' }}>
+                    <div className="text-center">
+                        <div className="spinner-border text-primary mb-3" role="status" style={{ width: '3rem', height: '3rem' }}>
+                            <span className="visually-hidden">Loading...</span>
                         </div>
-
-                        <div className="col-lg-4">
-                            <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })} value = {filters.status}>
-                                <option key="default" value="">Select a status</option>
-                                    {STATUS.map((status) => (
-                                        <option key={status} value={status.toLowerCase()}>{status}</option>
-                                        )
-                                    )}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-4">
-                            <div className="select-wrapper">
-                                <select className="form-select" onChange={(e) => setFilters({ ...filters, time: e.target.value })} value = {filters.time}>
-                                <option key="default" value="">Select a time range</option>
-                                    {TIME_RANGES.map((range) => (
-                                        <option key={range} value={range}>{range}</option>
-                                        )
-                                    )}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Enhanced search input with accessibility */}
-                    <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
-                        <div className="col-lg-12 d-flex align-items-center justify-content-between">
-                            <div className="d-flex gap-2">
-                                <button className="btn btn-secondary exportBtn" onClick={exportData}>
-                                    <i className="ri-download-2-line me-2"></i> Export 
-                                </button>
-                                <button 
-                                    className="btn btn-outline-secondary" 
-                                    onClick={handleClearFilters}
-                                    title="Clear all filters"
-                                >
-                                    <i className="ri-refresh-line"></i>
-                                </button>
-                            </div>
-                            <div className="d-flex gap-3">
-                                <input 
-                                    type="text" 
-                                    className="form-control searchInput" 
-                                    placeholder="Search User" 
-                                    onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-                                    aria-label="Search users"
-                                    value = {filters.name}
-                                />
-                                <button 
-                                    className="btn btn-primary addBtn" 
-                                    onClick={() => setAddUserDiv(true)}
-                                    aria-label="Add new user"
-                                >Add New User</button>
-                            </div>
-                        </div>
+                        <p className="text-muted">Loading users data...</p>
                     </div>
                 </div>
+            ) : (
+                <div className="card flex-grow-1 p-0" >
+                    <div className="card-header filters">
+                        <div className="row d-flex align-items-center p-2">
+                            <h5 className="card-title">Filters</h5>    
+                        </div>
+                        <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
+                            
+                            <div className="col-lg-4">
+                                <div className="select-wrapper">
+                                    <select className="form-select" onChange={(e) => setFilters({ ...filters, role: e.target.value })} value = {filters.role}>
+                                        <option key="default" value="">Select a role</option>
+                                        {ROLES.map((role) => (
+                                            <option key={role} value={role.toLowerCase()}>{role}</option>
+                                            )
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
 
-                <div className="card-body d-flex flex-wrap p-0 mb-1">
-                    {loading && (
-                        <div className="d-flex justify-content-center w-100 p-4">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
+                            <div className="col-lg-4">
+                                <div className="select-wrapper">
+                                    <select className="form-select" onChange={(e) => setFilters({ ...filters, status: e.target.value })} value = {filters.status}>
+                                    <option key="default" value="">Select a status</option>
+                                        {STATUS.map((status) => (
+                                            <option key={status} value={status.toLowerCase()}>{status}</option>
+                                            )
+                                        )}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                                <div className="select-wrapper">
+                                    <select className="form-select" onChange={(e) => setFilters({ ...filters, time: e.target.value })} value = {filters.time}>
+                                    <option key="default" value="">Select a time range</option>
+                                        {TIME_RANGES.map((range) => (
+                                            <option key={range} value={range}>{range}</option>
+                                            )
+                                        )}
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    )}
-                    {fetchError && showModal({type: 'error', show: true, message: fetchError})}
-                    
-                    {!loading && !fetchError && (
+
+                        {/* Enhanced search input with accessibility */}
+                        <div className="row d-flex mt-3 pb-3 ps-2 pe-2">
+                            <div className="col-lg-12 d-flex align-items-center justify-content-between">
+                                <div className="d-flex gap-2">
+                                    <button className="btn btn-secondary exportBtn" onClick={exportData}>
+                                        <i className="ri-download-2-line me-2"></i> Export 
+                                    </button>
+                                    <button 
+                                        className="btn btn-outline-secondary" 
+                                        onClick={handleClearFilters}
+                                        title="Clear all filters"
+                                    >
+                                        <i className="ri-refresh-line"></i>
+                                    </button>
+                                </div>
+                                <div className="d-flex gap-3">
+                                    <input 
+                                        type="text" 
+                                        className="form-control searchInput" 
+                                        placeholder="Search User" 
+                                        onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+                                        aria-label="Search users"
+                                        value = {filters.name}
+                                    />
+                                    <button 
+                                        className="btn btn-primary addBtn" 
+                                        onClick={handleShowUserForm}
+                                        aria-label="Add new user"
+                                    >Add New User</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card-body d-flex flex-wrap p-0 mb-1">
+                        {fetchError && showModal({type: 'error', show: true, message: fetchError})}
+                        
                         <div className="table-responsive text-nowrap user-table w-100">
                             <table className="table table-sm mb-0">
                                 <thead className="table-head">
@@ -449,72 +482,77 @@ export default function ManageUser() {
                                 </tbody>
                             </table>
                         </div>
-                    )}
-                    <div className="row w-100">
-                        <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
-                            <p>
-                                {filteredUsers.length > 0 
-                                    ? `Showing ${indexOfFirstUser + 1} to ${Math.min(indexOfLastUser, filteredUsers.length)} of ${filteredUsers.length} entries` 
-                                    : "No entries to display"}
-                            </p>
-                            
-                            {/* Enhanced pagination with keyboard accessibility */}
-                            {totalPages > 0 && (
-                                <ul className="pagination gap-2" role="navigation" aria-label="Pagination">
-                                    <li className={`page-item arrow ${currentPage === 1 ? 'disabled' : ''}`}>
-                                        <a 
-                                            className="page-link" 
-                                            aria-label="Previous page" 
-                                            onClick={() => currentPage > 1 && paginate(currentPage - 1)}
-                                            onKeyDown={(e) => handlePaginationKeyPress(e, currentPage - 1)}
-                                            tabIndex={currentPage === 1 ? -1 : 0}
-                                            role="button"
-                                        >
-                                            <i className="ri-arrow-left-s-line"></i>
-                                        </a>
-                                    </li>
-                                    
-                                    {Array.from({ length: totalPages }, (_, i) => (
-                                        <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
+                        <div className="row w-100">
+                            <div className="col-lg-12 d-flex align-items-center justify-content-between ps-5 pt-3">
+                                <p>
+                                    {filteredUsers.length > 0 
+                                        ? `Showing ${indexOfFirstUser + 1} to ${Math.min(indexOfLastUser, filteredUsers.length)} of ${filteredUsers.length} entries` 
+                                        : "No entries to display"}
+                                </p>
+                                
+                                {/* Enhanced pagination with keyboard accessibility */}
+                                {totalPages > 0 && (
+                                    <ul className="pagination gap-2" role="navigation" aria-label="Pagination">
+                                        <li className={`page-item arrow ${currentPage === 1 ? 'disabled' : ''}`}>
                                             <a 
                                                 className="page-link" 
-                                                onClick={() => paginate(i + 1)}
-                                                onKeyDown={(e) => handlePaginationKeyPress(e, i + 1)}
-                                                tabIndex={0}
+                                                aria-label="Previous page" 
+                                                onClick={() => currentPage > 1 && paginate(currentPage - 1)}
+                                                onKeyDown={(e) => handlePaginationKeyPress(e, currentPage - 1)}
+                                                tabIndex={currentPage === 1 ? -1 : 0}
                                                 role="button"
-                                                aria-label={`Page ${i + 1}`}
-                                                aria-current={i + 1 === currentPage ? "page" : null}
                                             >
-                                                {i + 1}
+                                                <i className="ri-arrow-left-s-line"></i>
                                             </a>
                                         </li>
-                                    ))}
-                                    
-                                    <li className={`page-item arrow ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                        <a 
-                                            className="page-link" 
-                                            onClick={() => currentPage < totalPages && paginate(currentPage + 1)} 
-                                            aria-label="Next page"
-                                            onKeyDown={(e) => handlePaginationKeyPress(e, currentPage + 1)}
-                                            tabIndex={currentPage === totalPages ? -1 : 0}
-                                            role="button"
-                                        >
-                                            <i className="ri-arrow-right-s-line"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            )}
+                                        
+                                        {Array.from({ length: totalPages }, (_, i) => (
+                                            <li key={i} className={`page-item ${i + 1 === currentPage ? "active" : ""}`}>
+                                                <a 
+                                                    className="page-link" 
+                                                    onClick={() => paginate(i + 1)}
+                                                    onKeyDown={(e) => handlePaginationKeyPress(e, i + 1)}
+                                                    tabIndex={0}
+                                                    role="button"
+                                                    aria-label={`Page ${i + 1}`}
+                                                    aria-current={i + 1 === currentPage ? "page" : null}
+                                                >
+                                                    {i + 1}
+                                                </a>
+                                            </li>
+                                        ))}
+                                        
+                                        <li className={`page-item arrow ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                            <a 
+                                                className="page-link" 
+                                                onClick={() => currentPage < totalPages && paginate(currentPage + 1)} 
+                                                aria-label="Next page"
+                                                onKeyDown={(e) => handlePaginationKeyPress(e, currentPage + 1)}
+                                                tabIndex={currentPage === totalPages ? -1 : 0}
+                                                role="button"
+                                            >
+                                                <i className="ri-arrow-right-s-line"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>  
-            </div>
+                </div>
+            )}
 
             {/* Enhanced form with loading state and accessibility */}
             <div 
-                className={`add-user-form ${addUserDiv ? 'show' : ''}`} 
+                className={`add-user-form ${addUserDiv ? 'show' : ''} ${formVisible ? 'visible' : ''}`} 
                 ref={addUserFormRef}
                 role="dialog"
                 aria-labelledby="addUserFormTitle"
+                style={{ 
+                    transition: "transform 300ms ease, opacity 300ms ease",
+                    opacity: formVisible ? 1 : 0,
+                    transform: formVisible ? 'translateX(0)' : 'translateX(100%)'
+                }}
             >
                 <div className="form-container d-flex flex-column mt-2">
                     <div className="d-flex align-items-center justify-content-between bottom-border">
@@ -530,11 +568,11 @@ export default function ManageUser() {
                             ></i>
                             <i 
                                 className="ri-close-line" 
-                                onClick={() => setAddUserDiv(false)}
+                                onClick={handleCloseUserForm}
                                 tabIndex="0"
                                 role="button"
                                 aria-label="Close form"
-                                onKeyDown={(e) => e.key === 'Enter' && setAddUserDiv(false)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleCloseUserForm()}
                             ></i>
                         </div>
                     </div>
@@ -599,7 +637,7 @@ export default function ManageUser() {
                             <button 
                                 type="button" 
                                 className="btn cancelItem" 
-                                onClick={() => setAddUserDiv(false)}
+                                onClick={handleCloseUserForm}
                             >
                                 Cancel
                             </button>
