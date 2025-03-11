@@ -89,11 +89,6 @@ export const menuPages = [
       page: "/email",
     },
     {
-      name: "Chat",
-      icon: "chat",
-      page: "/pages/dashboard/chat",
-    },
-    {
       name: "Calendar",
       icon: "calendar",
       page: "/pages/dashboard/calendar",
