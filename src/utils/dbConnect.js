@@ -9,18 +9,15 @@ const dbConnect = async () => {
   }
 
   try {
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(MONGODB_URI); // Removed deprecated options
     if (mongoose.connection.readyState === 1) {
       console.log('Connected to MongoDB Atlas');
     }
   } catch (error) {
     console.error('Error connecting to the database:', error.message);
-    // Log more details without exposing credentials
+    
     if (error.name === 'MongooseServerSelectionError') {
-      console.error('Could not connect to any server in the replica set. Check network or MongoDB Atlas status.');
+      console.error('Could not connect to MongoDB Atlas. Check network, credentials, or IP whitelist.');
     }
   }
 };
