@@ -13,7 +13,9 @@ export default function BlogLayout({ children }) {
       <StylesProvider stylesheets={['/assets/css/blog/blog.css']} />
       <div className="container-fluid vh-100 p-0">
         <NavBar />
-        {children}
+        <div className='mt-5'>
+          {children}
+        </div>
         <Footer />
       </div>
     </>

@@ -1582,6 +1582,7 @@ body {
   text-decoration: none;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(102, 108, 255, 0.3);
+  border: none;
 }
 
 .cta-btn:hover {
