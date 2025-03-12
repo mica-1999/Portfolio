@@ -8,8 +8,8 @@ export default function AboutMe() {
   // Skills data
   const skills = {
     frontend: ['React', 'Next.js', 'JavaScript', 'TypeScript', 'HTML5', 'CSS3/SCSS', 'Tailwind CSS', 'Bootstrap'],
-    backend: ['Node.js', 'Express', 'MongoDB', 'SQL', 'REST APIs'],
-    tools: ['Git', 'GitHub', 'VS Code', 'Figma', 'Adobe XD', 'Webpack']
+    backend: ['Node.js', 'Next.js', 'Express', 'MongoDB', 'SQL', 'REST APIs','PostgreSQL'],
+    tools: ['Git', 'GitHub', 'VS Code', 'Vercel', 'Figma', 'Webpack', 'DBeaver', 'pgAdmin', 'Compass', 'xampp','phpMyAdmin']  
   };
   
   // Experience data
