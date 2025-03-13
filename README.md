@@ -95,7 +95,7 @@ When including static files such as CSS, JS, and images from the `public` direct
 - 
 
 # Extra
-- Do a better Login Page
+- Fix the damn responsive design on the eebsite cuz on the phone it looks like fucking shit
 
 # PS
 - Project will be on hold due to burn out and wanting to learn other stuff, for now a good base is done
