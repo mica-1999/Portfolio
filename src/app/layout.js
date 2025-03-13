@@ -4,6 +4,9 @@ import '../styles/global.css';
 export const metadata = {
   title: 'My Portfolio',
   description: 'Welcome to my portfolio site!',
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: 'My Portfolio',
     description: 'Explore my projects and accomplishments!',
