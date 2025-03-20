@@ -1,9 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from '../../../../utility/Modal';
 import { MAIN_CATEGORIES, SUBCATEGORIES, STATUS_OPTIONS, TAGS } from '../Constants';
 
 export default function NewSoftware() {
+    const textareasRef = useRef([]);
+
+    const autoResizeTextareas = () => {
+        textareasRef.current.forEach((textarea) => {
+            textarea.style.height = 'auto';  // Reset height before resizing
+            textarea.style.height = `${textarea.scrollHeight}px`;  // Set height based on content
+        });
+    };
+
     // Base form data structure for a new learning topic
     const [formData, setFormData] = useState({
         titleCard: "",
@@ -363,6 +372,44 @@ export default function NewSoftware() {
         }
       },[showModal.show === false])
 
+    // Textarea auto-resize effect
+    useEffect(() => {
+        const autoResizeTextarea = (textarea) => {
+            if (textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = `${textarea.scrollHeight}px`;
+            }
+        };
+
+        // Function to handle all textareas in the document
+        const setupTextareas = () => {
+            // Get all textareas in the form
+            const allTextareas = document.querySelectorAll('textarea');
+            
+            // Remove existing listeners (to avoid duplicates)
+            allTextareas.forEach(textarea => {
+                textarea.removeEventListener('input', () => autoResizeTextarea(textarea));
+            });
+            
+            // Add new listeners and initialize heights
+            allTextareas.forEach(textarea => {
+                autoResizeTextarea(textarea); // Set initial height
+                textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+            });
+        };
+
+        // Initial setup
+        setupTextareas();
+
+        // Setup on form data changes (when new textareas might be added)
+        return () => {
+            const allTextareas = document.querySelectorAll('textarea');
+            allTextareas.forEach(textarea => {
+                textarea.removeEventListener('input', () => autoResizeTextarea(textarea));
+            });
+        };
+    }, [formData]);
+
     return (
         <div className="row mt-4">
             {/* Form Card */}
@@ -464,6 +511,7 @@ export default function NewSoftware() {
                                     <div className="col-lg-6">
                                         <div className="form-group">
                                             <textarea
+                                                ref={(el) => textareasRef.current[0] = el}
                                                 id="description"
                                                 name="description"
                                                 placeholder="Brief explanation of the topic"
@@ -621,6 +669,7 @@ export default function NewSoftware() {
                                                     
                                                     <div className="form-group">
                                                         <textarea
+                                                            ref={(el) => textareasRef.current[1] = el}
                                                             id={`concept-${index}-explanation`}
                                                             placeholder="Explain this concept"
                                                             value={concept.explanation}
@@ -687,6 +736,7 @@ export default function NewSoftware() {
                                                         <div className="col-lg-6 mb-2">
                                                             <div className="form-group">
                                                                 <textarea
+                                                                    ref={(el) => textareasRef.current[2] = el}
                                                                     id={`snippet-${index}-code`}
                                                                     placeholder="// Code goes here"
                                                                     value={snippet.code}
@@ -703,6 +753,7 @@ export default function NewSoftware() {
                                                         <div className="col-lg-6">
                                                             <div className="form-group">
                                                                 <textarea
+                                                                    ref={(el) => textareasRef.current[3] = el}
                                                                     id={`snippet-${index}-explanation`}
                                                                     placeholder="Explain your code"
                                                                     value={snippet.explanation}
@@ -781,6 +832,7 @@ export default function NewSoftware() {
                                                     
                                                     <div className="form-group">
                                                         <textarea
+                                                            ref={(el) => textareasRef.current[4] = el}
                                                             id={`video-${index}-description`}
                                                             placeholder="Video description"
                                                             value={video.description}
@@ -804,6 +856,7 @@ export default function NewSoftware() {
                                     <div className="col-lg-12 mb-3">
                                         <div className="form-group">
                                             <textarea
+                                                ref={(el) => textareasRef.current[5] = el}
                                                 id="userNotes"
                                                 name="userNotes"
                                                 placeholder="Your personal notes"

@@ -578,6 +578,10 @@ button:focus {
     z-index: 5;
 }
 
+.containsTag, .containsTag:hover{
+    border: 2px solid #28a745;
+}
+
 /* Clean button states */
 .btn-outline-primary {
     color: var(--bs-primary);

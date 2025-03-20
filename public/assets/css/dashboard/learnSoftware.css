@@ -286,6 +286,7 @@
 }
 .btn-outline-secondary:hover {
     background-color: #393C6A !important;
+    border: 1px solid #6c757d !important;
 }
 
 
@@ -328,7 +329,7 @@
 .exportBtn:hover {
     background-color: #393C6A;
     color: #D4D5EA;
-    border: 1px !important
+    border: 1px solid #6c757d !important;
 }
 
 .searchInput:hover {

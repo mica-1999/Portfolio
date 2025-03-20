@@ -794,13 +794,13 @@ export default function ManageProject() {
                             <div className="errorDiv">{errors.state}</div>
                         </div>
 
-                        <div className="select-wrapper">
+                        <div className={`select-wrapper`}>
                             <button 
                                 className={`btn dropdown-toggle w-100 formBtn tagButton ${
                                     formtagBtn ? 'setBorder': ''
                                 } ${
                                     formData.tags.length > 0 ? 'selected-tags' : ''
-                                }`} 
+                                } ${formData.tags.length > 0 ? 'containsTag' : ''}` } 
                                 type="button" 
                                 id="dropdownForm" 
                                 onClick={() => { 
