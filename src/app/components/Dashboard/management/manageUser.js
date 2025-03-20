@@ -340,7 +340,10 @@ export default function ManageUser() {
                 <div className="card flex-grow-1 p-0" >
                     <div className="card-header filters">
                         <div className="row d-flex align-items-center p-2">
-                            <h5 className="card-title">Filters</h5>    
+                            <h5 className="card-title">
+                                <i className="ri-user-settings-line me-2"></i>
+                                 Users
+                            </h5>    
                         </div>
                         <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
                             
@@ -397,14 +400,26 @@ export default function ManageUser() {
                                     </button>
                                 </div>
                                 <div className="d-flex gap-3">
-                                    <input 
-                                        type="text" 
-                                        className="form-control searchInput" 
-                                        placeholder="Search User" 
-                                        onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-                                        aria-label="Search users"
-                                        value = {filters.name}
-                                    />
+                                    <div className="d-flex position-relative searchBox">
+                                        <i className="ri-search-line search-icon"></i>
+                                        <input 
+                                            type="text" 
+                                            className="form-control searchInput ps-5" 
+                                            placeholder="Search User" 
+                                            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+                                            aria-label="Search users"
+                                            value={filters.name}
+                                        />
+                                        {filters.name && (
+                                            <button 
+                                                className="btn btn-sm btn-link position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                onClick={() => setFilters({ ...filters, name: '' })}
+                                                style={{ zIndex: 5 }}
+                                            >
+                                                <i className="ri-close-line"></i>
+                                            </button>
+                                        )}
+                                    </div>
                                     <button 
                                         className="btn btn-primary addBtn" 
                                         onClick={handleShowUserForm}

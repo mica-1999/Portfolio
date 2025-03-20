@@ -16,12 +16,14 @@ export default function ProjectsSection({ projects, hidden, onToggleVisibility }
         <div id="2" className={hidden ? 'blur_element' : ''}>
           <div className="card-header">
             <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">Projects</h5>
+              <div className='d-flex align-items-center'>
+                  <i className="ri-folder-chart-line ri-lg me-2"></i>
+                  <h5 className="mt-2 card-title">Projects</h5>
+              </div>
               <div>
                 <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={onToggleVisibility}></i>
               </div>
             </div>
-            <h6 className="card-subtitle mb-2">#Categories</h6>
           </div>
           <div className="card-body p-0">
             <div className="table-responsive text-nowrap project-table">

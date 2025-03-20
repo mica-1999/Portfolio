@@ -32,7 +32,7 @@ export default function MainContent() {
   // State for UI and loading
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [hidden_sections, setHiddenSections] = useState([]);
+  const [hidden_sections, setHiddenSections] = useState(['1']);
 
   // Fix localStorage hydration issues by using useEffect for initial state
   useEffect(() => {

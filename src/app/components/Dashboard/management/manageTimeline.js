@@ -229,7 +229,7 @@ export default function ManageTimeline() {
                                     <i className="ri-refresh-line"></i>
                                 </button>
                             </div>
-                            <div className="d-flex position-relative">
+                            <div className="d-flex position-relative searchBox">
                                 <i className="ri-search-line search-icon"></i>
                                 <input 
                                     type="text" 

@@ -232,8 +232,8 @@ export default function ManageProject() {
             console.error('Error creating project:', error);
             setShowModal({
                 type: 'error', 
-                show: true, 
-                message: error.message || 'Error creating Project. Please try again.'
+                    show: true, 
+                    message: error.message || 'Error creating Project. Please try again.'
             });
         } finally {
             setSubmitting(false);
@@ -524,7 +524,10 @@ export default function ManageProject() {
                 <div className="card flex-grow-1 p-0">
                     <div className="card-header filters">
                         <div className="row d-flex align-items-center p-2">
-                            <h5 className="card-title">Filters</h5>    
+                            <h5 className="card-title">
+                                <i className="ri-folder-chart-line me-2"></i>
+                                 Projects
+                            </h5>    
                         </div>
                         <div className="row d-flex align-items-center ps-2 pe-2 pb-4 border-bottom">
                             <div className="col-lg-4">
@@ -612,14 +615,26 @@ export default function ManageProject() {
                                     </button>
                                 </div>
                                 <div className="d-flex gap-3">
-                                    <input 
-                                        type="text" 
-                                        className="form-control searchInput" 
-                                        placeholder="Search Project" 
-                                        onChange={(e) => setFilters({ ...filters, title: e.target.value })}
-                                        value={filters.title}
-                                        aria-label="Search projects"
-                                    />
+                                    <div className="d-flex position-relative searchBox">
+                                        <i className="ri-search-line search-icon"></i>
+                                        <input 
+                                            type="text" 
+                                            className="form-control searchInput ps-5" 
+                                            placeholder="Search Project" 
+                                            onChange={(e) => setFilters({ ...filters, title: e.target.value })}
+                                            value={filters.title}
+                                            aria-label="Search projects"
+                                        />
+                                        {filters.title && (
+                                            <button 
+                                                className="btn btn-sm btn-link position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                onClick={() => setFilters({ ...filters, title: '' })}
+                                                style={{ zIndex: 5 }}
+                                            >
+                                                <i className="ri-close-line"></i>
+                                            </button>
+                                        )}
+                                    </div>
                                     <button 
                                         className="btn btn-primary addBtn" 
                                         onClick={handleShowProjectForm}

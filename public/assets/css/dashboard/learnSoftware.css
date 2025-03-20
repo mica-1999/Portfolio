@@ -281,12 +281,20 @@
     color: var(--primary-text-color);
 }
 
+.btn-outline-secondary{
+    border: 0.09rem solid #464963 !important;
+}
+.btn-outline-secondary:hover {
+    background-color: #393C6A !important;
+}
+
+
 /* Input and search styles */
 .searchInput {
     width: 215px;
     height: 40px;
     background: transparent;
-    border: 0.09rem solid #464963;
+    border: 1px solid #464963;
     color: #D4D5EA;
     padding-left: 30px;
     transition: all 0.3s ease;
@@ -311,12 +319,24 @@
     width: 150px;
 }
 
-.exportBtn,
-.exportBtn:hover {
+.exportBtn {
     background: transparent;
     width: 150px;
     color: #6D788D;
     border: 0.09rem solid #464963;
+}
+.exportBtn:hover {
+    background-color: #393C6A;
+    color: #D4D5EA;
+    border: 1px !important
+}
+
+.searchInput:hover {
+    background-color: #393C6A;
+    border: 1px solid #6c757d;
+}
+.searchInput:hover::placeholder {
+    color: #D4D5EA;
 }
 
 /* Enhanced hover effects */

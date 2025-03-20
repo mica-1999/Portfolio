@@ -263,7 +263,10 @@ export default function ManageSoftware() {
             <div className="card flex-grow-1 p-0">
               <div className="card-header filters">
                 <div className="row d-flex align-items-center p-2">
-                  <h5 className="card-title">Filters</h5>
+                  <h5 className="card-title">
+                    <i className="ri-code-box-line me-2"></i>
+                    Software Topics
+                  </h5>
                 </div>
       
                 {/* Filter Rows */}

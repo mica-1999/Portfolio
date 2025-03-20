@@ -7,7 +7,10 @@ export default function TimelineSection({ timeline, hidden, onToggleVisibility }
         <div id="3" className={hidden ? 'blur_element' : ''}>
           <div className="card-header">
             <div className="d-flex align-items-center justify-content-between">
-              <h5 className="card-title">Activity Timeline</h5>
+              <div className='d-flex align-items-center'>
+                <i className="ri-calendar-todo-line ri-lg me-2"></i>
+                <h5 className="mt-2 card-title">Activity Timeline</h5>
+              </div>
               <div>
                 <i className="ri-eye-off-line ri-lg ms-2 pointer" onClick={onToggleVisibility}></i>
               </div>

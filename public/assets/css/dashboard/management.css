@@ -45,7 +45,7 @@
     width: 215px;
     height: 40px;
     background: transparent;
-    border: 0.09rem solid #464963;
+    border: 1px solid #464963;
     color: #D4D5EA;
     padding-left: 30px;
     transition: all 0.3s ease;
@@ -54,6 +54,16 @@
 .searchInput::placeholder {
     font-size: 0.8125rem;
     color: #7B7C95;
+}
+.searchInput:hover {
+    background-color: #393C6A;
+    border: 1px solid #6c757d
+}
+.searchInput:hover::placeholder {
+    color: #D4D5EA;
+}
+.searchBox:hover .search-icon {
+    color: white; /* or #D4D5EA if that's the white color you want */
 }
 
 .searchInput:focus {
@@ -77,12 +87,16 @@
     transform: translateY(-2px);
 }
 
-.exportBtn,
-.exportBtn:hover {
+.exportBtn {
     background: transparent;
     width: 150px;
     color: #6D788D;
     border: 0.09rem solid #464963;
+}
+.exportBtn:hover {
+    background-color: #393C6A;
+    color: #D4D5EA;
+
 }
 
 /* Custom checkbox styles */
@@ -498,7 +512,6 @@ button:focus {
     font-weight: 600;
     color: #D4D5EA;
     display: -webkit-box;
-    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

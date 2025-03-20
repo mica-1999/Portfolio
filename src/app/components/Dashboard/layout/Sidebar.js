@@ -16,8 +16,29 @@ export default function Sidebar() {
     <div className={`d-flex col-lg-2 p-3 flex-column ps-3 vh-100 position-fixed sidebarMenu ${sidebarOpen ? 'open' : 'closed'}`}>
       {/* Sidebar Header */}
       <div className="d-flex align-items-center justify-content-between logo mt-3">
-        <a href="/pages/dashboard"><img  src="/assets/images/portfolio.png" alt="logo" /></a>
-        <i className="fa-solid fa-arrow-left fa-lg d-none" style={{ cursor:"pointer" }} onClick={() => setSidebarOpen(false)}></i>
+        <Link href="/pages/dashboard" className="text-decoration-none">
+          <div className="d-flex align-items-center">
+            <div className="logo-icon me-2 d-flex align-items-center justify-content-center" 
+                 style={{ 
+                   background: 'linear-gradient(135deg, #646cfa, #4a51c5)', 
+                   color: '#fff', 
+                   width: '40px', 
+                   height: '40px', 
+                   borderRadius: '10px',
+                   fontSize: '18px',
+                   fontWeight: 'bold',
+                   boxShadow: '0 3px 8px rgba(46, 47, 71, 0.3)'
+                 }}>
+              <i className="fa-solid fa-th-large"></i>
+            </div>
+            <div>
+              <div className="logo-text" style={{ color: '#cdd0e1', fontSize: '20px', fontWeight: 'bold', lineHeight: '1.1' }}>
+                Dash<span style={{ color: '#646cfa' }}>Hub</span>
+              </div>
+            </div>
+          </div>
+        </Link>
+        <i className="fa-solid fa-arrow-left fa-lg d-none" style={{ cursor:"pointer", color: '#cdd0e1' }} onClick={() => setSidebarOpen(false)}></i>
       </div>
       <div className="overflow-auto mt-4">
         <ul className="main-menu nav flex-column mt-3">
