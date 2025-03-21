@@ -86,9 +86,8 @@ The api folder in Next.js is responsible for handling server-side requests, such
 
 When including static files such as CSS, JS, and images from the `public` directory, make sure to use a leading slash (`/`) in the path. This ensures that the files are referenced from the root of the project and not relative to the current directory.
 
-## Future Enhancements
-- A massive overhaul on this project is necessary, stuff like:
--- Toasts instead of Modals, much cleaner and less intrusive
--- Typescript
--- Tailwind as an option
--- ESLint
+## Future Enhancements (A massive overhaul on this project is necessary)
+- Toasts instead of Modals, much cleaner and less intrusive
+- Typescript
+- Tailwind as an option
+- ESLint
