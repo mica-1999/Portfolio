@@ -87,15 +87,8 @@ The api folder in Next.js is responsible for handling server-side requests, such
 When including static files such as CSS, JS, and images from the `public` directory, make sure to use a leading slash (`/`) in the path. This ensures that the files are referenced from the root of the project and not relative to the current directory.
 
 ## Future Enhancements
-
-- Add notifications in the top right corner.
-- Integrate AI into the chat feature.
-- Add APIs for news, Spotify, weather, and other features on the dashboard main page.
-- The learning page is already established, the missing step is doing the page details for the topic at hand
-- 
-
-# Extra
-- Fix the damn responsive design on the eebsite cuz on the phone it looks like fucking shit
-
-# PS
-- Project will be on hold due to burn out and wanting to learn other stuff, for now a good base is done
+- A massive overhaul on this project is necessary, stuff like:
+-- Toasts instead of Modals, much cleaner and less intrusive
+-- Typescript
+-- Tailwind as an option
+-- ESLint
