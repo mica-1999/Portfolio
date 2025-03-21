@@ -146,7 +146,7 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                     onChange={(e) => handleInputChange('description', e.target.value)}
                                 ></textarea>
                             ) : (
-                                <p>{topicClicked.description}</p>
+                                <p className="preserve-newlines">{topicClicked.description}</p>
                             )}
                         </section>
 
@@ -218,7 +218,7 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                                     Invalid or missing video URL
                                                 </div>
                                             )}
-                                            <p>{video.description}</p>
+                                            <p className="video-description preserve-newlines">{video.description}</p>
                                         </div>
                                     ))
                                 )}
@@ -281,7 +281,8 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                                     {snippet.code}
                                                 </code>
                                             </pre>
-                                            <p><strong>Explanation:</strong> {snippet.explanation}</p>
+                                            <p><strong>Explanation:</strong> </p>
+                                            <span className="code-explanation preserve-newlines">{snippet.explanation}</span>
                                         </div>
                                     ))
                                 )}
@@ -319,7 +320,7 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                     <ul className="list-group">
                                         {topicClicked.concepts?.map((concept, index) => (
                                             <li key={index} className="list-group-item">
-                                                <strong>{concept.title}:</strong> {concept.explanation}
+                                                <strong>{concept.title}:</strong> <span className="concept-explanation preserve-newlines">{concept.explanation}</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -361,7 +362,7 @@ export const CodeModal = ({showModal, topicClicked, setShowModal, fetchTopics}) 
                                         onChange={(e) => handleInputChange('userNotes', e.target.value)}
                                     ></textarea>
                                 ) : (
-                                    <p>{topicClicked.userNotes}</p>
+                                    <p className="preserve-newlines">{topicClicked.userNotes}</p>
                                 )}
                             </section>
                         ) : null}

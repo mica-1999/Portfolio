@@ -11,3 +11,16 @@ textarea {
     overflow: hidden !important;  /* Prevents scrollbars */
     resize: none !important;  /* Disables manual resizing */
 }
+
+/* Preserve whitespace in elements displaying textarea content */
+.preserve-newlines {
+  white-space: pre-wrap;
+}
+
+/* Style for modal content that needs preserved whitespace */
+.modal-body p,
+.concept-explanation,
+.code-explanation,
+.video-description {
+  white-space: pre-line;
+}

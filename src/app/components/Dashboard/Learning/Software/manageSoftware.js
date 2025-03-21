@@ -415,7 +415,7 @@ export default function ManageSoftware() {
                     </div>
                     <div className="card-body">
                       <h5 className="card-title">{topic.titleCard}</h5>
-                      <p className="card-text topicDescription">{topic.description}</p>
+                      <p className="card-text topicDescription preserve-newlines">{topic.description}</p>
                     </div>
                   </div>
                 </div>
